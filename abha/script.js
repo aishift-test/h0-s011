@@ -234,6 +234,14 @@
 
   var TYPE_LABEL = { nature: "Nature", heritage: "Heritage", food: "Food", activities: "Activity" };
 
+  /* the four seasons, and the months in each one */
+  var SEASONS = {
+    winter: { label: "Winter", months: [12, 1, 2] },
+    spring: { label: "Spring", months: [3, 4, 5] },
+    summer: { label: "Summer", months: [6, 7, 8] },
+    autumn: { label: "Autumn", months: [9, 10, 11] }
+  };
+
   /* ----------------------------------------------------------
      2. THE PAGE
      ---------------------------------------------------------- */
@@ -242,6 +250,7 @@
   var empty      = document.getElementById("empty");
   var resetBtn   = document.getElementById("reset");
   var filterBtns = document.querySelectorAll("#filters .chip");
+  var seasonBtns = document.querySelectorAll("#seasons .season");
   var monthBtns  = document.querySelectorAll("#months .month");
   var planBtn    = document.getElementById("planBtn");
   var planBtnTxt = document.getElementById("planBtnText");
@@ -250,7 +259,10 @@
   var planList   = document.getElementById("plan");
   var planFoot   = document.getElementById("planFoot");
 
-  var state = { type: "all", month: 0 };
+  /* season: "" or "winter" | "spring" | "summer" | "autumn"
+     month:  0 or 1 ... 12
+     Only one of the two is ever set. Picking one clears the other. */
+  var state = { type: "all", season: "", month: 0 };
 
   /* ----------------------------------------------------------
      3. SMALL HELPERS
@@ -259,8 +271,33 @@
     return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(place.maps);
   }
 
-  function isBestIn(place, month) {
-    return place.months.indexOf(month) !== -1;
+  /* The months the visitor asked about: one month, or all the months
+     of a season. Returns null when they have not asked for any. */
+  function wantedMonths() {
+    if (state.month) return [state.month];
+    if (state.season) return SEASONS[state.season].months;
+    return null;
+  }
+
+  /* Is this place at its best in one of those months? */
+  function isBestIn(place, months) {
+    if (!months) return false;
+    return months.some(function (m) { return place.months.indexOf(m) !== -1; });
+  }
+
+  /* "March" or "spring" */
+  function periodShort() {
+    if (state.month) return MONTHS[state.month - 1];
+    if (state.season) return SEASONS[state.season].label.toLowerCase();
+    return "";
+  }
+
+  /* "March" or "spring (Mar–May)" — the season with its months */
+  function periodName() {
+    if (!state.season) return periodShort();
+    var s = SEASONS[state.season];
+    var first = s.months[0], last = s.months[s.months.length - 1];
+    return periodShort() + " (" + SHORT[first - 1] + "–" + SHORT[last - 1] + ")";
   }
 
   /* "Jun–Aug", "Dec–May", "Mar, Apr" or "All year" */
@@ -298,12 +335,12 @@
   /* ----------------------------------------------------------
      4. DRAW THE CARDS
      ---------------------------------------------------------- */
-  function cardHtml(place, bestNow) {
+  function cardHtml(place, bestNow, quiet) {
     // some photos are tall; "pos" says which part of the photo to show
     var pos = place.pos ? ' style="object-position:' + place.pos + '"' : '';
 
     return '' +
-      '<li class="card' + (state.month && !bestNow ? " is-quiet" : "") + '">' +
+      '<li class="card' + (quiet ? " is-quiet" : "") + '">' +
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="Open ' + escapeHtml(place.name) + ' in Google Maps">' +
           '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
@@ -326,35 +363,36 @@
   }
 
   function render() {
-    var month = state.month;
+    var months = wantedMonths();
 
     var shown = PLACES.filter(function (p) {
       return state.type === "all" || p.type === state.type;
     });
 
-    // when a month is picked, the best ones come first
-    if (month) {
+    // when a season or a month is picked, the best ones come first
+    if (months) {
       shown = shown.slice().sort(function (a, b) {
-        return (isBestIn(b, month) ? 1 : 0) - (isBestIn(a, month) ? 1 : 0);
+        return (isBestIn(b, months) ? 1 : 0) - (isBestIn(a, months) ? 1 : 0);
       });
     }
 
     grid.innerHTML = shown.map(function (p) {
-      return cardHtml(p, month && isBestIn(p, month));
+      var best = isBestIn(p, months);
+      return cardHtml(p, best, months && !best);
     }).join("");
 
     empty.hidden = shown.length > 0;
 
     // the line above the cards
     var typeWord = state.type === "all" ? "" : TYPE_LABEL[state.type].toLowerCase() + " ";
-    if (!month) {
+    if (!months) {
       status.innerHTML = "Showing <b>" + shown.length + "</b> " + typeWord +
         (shown.length === 1 ? "place" : "places") + ".";
     } else {
-      var good = shown.filter(function (p) { return isBestIn(p, month); }).length;
-      status.innerHTML = "In <b>" + MONTHS[month - 1] + "</b>, <b>" + good + "</b> of these " +
-        shown.length + " " + typeWord + (shown.length === 1 ? "place is" : "places are") +
-        " at their best. Those are shown first.";
+      var good = shown.filter(function (p) { return isBestIn(p, months); }).length;
+      status.innerHTML = "In <b>" + periodName() + "</b>, <b>" + good + "</b> of these " +
+        shown.length + " " + typeWord + (shown.length === 1 ? "place" : "places") +
+        (good === 1 ? " is" : " are") + " at their best. Those are shown first.";
     }
   }
 
@@ -370,31 +408,59 @@
   });
 
   /* ----------------------------------------------------------
-     6. THE MONTH PICKER
+     6. THE SEASON PICKER AND THE MONTH PICKER
+
+     They are the same question at two sizes, so picking one
+     clears the other. Pick "Any" to go back to everything.
      ---------------------------------------------------------- */
+  function updatePlanBtn() {
+    if (!planBtnTxt) return;
+    if (state.month) {
+      planBtnTxt.textContent = "Plan my day in " + MONTHS[state.month - 1];
+    } else if (state.season) {
+      planBtnTxt.textContent = "Plan my day in " + SEASONS[state.season].label.toLowerCase();
+    } else {
+      planBtnTxt.textContent = "Make me another day";
+    }
+  }
+
+  function showTab(list, on) {
+    list.forEach(function (b) { b.classList.toggle("is-on", b === on); });
+  }
+
+  seasonBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var value = btn.getAttribute("data-season");
+      state.season = value === "0" ? "" : value;
+      state.month = 0;
+
+      showTab(seasonBtns, btn);
+      showTab(monthBtns, monthBtns[0]);   // back to "Any"
+      render();
+      updatePlanBtn();
+    });
+  });
+
   monthBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
       state.month = Number(btn.getAttribute("data-month"));
-      monthBtns.forEach(function (b) { b.classList.toggle("is-on", b === btn); });
+      state.season = "";
+
+      showTab(monthBtns, btn);
+      showTab(seasonBtns, seasonBtns[0]);  // back to "Any"
       render();
-      if (planBtnTxt) {
-        planBtnTxt.textContent = state.month
-          ? "Plan my day in " + MONTHS[state.month - 1]
-          : "Make me a day";
-      }
+      updatePlanBtn();
     });
   });
 
   if (resetBtn) {
     resetBtn.addEventListener("click", function () {
-      state = { type: "all", month: 0 };
-      filterBtns.forEach(function (b) {
-        b.classList.toggle("is-on", b.getAttribute("data-filter") === "all");
-      });
-      monthBtns.forEach(function (b) {
-        b.classList.toggle("is-on", b.getAttribute("data-month") === "0");
-      });
+      state = { type: "all", season: "", month: 0 };
+      showTab(filterBtns, filterBtns[0]);
+      showTab(seasonBtns, seasonBtns[0]);
+      showTab(monthBtns, monthBtns[0]);
       render();
+      updatePlanBtn();
     });
   }
 
@@ -455,8 +521,8 @@
   }
 
   // Build one day. When "strict" is true it only uses places that are
-  // at their best in the chosen month (if there are any).
-  function buildStops(month, strict) {
+  // at their best in the chosen season or month (if there are any).
+  function buildStops(months, strict) {
     var used = [];
     var stops = [];
 
@@ -466,8 +532,8 @@
       });
       if (!pool.length) return;
 
-      var good = (month && strict)
-        ? pool.filter(function (p) { return isBestIn(p, month); })
+      var good = (months && strict)
+        ? pool.filter(function (p) { return isBestIn(p, months); })
         : [];
       var from = good.length ? good : pool;
       var place = from[Math.floor(Math.random() * from.length)];
@@ -487,25 +553,25 @@
   var lastPlan = [];
 
   function makePlan() {
-    var month = state.month;
-    var stops = buildStops(month, true);
+    var months = wantedMonths();
+    var stops = buildStops(months, true);
 
     // try again so two presses in a row give you a different day
     for (var i = 0; i < 24 && sameNames(stops, lastPlan); i++) {
-      stops = buildStops(month, i < 16);
+      stops = buildStops(months, i < 16);
     }
     lastPlan = stops.map(function (s) { return s.place.name; });
 
     drawPlan(stops);
 
     if (planTitle) {
-      planTitle.textContent = month
-        ? "A day in " + MONTHS[month - 1]
+      planTitle.textContent = months
+        ? "A day in " + periodShort()
         : "A day in Abha";
     }
 
-    planFoot.innerHTML = (month
-      ? "Picked for " + MONTHS[month - 1] + ". "
+    planFoot.innerHTML = (months
+      ? "Picked for " + periodName() + ". "
       : "") +
       "Press again for a different day, or " +
       '<button type="button" class="link" id="showMine">show my plan</button>.';
