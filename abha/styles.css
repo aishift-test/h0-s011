@@ -52,29 +52,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ------------------------------------------------------------
-   THE PICTURE BEHIND THE PAGE
-
-   One fixed layer, under everything else. It holds the photo
-   and, on top of the photo, a light veil of the page colour.
-   The veil is what keeps the words easy to read.
-
-   `inset: 0` plus `scale` makes the layer a little wider than
-   the screen, so the soft blurred edge stays off-screen.
-   ------------------------------------------------------------ */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(var(--bg-rgb), .5), rgba(var(--bg-rgb), .5)),
-    url("img/background.jpg") center / cover no-repeat;
-  filter: blur(16px);
-  transform: scale(1.12);
-}
-
 img { display: block; max-width: 100%; }
 
 h1, h2, h3 {
@@ -451,9 +428,7 @@ a { color: inherit; }
 .status {
   margin: 0 0 1.6rem;
   font-size: .9rem;
-  /* this line sits straight on the page background, so it is darker
-     than the other small text: the picture behind it comes and goes */
-  color: var(--ink);
+  color: var(--muted);
 }
 .status b { color: var(--ink); font-weight: 600; }
 
@@ -631,8 +606,7 @@ a { color: inherit; }
 .empty {
   margin: 2rem 0;
   text-align: center;
-  /* same reason as .status — it sits on the picture */
-  color: var(--ink);
+  color: var(--muted);
 }
 .link {
   font: inherit;
