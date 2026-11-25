@@ -141,7 +141,23 @@
     });
   }
 
-  /* ---- 5. gentle fade in when a block comes into view ---- */
+  /* ---- 5. the gold reading bar at the top ---- */
+  var progress = document.getElementById("progress");
+
+  if (progress) {
+    var onProgress = function () {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var room = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = room > 0 ? (y / room) * 100 : 0;
+      progress.style.width = Math.max(0, Math.min(100, pct)) + "%";
+    };
+
+    onProgress();
+    window.addEventListener("scroll", onProgress, { passive: true });
+    window.addEventListener("resize", onProgress);
+  }
+
+  /* ---- 6. gentle fade in when a block comes into view ---- */
   var items = document.querySelectorAll(
     ".sec .wrap > *, .card, .week, .faq, .bonuses li, .fail-block, .checklist li, .results li"
   );

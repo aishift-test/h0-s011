@@ -1110,3 +1110,231 @@ a, button, summary, .video { -webkit-tap-highlight-color: transparent; }
   .jprice .price-new { font-size: 2.4rem; }
   .jprice .price-old { font-size: 1.15rem; }
 }
+
+/* =========================================================
+   Decoration — ornaments, glow and depth.
+   Nothing here changes the size or the position of anything.
+   ========================================================= */
+
+/* --- reading bar at the very top of the screen --- */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  z-index: 90;
+  background: linear-gradient(90deg, #8a7431, #e8d28a 45%, #b8a050);
+  box-shadow: 0 0 10px rgba(201, 174, 92, 0.65);
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+::selection { background: rgba(201, 174, 92, 0.35); }
+
+/* --- richer dark sections: a warm glow at the top --- */
+.hero {
+  background:
+    radial-gradient(58% 42% at 50% 6%, rgba(201, 174, 92, 0.13) 0%, rgba(201, 174, 92, 0) 72%),
+    radial-gradient(115% 78% at 50% -8%, #303a63 0%, #232b4c 42%, #1a2038 100%);
+}
+
+.sec.dark {
+  background:
+    radial-gradient(85% 34% at 50% 0%, rgba(201, 174, 92, 0.075) 0%, rgba(201, 174, 92, 0) 70%),
+    linear-gradient(180deg, #232b4c 0%, #1e2540 45%, #1a2038 100%);
+}
+
+.sec.light {
+  background:
+    radial-gradient(90% 30% at 50% 0%, rgba(184, 160, 80, 0.055) 0%, rgba(184, 160, 80, 0) 70%),
+    var(--cream);
+}
+
+/* --- the headline gets a soft shadow and a gold sheen --- */
+.hero h1 { text-shadow: 0 3px 34px rgba(0, 0, 0, 0.45); }
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .hero h1 .gold {
+    background: linear-gradient(100deg, #e8d28a 0%, #c9ae5c 38%, #f2e3ae 58%, #b8a050 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.hero .sub .dot { color: var(--gold-bright); }
+
+/* --- heading ornament: a gold rule with a bead in the middle --- */
+.sec h2 { position: relative; }
+
+.sec h2::after {
+  width: 96px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184, 160, 80, 0) 0%, rgba(184, 160, 80, 0.85) 26%, rgba(184, 160, 80, 0.85) 74%, rgba(184, 160, 80, 0) 100%);
+}
+
+.sec.dark h2::after {
+  background: linear-gradient(90deg, rgba(201, 174, 92, 0) 0%, rgba(201, 174, 92, 0.9) 26%, rgba(201, 174, 92, 0.9) 74%, rgba(201, 174, 92, 0) 100%);
+}
+
+.sec h2::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.72rem - 3px);
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  transform: rotate(45deg);
+  background: linear-gradient(140deg, #e8d28a, #b8a050);
+  box-shadow: 0 0 10px rgba(201, 174, 92, 0.75);
+}
+
+/* --- buttons: a gold sheen that sweeps across on hover --- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ddc87a 0%, #c2ab5a 48%, #a38b3c 100%);
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -70%;
+  width: 45%;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.btn:hover::after { left: 130%; }
+
+/* --- the video box: a warmer frame and a soft glow under it --- */
+.video {
+  border-color: rgba(184, 160, 80, 0.32);
+  box-shadow:
+    0 34px 60px -30px rgba(0, 0, 0, 0.95),
+    0 0 42px -12px rgba(184, 160, 80, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* --- case study cards: a gold top edge and a lift on hover --- */
+.card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(184, 160, 80, 0), #c9ae5c 50%, rgba(184, 160, 80, 0));
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1px 2px -1px rgba(30, 37, 64, 0.12), 0 30px 54px -28px rgba(30, 37, 64, 0.5);
+}
+
+.avatar {
+  position: relative;
+  border-color: rgba(201, 174, 92, 0.9);
+  box-shadow:
+    0 0 0 4px rgba(184, 160, 80, 0.14),
+    0 0 22px rgba(201, 174, 92, 0.38),
+    inset 0 1px 0 #fff;
+}
+
+/* --- stat boxes: a gold top edge --- */
+.stats li {
+  position: relative;
+  overflow: hidden;
+}
+
+.stats li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 22%;
+  right: 22%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201, 174, 92, 0), rgba(201, 174, 92, 0.9), rgba(201, 174, 92, 0));
+}
+
+/* --- week pictures: a warm glow behind the drawing --- */
+.week-art {
+  position: relative;
+  background:
+    radial-gradient(70% 60% at 50% 42%, rgba(201, 174, 92, 0.16) 0%, rgba(201, 174, 92, 0) 72%),
+    radial-gradient(120% 130% at 50% 0%, #2b3459 0%, #212949 45%, #1a2038 100%);
+}
+
+.week-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(85% 75% at 50% 45%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(85% 75% at 50% 45%, #000 0%, transparent 78%);
+}
+
+.week-art svg { position: relative; z-index: 1; }
+
+/* --- bonus icons: a gold ring and a glow --- */
+.b-icon {
+  position: relative;
+  border-color: rgba(201, 174, 92, 0.34);
+  box-shadow:
+    0 0 0 1px rgba(201, 174, 92, 0.12),
+    0 0 20px -4px rgba(201, 174, 92, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.b-icon svg { color: var(--gold-bright); }
+
+/* --- the price card: a deeper glow --- */
+.price-card {
+  box-shadow:
+    0 0 60px -18px rgba(184, 160, 80, 0.35),
+    0 30px 60px -34px rgba(0, 0, 0, 0.9);
+}
+
+/* --- FAQ rows: a gold edge on the open one --- */
+.faq[open] {
+  box-shadow: 0 18px 34px -26px rgba(30, 37, 64, 0.5);
+}
+
+/* --- the menu panel and the footer get a gold hairline --- */
+.menu { box-shadow: 0 18px 34px -22px rgba(0, 0, 0, 0.85); }
+
+.site-footer .brand-footer { text-shadow: 0 0 26px rgba(201, 174, 92, 0.25); }
+
+/* --- softer, rounded scrollbar on a desktop --- */
+@media (min-width: 720px) {
+  html { scrollbar-width: thin; scrollbar-color: rgba(184, 160, 80, 0.55) transparent; }
+  body::-webkit-scrollbar { width: 10px; }
+  body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(201, 174, 92, 0.7), rgba(184, 160, 80, 0.45));
+    border-radius: 99px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+  }
+  body::-webkit-scrollbar-track { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::after { transition: none; }
+  .card { transition: none; }
+}
