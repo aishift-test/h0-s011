@@ -248,7 +248,11 @@
   var grid       = document.getElementById("grid");
   var status     = document.getElementById("status");
   var empty      = document.getElementById("empty");
-  var resetBtn   = document.getElementById("reset");
+  var nowLine    = document.getElementById("nowline");
+  var toolbar    = document.getElementById("toolbar");
+  var savedChip  = document.querySelector('#filters .chip[data-filter="saved"]');
+  var icsBtn     = document.getElementById("icsBtn");
+  var icsNote    = document.getElementById("icsNote");
   var filterBtns = document.querySelectorAll("#filters .chip");
   var seasonBtns = document.querySelectorAll("#seasons .season");
   var monthBtns  = document.querySelectorAll("#months .month");
@@ -400,11 +404,32 @@
       "</li>";
   }
 
+  /* Cards fade in as you reach them, instead of all at once. */
+  var io = ("IntersectionObserver" in window)
+    ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -6% 0px" })
+    : null;
+
+  function reveal() {
+    var cards = grid.querySelectorAll(".card");
+    Array.prototype.forEach.call(cards, function (c) {
+      if (io) io.observe(c); else c.classList.add("is-in");
+    });
+  }
+
   function render() {
     var months = wantedMonths();
 
     var shown = PLACES.filter(function (p) {
-      return state.type === "all" || p.type === state.type;
+      if (state.type === "all") return true;
+      if (state.type === "saved") return !!saved[p.name];
+      return p.type === state.type;
     });
 
     // when a season or a month is picked, the best ones come first
@@ -418,11 +443,22 @@
       var best = isBestIn(p, months);
       return cardHtml(p, best, months && !best);
     }).join("");
+    reveal();
 
     empty.hidden = shown.length > 0;
+    if (!shown.length && state.type === "saved") {
+      empty.innerHTML = "You have not saved any places yet. " +
+        "Press the heart on a place to keep it here. " +
+        '<button type="button" class="link" id="reset">Show everything</button>';
+    } else {
+      empty.innerHTML = "Nothing matches that. " +
+        '<button type="button" class="link" id="reset">Show everything</button>';
+    }
 
     // the line above the cards
-    var typeWord = state.type === "all" ? "" : TYPE_LABEL[state.type].toLowerCase() + " ";
+    var typeWord = state.type === "all" ? ""
+      : state.type === "saved" ? "saved "
+      : TYPE_LABEL[state.type].toLowerCase() + " ";
     if (!months) {
       status.innerHTML = "Showing <b>" + shown.length + "</b> " + typeWord +
         (shown.length === 1 ? "place" : "places") + ".";
@@ -432,6 +468,38 @@
         shown.length + " " + typeWord + (shown.length === 1 ? "place" : "places") +
         (good === 1 ? " is" : " are") + " at their best. Those are shown first.";
     }
+
+    drawNowLine();
+    updateSavedChip();
+  }
+
+  /* ----------------------------------------------------------
+     4c. "IT IS NOVEMBER" — what is good at this moment
+
+     The page reads the month from the visitor's own device and
+     says how many places are at their best right now.
+     ---------------------------------------------------------- */
+  function currentMonth() { return new Date().getMonth() + 1; }
+
+  function drawNowLine() {
+    if (!nowLine) return;
+
+    // once a filter is on, the line above the cards already says it
+    if (state.type !== "all" || wantedMonths()) { nowLine.hidden = true; return; }
+
+    var m = currentMonth();
+    var good = PLACES.filter(function (p) { return isBestIn(p, [m]); }).length;
+
+    nowLine.hidden = false;
+    nowLine.innerHTML = "It is <b>" + MONTHS[m - 1] + "</b> in Abha. <b>" + good +
+      "</b> of the " + PLACES.length + " places are at their best now. " +
+      '<button type="button" class="link" id="showNow">Show them</button>';
+  }
+
+  function updateSavedChip() {
+    if (!savedChip) return;
+    var n = savedCount();
+    savedChip.textContent = n ? "Saved (" + n + ")" : "Saved";
   }
 
   /* ----------------------------------------------------------
@@ -491,16 +559,65 @@
     });
   });
 
-  if (resetBtn) {
-    resetBtn.addEventListener("click", function () {
-      state = { type: "all", season: "", month: 0 };
-      showTab(filterBtns, filterBtns[0]);
-      showTab(seasonBtns, seasonBtns[0]);
-      showTab(monthBtns, monthBtns[0]);
-      render();
-      updatePlanBtn();
-    });
+  function resetAll() {
+    state = { type: "all", season: "", month: 0 };
+    showTab(filterBtns, filterBtns[0]);
+    showTab(seasonBtns, seasonBtns[0]);
+    showTab(monthBtns, monthBtns[0]);
+    render();
+    updatePlanBtn();
   }
+
+  // "Show everything" is drawn inside the empty message, so listen on the
+  // message itself — the button is made again every time the list changes.
+  empty.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "reset") resetAll();
+  });
+
+  /* ----------------------------------------------------------
+     6b. THE HEART ON A CARD
+     ---------------------------------------------------------- */
+  grid.addEventListener("click", function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest(".save") : null;
+    if (!btn) return;
+
+    e.preventDefault();
+    var name = btn.getAttribute("data-name");
+
+    if (saved[name]) delete saved[name]; else saved[name] = true;
+    saveStore();
+
+    var on = !!saved[name];
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.setAttribute("aria-label", (on ? "Remove " : "Save ") + name);
+    updateSavedChip();
+
+    // looking at the saved list and you just unsaved one — take it away
+    if (state.type === "saved" && !on) render();
+  });
+
+  /* ----------------------------------------------------------
+     6c. "SHOW THEM" — jump to this month's best places
+     ---------------------------------------------------------- */
+  nowLine.addEventListener("click", function (e) {
+    if (!e.target || e.target.id !== "showNow") return;
+
+    var m = currentMonth();
+    state.month = m;
+    state.season = "";
+    showTab(monthBtns, document.querySelector('#months .month[data-month="' + m + '"]'));
+    showTab(seasonBtns, seasonBtns[0]);
+    render();
+    updatePlanBtn();
+  });
+
+  /* ----------------------------------------------------------
+     6d. A SHADOW UNDER THE TOOLBAR ONCE YOU SCROLL
+     ---------------------------------------------------------- */
+  function onScroll() {
+    if (toolbar) toolbar.classList.toggle("is-stuck", window.scrollY > 30);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   /* ----------------------------------------------------------
      7. PLAN MY DAY
@@ -550,7 +667,11 @@
 
   // Draw any list of stops. A stop is { slot, place, note },
   // where "slot" is a key from SLOTS above.
+  var lastStops = [];
+
   function drawPlan(stops) {
+    lastStops = stops;
+    if (icsNote) icsNote.hidden = true;   // the old note was about another day
     planList.innerHTML = stops.map(function (stop) {
       var place = stop.place;
       var note = stop.note || place.tip;
@@ -642,6 +763,83 @@
 
   if (planBtn) planBtn.addEventListener("click", makePlan);
 
+  /* ----------------------------------------------------------
+     7b. PUT THE DAY IN A CALENDAR
+
+     The page builds a small calendar file in the browser and
+     hands it to the phone. No server is needed.
+     ---------------------------------------------------------- */
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+
+  function nextFriday() {
+    var d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7));  // 5 = Friday
+    return d;
+  }
+
+  /* A time in Abha as UTC. Abha is UTC+3 all year, with no summer time. */
+  function utcStamp(day, hhmm) {
+    var p = hhmm.split(":");
+    var d = new Date(day.getFullYear(), day.getMonth(), day.getDate(),
+                     Number(p[0]) - 3, Number(p[1]), 0);
+    return d.getUTCFullYear() + pad2(d.getUTCMonth() + 1) + pad2(d.getUTCDate()) + "T" +
+           pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + "00Z";
+  }
+
+  function icsEsc(s) {
+    return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;")
+                    .replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  }
+
+  function icsText(stops, day) {
+    var L = ["BEGIN:VCALENDAR", "VERSION:2.0", "CALSCALE:GREGORIAN",
+             "PRODID:-//Abha guide//A day in Abha//EN"];
+    var stamp = utcStamp(day, "00:00");
+
+    stops.forEach(function (stop) {
+      var s = SLOT_BY_KEY[stop.slot];
+      L.push("BEGIN:VEVENT");
+      L.push("UID:" + stamp + "-" + s.key + "@abha-guide");
+      L.push("DTSTAMP:" + stamp);
+      L.push("DTSTART:" + utcStamp(day, s.from));
+      L.push("DTEND:" + utcStamp(day, s.to));
+      L.push("SUMMARY:" + icsEsc(stop.place.name));
+      L.push("LOCATION:" + icsEsc(stop.place.maps));
+      L.push("DESCRIPTION:" + icsEsc(stop.place.line));
+      L.push("END:VEVENT");
+    });
+
+    L.push("END:VCALENDAR");
+    return L.join("\r\n") + "\r\n";
+  }
+
+  function dayLabel(d) {
+    return d.getDate() + " " + MONTHS[d.getMonth()];
+  }
+
+  if (icsBtn) icsBtn.addEventListener("click", function () {
+    if (!lastStops.length) return;
+
+    var day = nextFriday();
+    var blob = new Blob([icsText(lastStops, day)], { type: "text/calendar;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+
+    a.href = url;
+    a.download = "abha-day.ics";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+
+    if (icsNote) {
+      icsNote.hidden = false;
+      icsNote.textContent = "Saved as abha-day.ics for Friday " + dayLabel(day) +
+        ". Open that file to put the four stops in your calendar.";
+    }
+  });
+
   // the small "show my plan" button inside the panel
   planFoot.addEventListener("click", function (e) {
     if (e.target && e.target.id === "showMine") showMyPlan();
@@ -652,4 +850,5 @@
      ---------------------------------------------------------- */
   render();
   showMyPlan();
+  onScroll();
 })();
