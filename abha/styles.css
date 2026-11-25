@@ -34,6 +34,11 @@
   /* a very pale purple, for a button the mouse is over */
   --accent-tint: #f7eef6;
 
+  /* the grey box behind a photo, before the photo arrives,
+     and the thin "|" between the type and the months on a card */
+  --photo-bg: #ececec;
+  --sep:      rgba(0, 0, 0, .25);
+
   /* The little chips that sit ON a photo — the heart and the
      "best now" label. They stay white with dark words in both
      light and dark, because a photo can be any colour. */
@@ -91,6 +96,9 @@
   --accent-fill-hover: #c448b4;
   --accent-tint:       #2b1a2a;
 
+  --photo-bg: #262626;
+  --sep:      rgba(255, 255, 255, .3);
+
   --shadow:      0 1px 2px rgba(0, 0, 0, .5), 0 6px 18px -8px rgba(0, 0, 0, .7);
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, .55), 0 20px 40px -18px rgba(0, 0, 0, .8);
 }
@@ -102,10 +110,6 @@
   border: 1px solid var(--line);
   border-left: 3px solid var(--accent);
 }
-/* the grey box behind a photo, before the photo arrives */
-:root[data-theme="dark"] .card-photo { background: #262626; }
-/* the thin "|" between the type and the months on a card */
-:root[data-theme="dark"] .card-meta .sep { color: rgba(255, 255, 255, .3); }
 
 * { box-sizing: border-box; }
 
@@ -346,7 +350,9 @@ a { color: inherit; }
        one you are in. --- */
 .theme-btn {
   flex: 0 0 auto;
-  display: grid;
+  /* hidden until the script says it is running. With the script
+     off the page is light and the button could not do anything. */
+  display: none;
   place-items: center;
   width: 2.15rem;
   height: 2.15rem;
@@ -359,6 +365,7 @@ a { color: inherit; }
   cursor: pointer;
   transition: background .18s, color .18s;
 }
+.js .theme-btn { display: grid; }
 .theme-btn:hover { background: var(--accent-fill); color: #fff; }
 .theme-btn:active { transform: translateY(1px); }
 .theme-btn svg { flex: 0 0 auto; }
@@ -612,7 +619,7 @@ a { color: inherit; }
   display: block;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #ececec;
+  background: var(--photo-bg);
 }
 .card-photo img {
   width: 100%;
@@ -673,7 +680,7 @@ a { color: inherit; }
   border-radius: 50%;
   background: var(--muted);
 }
-.card-meta .sep { color: rgba(0, 0, 0, .25); }
+.card-meta .sep { color: var(--sep); }
 /* the four types, told apart by a small coloured dot */
 .card-meta.type-nature   .dot { background: #3f7a3f; }
 .card-meta.type-heritage .dot { background: #2f6f7a; }
@@ -706,7 +713,7 @@ a { color: inherit; }
   text-decoration: none;
   padding: .58rem .95rem;
   border-radius: 8px;
-  background: var(--accent);
+  background: var(--accent-fill);
   transition: background .2s, gap .2s;
 }
 .maps:hover { background: var(--accent-fill-hover); gap: .6rem; }
@@ -1077,6 +1084,7 @@ a { color: inherit; }
     --ink: #141414; --text: #4b4b4b; --muted: #717171;
     --line: rgba(0, 0, 0, .12);
     --accent: #78006e; --accent-fill: #78006e; --accent-tint: #f7eef6;
+    --photo-bg: #ececec; --sep: rgba(0, 0, 0, .25);
     --shadow: none; --shadow-lift: none;
   }
   .card { opacity: 1 !important; }
