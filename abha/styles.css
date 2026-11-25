@@ -20,10 +20,11 @@
   --sand-soft:   #e6d3a8;
   --sand-bright: #e3c47f;
 
-  /* the three types */
-  --nature:   #2f6b4e;
-  --food:     #b4562f;
-  --heritage: #4a5f8a;
+  /* the four types */
+  --nature:     #2f6b4e;
+  --heritage:   #4a5f8a;
+  --food:       #b4562f;
+  --activities: #8a6a1f;
 
   --radius:  16px;
   --shadow:  0 1px 2px rgba(26, 32, 28, .06), 0 12px 28px -18px rgba(26, 32, 28, .45);
@@ -321,8 +322,9 @@ a { color: inherit; }
   background: var(--green);
   box-shadow: 0 2px 10px rgba(0, 0, 0, .3);
 }
-.tag-food     { background: var(--food); }
-.tag-heritage { background: var(--heritage); }
+.tag-heritage   { background: var(--heritage); }
+.tag-food       { background: var(--food); }
+.tag-activities { background: var(--activities); }
 
 .now {
   position: absolute;
@@ -449,9 +451,16 @@ a { color: inherit; }
 }
 
 .planner-lede {
-  margin: 0 0 1.4rem;
+  margin: 0 0 .55rem;
   max-width: 30rem;
   color: #c4d3c8;
+}
+
+.planner-note {
+  margin: 0 0 1.4rem;
+  max-width: 30rem;
+  font-size: .84rem;
+  color: #b9c9bd;
 }
 
 .btn-plan {

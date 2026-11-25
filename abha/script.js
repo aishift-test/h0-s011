@@ -10,41 +10,33 @@
 
   /* ----------------------------------------------------------
      1. THE PLACES
-     type   : "nature" | "food" | "heritage"
+     type   : "nature" | "heritage" | "food" | "activities"
      months : the months it is at its best (1 = January ... 12 = December)
-     slot   : where it fits in a day — "morning", "lunch" or "evening"
+     slot   : where it fits in a day — "morning", "lunch", "afternoon" or "evening"
      maps   : the words typed into Google Maps
      ---------------------------------------------------------- */
+  var ALL_YEAR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
   var PLACES = [
+    /* ---- nature ---- */
     {
-      name: "Al Soudah Peak",
+      name: "Al Soudah Park",
       type: "nature",
       img: "img/soudah.jpg",
       alt: "A drawing of green mountain peaks at Al Soudah, with mist between them",
-      line: "The highest point in Saudi Arabia. Juniper trees, cloud, and a cool 20°C while the rest of the country burns.",
-      months: [6, 7, 8, 9],
+      line: "The highest area near Abha. Fog, juniper trees and long views. Cool even in August.",
+      months: [6, 7, 8],
       slot: "morning",
-      tip: "Go before 10am — the cloud usually rolls in after lunch.",
+      tip: "Take a jacket — it is cold up here, even in August.",
       maps: "Al Soudah, Abha, Saudi Arabia"
-    },
-    {
-      name: "Abha Cable Car",
-      type: "nature",
-      img: "img/cable-car.jpg",
-      alt: "Cable car cabins hanging above tall green trees on the Abha line",
-      line: "A long, slow ride over the valley, from the mountain down towards the city. The best view you can buy for a few riyals.",
-      months: [6, 7, 8, 9],
-      slot: "evening",
-      tip: "Ride down near sunset and watch the city lights come on.",
-      maps: "Abha Cable Car, Abha, Saudi Arabia"
     },
     {
       name: "Abha Dam Lake",
       type: "nature",
       img: "img/dam-lake.jpg",
       alt: "A drawing of the lake at Abha dam, with green mountains behind it",
-      line: "A quiet lake in the middle of the city. Walk the path, or take a small boat out on the water.",
-      months: [11, 12, 1, 2],
+      line: "A lake with a walking path and places to sit. Families go there in the spring.",
+      months: [3, 4, 5],
       slot: "evening",
       tip: "Come an hour before sunset — the light on the water is the whole point.",
       maps: "Abha Dam Lake, Abha, Saudi Arabia"
@@ -54,12 +46,25 @@
       type: "nature",
       img: "img/jacaranda.jpg",
       alt: "A drawing of two jacaranda trees covered in purple blossom",
-      line: "For a few weeks in spring the whole city turns purple. People drive from all over Saudi Arabia to see it.",
+      line: "In spring the jacaranda trees turn the streets purple. Very beautiful, and only for a few weeks.",
       months: [3, 4],
       slot: "morning",
       tip: "Come in the first half of April, before the flowers start to fall.",
       maps: "Jacaranda trees, Abha, Saudi Arabia"
     },
+    {
+      name: "Habala Hanging Village",
+      type: "nature",
+      img: "img/habala.jpg",
+      alt: "The dry rocky plateau and deep valley at Al Habala in Asir",
+      line: "An old village on a cliff. You go down to it by cable car, over the valley.",
+      months: [12, 1, 2, 3, 4, 5],
+      slot: "morning",
+      tip: "Check the cable car is open before you drive there. Wear real shoes.",
+      maps: "Al Habala, Abha, Saudi Arabia"
+    },
+
+    /* ---- heritage ---- */
     {
       name: "Rijal Almaa Village",
       type: "heritage",
@@ -78,33 +83,92 @@
       type: "heritage",
       img: "img/muftaha.jpg",
       alt: "The white and blue buildings of Al Muftaha art village in Abha",
-      line: "A village of artists in the centre of Abha: galleries, wall paintings and small shops. It comes alive in summer.",
-      months: [6, 7, 8, 9],
-      slot: "evening",
-      tip: "The evening Soudah Season events happen here. Check what is on.",
+      line: "An area for artists and local art: colourful walls, galleries and small shops.",
+      months: ALL_YEAR,
+      slot: "afternoon",
+      tip: "Good at any time of year. In summer there are evening events here.",
       maps: "Al Muftaha Art Village, Abha, Saudi Arabia"
     },
     {
-      name: "Al Habala Hanging Village",
-      type: "heritage",
-      img: "img/habala.jpg",
-      alt: "The dry rocky plateau and deep valley at Al Habala in Asir",
-      line: "A village built into a cliff, once reached only by rope ladders. Now a cable car takes you down.",
-      months: [3, 4, 5, 9, 10],
-      slot: "morning",
-      tip: "Wear real shoes. The ground is rock, not pavement.",
-      maps: "Al Habala, Abha, Saudi Arabia"
-    },
-    {
-      name: "Shada Palace Museum",
+      name: "Shada Palace",
       type: "heritage",
       img: "img/shada-palace.jpg",
       alt: "The old palace of Abha standing on a hill under a cloudy sky",
-      line: "The old ruler's palace, built in 1927 from stone and mud. Inside: rooms of Asiri life, dress and tools.",
-      months: [11, 12, 1, 2],
-      slot: "evening",
+      line: "An old mud and stone palace, now a small museum. Inside: rooms of Asiri life, dress and tools.",
+      months: ALL_YEAR,
+      slot: "morning",
       tip: "Small and quick — an hour is plenty. Good on a cloudy day.",
       maps: "Shada Palace, Abha, Saudi Arabia"
+    },
+    {
+      name: "Al Qatt Al Asiri Art",
+      type: "heritage",
+      img: "img/qatt-asiri.jpg",
+      alt: "Al Qatt Al Asiri wall painting: red, yellow, green and blue shapes with triangles and lines",
+      line: "The colourful wall painting that women in Asir paint inside their homes. Red, yellow, green and blue.",
+      months: ALL_YEAR,
+      slot: "afternoon",
+      tip: "Look for it on the inside walls of old houses and in the heritage villages.",
+      maps: "Al Qatt Al Asiri art, Abha, Saudi Arabia"
+    },
+
+    /* ---- activities ---- */
+    {
+      name: "Green Mountain Viewpoint",
+      type: "activities",
+      img: "img/jabal-akhdar.jpg",
+      alt: "The green hill of Jabal Akhdar rising above the white buildings of Abha",
+      line: "A hill inside the city with a view of all of Abha. Best in the evening, when the lights come on.",
+      months: ALL_YEAR,
+      slot: "evening",
+      tip: "Go up about half an hour before sunset and stay for the lights.",
+      maps: "Jabal Akhdar, Abha, Saudi Arabia"
+    },
+    {
+      name: "Abha Cable Car",
+      type: "activities",
+      img: "img/cable-car.jpg",
+      alt: "Cable car cabins hanging above tall green trees on the Abha line",
+      line: "A long, slow ride over the valley, from the mountain down towards the city. The best view you can buy for a few riyals.",
+      months: [6, 7, 8, 9],
+      slot: "evening",
+      tip: "Ride down near sunset and watch the city lights come on.",
+      maps: "Abha Cable Car, Abha, Saudi Arabia"
+    },
+    {
+      name: "Al Sahab Park",
+      type: "activities",
+      img: "img/sahab-park.jpg",
+      alt: "Green lawns, paths and trees in a park in Abha",
+      line: "The name means clouds park. A picnic area at the edge of the mountain — sometimes the clouds are under you.",
+      months: [6, 7, 8],
+      slot: "afternoon",
+      tip: "Take a picnic and a blanket. It is a good place to sit and do nothing.",
+      maps: "Al Sahab Park, Abha, Saudi Arabia"
+    },
+    {
+      name: "Weekly Market",
+      type: "activities",
+      img: "img/market.jpg",
+      alt: "Colourful cloth and goods hanging at a traditional market stall in Saudi Arabia",
+      line: "A traditional market with honey, spices, baskets and local clothes. Go in the morning — it closes early.",
+      months: ALL_YEAR,
+      slot: "morning",
+      tip: "Take cash, and ask before you take a photo of people.",
+      maps: "traditional market, Abha, Saudi Arabia"
+    },
+
+    /* ---- food ---- */
+    {
+      name: "Areeka",
+      type: "food",
+      img: "img/areeka.jpg",
+      alt: "A bowl of areeka: brown wheat porridge topped with honey and dates",
+      line: "Wheat cooked soft, then covered with honey and butter. The Asiri breakfast, and a very old recipe.",
+      months: ALL_YEAR,
+      slot: "lunch",
+      tip: "Eat it for breakfast or as a sweet after a big lunch.",
+      maps: "areeka, Abha, Saudi Arabia"
     },
     {
       name: "Haneeth at a Local House",
@@ -112,7 +176,7 @@
       img: "img/haneeth.jpg",
       alt: "A large platter of haneeth: slow-roast lamb on a bed of rice",
       line: "Lamb buried in an underground oven for hours until it falls off the bone. The Asiri dish you will talk about later.",
-      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      months: ALL_YEAR,
       slot: "lunch",
       tip: "Order one big plate for the table and eat with your right hand.",
       maps: "haneeth restaurant, Abha, Saudi Arabia"
@@ -134,10 +198,54 @@
       img: "img/kabsa.jpg",
       alt: "A close view of kabsa rice with tomato, lime and fresh salad",
       line: "Spiced rice with chicken or lamb, then cardamom coffee and dates. The everyday meal, done well.",
-      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      months: ALL_YEAR,
       slot: "lunch",
       tip: "Say yes to a second cup of coffee. It means you are welcome.",
       maps: "kabsa restaurant, Abha, Saudi Arabia"
+    },
+    {
+      name: "Asir Table",
+      type: "food",
+      img: "img/asir-table.jpg",
+      alt: "A golden Arabic coffee pot, a small cup and dates on a table",
+      line: "Traditional dishes, eaten sitting on the floor. Come hungry and come with friends.",
+      months: ALL_YEAR,
+      slot: "lunch",
+      tip: "A made-up place, for this project. The real ones are just as good.",
+      maps: "traditional restaurant, Abha, Saudi Arabia"
+    },
+    {
+      name: "Misty Peak Cafe",
+      type: "food",
+      img: "img/misty-peak.jpg",
+      alt: "A small cup of Arabic coffee on a saucer",
+      line: "Coffee with a mountain view. Good for a slow morning before the clouds come in.",
+      months: ALL_YEAR,
+      slot: "morning",
+      tip: "A made-up place, for this project. Look for a cafe with a view like this.",
+      maps: "cafe with a view, Abha, Saudi Arabia"
+    },
+    {
+      name: "Jacaranda Corner",
+      type: "food",
+      img: "img/jacaranda-corner.jpg",
+      alt: "Coffee and small sweets on a table, with a flower in a vase",
+      line: "A small cafe with purple flowers outside in spring. A good place to stop and sit.",
+      months: [3, 4],
+      slot: "morning",
+      tip: "A made-up place, for this project. Come in April for the flowers.",
+      maps: "cafe, Abha, Saudi Arabia"
+    },
+    {
+      name: "Highland Grill House",
+      type: "food",
+      img: "img/highland-grill.jpg",
+      alt: "A large mixed grill platter with meat, tomatoes and peppers",
+      line: "A family restaurant with local food and a big mixed grill for the table.",
+      months: ALL_YEAR,
+      slot: "evening",
+      tip: "A made-up place, for this project. Good for a group at the end of the day.",
+      maps: "grill restaurant, Abha, Saudi Arabia"
     }
   ];
 
@@ -146,7 +254,7 @@
   var SHORT  = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  var TYPE_LABEL = { nature: "Nature", food: "Food", heritage: "Heritage" };
+  var TYPE_LABEL = { nature: "Nature", heritage: "Heritage", food: "Food", activities: "Activity" };
 
   /* ----------------------------------------------------------
      2. THE PAGE
@@ -300,7 +408,8 @@
   /* ----------------------------------------------------------
      7. PLAN MY DAY
      ---------------------------------------------------------- */
-  var SLOTS = [["morning", "Morning"], ["lunch", "Lunch"], ["evening", "Evening"]];
+  var SLOTS = [["morning", "Morning"], ["lunch", "Lunch"],
+               ["afternoon", "Afternoon"], ["evening", "Evening"]];
 
   // Build one day. When "strict" is true it only uses places that are
   // at their best in the chosen month (if there are any).
