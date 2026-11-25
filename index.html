@@ -516,6 +516,27 @@
   </div>
 </div>
 
+<!-- The join panel. It opens when you tap any "Join the Challenge" button.
+     Put your payment link in script.js at CHECKOUT_URL. -->
+<div class="vmodal" id="joinModal" hidden>
+  <div class="vmodal-back" data-jclose></div>
+  <div class="vmodal-box jbox" role="dialog" aria-modal="true" aria-label="Join the challenge">
+    <button class="vmodal-x" id="joinClose" type="button" data-jclose aria-label="Close">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <p class="jkicker">Breakthrough Author Live</p>
+    <p class="price jprice"><span class="price-old">$950</span><span class="price-new">$47</span></p>
+    <ul class="jlist">
+      <li>4 weeks of live coaching, with editors on your first chapter</li>
+      <li>Your outline, your chapter, and a launch plan you can run</li>
+      <li>All 7 bonuses — $13,385 of value</li>
+      <li>Full refund if it is not worth your time. You keep everything.</li>
+    </ul>
+    <a class="btn jbtn" id="joinCheckout" href="#join">Continue to checkout</a>
+    <p class="jwait" id="joinWait" hidden>Checkout opens soon.</p>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>

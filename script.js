@@ -93,7 +93,55 @@
     });
   }
 
-  /* ---- 4. gentle fade in when a block comes into view ---- */
+  /* ---- 4. the join panel ----
+     Put your payment link between the quotes below.
+     A Gumroad, Stripe, Ko-fi or PayPal link works.
+     Leave it empty and the panel says the link is not set up yet. */
+  var CHECKOUT_URL = "";
+
+  var joinModal = document.getElementById("joinModal");
+  var joinCheckout = document.getElementById("joinCheckout");
+  var joinWait = document.getElementById("joinWait");
+  var joinClose = document.getElementById("joinClose");
+  var joinButtons = document.querySelectorAll('a[href="#join"]');
+
+  if (joinModal && joinCheckout && joinWait && joinButtons.length) {
+    if (CHECKOUT_URL) {
+      joinCheckout.href = CHECKOUT_URL;
+      joinWait.hidden = true;
+    } else {
+      joinCheckout.hidden = true;
+      joinWait.hidden = false;
+    }
+
+    var openJoin = function () {
+      joinModal.hidden = false;
+      document.body.classList.add("no-scroll");
+      if (joinClose) joinClose.focus();
+    };
+
+    var closeJoin = function () {
+      joinModal.hidden = true;
+      document.body.classList.remove("no-scroll");
+    };
+
+    joinButtons.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        openJoin();
+      });
+    });
+
+    joinModal.addEventListener("click", function (event) {
+      if (event.target.closest("[data-jclose]")) closeJoin();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !joinModal.hidden) closeJoin();
+    });
+  }
+
+  /* ---- 5. gentle fade in when a block comes into view ---- */
   var items = document.querySelectorAll(
     ".sec .wrap > *, .card, .week, .faq, .bonuses li, .fail-block, .checklist li, .results li"
   );

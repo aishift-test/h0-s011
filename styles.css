@@ -1049,3 +1049,64 @@ a, button, summary, .video { -webkit-tap-highlight-color: transparent; }
   /* a little more air in the long lists */
   .checklist { gap: 0.7rem; }
 }
+
+/* =========================================================
+   Join panel (opens from every "Join the Challenge" button)
+   ========================================================= */
+
+.jbox {
+  text-align: center;
+  padding: 1.5rem 1.2rem 1.4rem;
+}
+
+.jkicker {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+.jprice { margin: 0.55rem 0 1rem; }
+
+.jlist {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 34rem;
+  text-align: left;
+}
+
+.jlist li {
+  position: relative;
+  margin: 0.4rem 0;
+  padding-left: 1.6rem;
+  color: var(--dark-text);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.jlist li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.jbtn { margin-top: 1.3rem; }
+
+.jwait {
+  margin: 0.9rem 0 0;
+  color: var(--dark-muted);
+  font-size: 0.78rem;
+}
+.jwait[hidden] { display: none; }
+
+@media (max-width: 380px) {
+  .jbox { padding: 1.2rem 0.9rem 1.1rem; }
+  .jlist li { font-size: 0.82rem; }
+  .jprice .price-new { font-size: 2.4rem; }
+  .jprice .price-old { font-size: 1.15rem; }
+}
