@@ -1009,3 +1009,43 @@ a { color: inherit; }
 .vmodal-note[hidden] { display: none; }
 
 body.no-scroll { overflow: hidden; }
+
+/* =========================================================
+   Small phones (320px - 400px)
+   ========================================================= */
+
+/* tapping should not flash a grey box */
+a, button, summary, .video { -webkit-tap-highlight-color: transparent; }
+
+/* the menu button is easier to hit */
+.burger { width: 44px; height: 44px; }
+
+/* the menu never runs off the bottom of the screen */
+.menu { max-height: calc(100vh - 52px); overflow-y: auto; }
+
+/* the sticky bar keeps clear of the home bar on new phones */
+.sticky-cta { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)); }
+
+@media (max-width: 380px) {
+  /* more room for words on a narrow screen */
+  .wrap { padding: 0 1.15rem; }
+
+  /* the gold button fits on one line */
+  .btn { font-size: 0.74rem; letter-spacing: 0.07em; padding: 0.95rem 0.7rem; }
+  .sticky-cta .btn { font-size: 0.74rem; }
+
+  /* the video box: smaller circle, so nothing touches the labels */
+  .video-play { width: 46px; height: 46px; }
+  .video-play svg { width: 26px; height: 26px; }
+  .video-label { font-size: 0.72rem; }
+  .video-badge, .video-cc { font-size: 0.62rem; padding: 0.1rem 0.32rem; }
+
+  /* the video player fits the screen */
+  .vmodal { padding: 0.7rem; }
+  .vmodal-box { padding: 0.5rem; }
+  .vmodal-x { top: -12px; right: 0; }
+  .vmodal-note { padding: 2rem 0.8rem; font-size: 0.86rem; }
+
+  /* a little more air in the long lists */
+  .checklist { gap: 0.7rem; }
+}
