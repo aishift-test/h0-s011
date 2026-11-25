@@ -697,7 +697,11 @@ a { color: inherit; }
   padding-left: 1.8rem;
   font-size: 0.92rem;
   line-height: 1.6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 0.6rem;
 }
+
+.fit-list li:last-child { border-bottom: 0; }
 
 .fit-list li::before {
   position: absolute;
@@ -791,11 +795,22 @@ a { color: inherit; }
 
 /* ---------- footer ---------- */
 .site-footer {
-  background: var(--navy-deep);
+  position: relative;
+  background: linear-gradient(180deg, #141a2e 0%, #101527 100%);
   color: #7d8296;
-  padding: 1.8rem 0 2.2rem;
+  padding: 1.9rem 0 2.3rem;
   text-align: center;
   font-size: 0.8rem;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184, 160, 80, 0), rgba(184, 160, 80, 0.35), rgba(184, 160, 80, 0));
 }
 
 .site-footer p { margin: 0.15rem 0; }
@@ -858,7 +873,20 @@ a { color: inherit; }
   }
 
   .menu[hidden] { display: flex; }
-  .menu a { border-bottom: 0; padding: 0; font-size: 0.9rem; }
+  .menu a { position: relative; border-bottom: 0; padding: 0; font-size: 0.9rem; }
+  .menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+  .menu a:hover::after { transform: scaleX(1); }
   .menu .menu-cta { margin-top: 0; padding: 0.55rem 1rem; font-size: 0.75rem; }
 
   .header-inner { min-height: 60px; }
@@ -873,7 +901,7 @@ a { color: inherit; }
   .fail-block { grid-template-columns: 44px 1fr; gap: 1.3rem; }
 
   .checklist { grid-template-columns: 1fr 1fr; }
-  .checklist li:first-child { grid-column: 1 / -1; }
+  .checklist li { padding-left: 3.2rem; }
 
   .stats { grid-template-columns: repeat(4, 1fr); }
 
