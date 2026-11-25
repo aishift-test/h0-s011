@@ -58,6 +58,15 @@
   --shadow:  0 1px 2px rgba(0, 0, 0, .05), 0 6px 18px -8px rgba(0, 0, 0, .12);
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, .06), 0 20px 40px -18px rgba(0, 0, 0, .26);
 
+  /* How tall the sticky bar at the top is. Everything that jumps
+     to a place on the page (See the 18 places, Plan my day, the
+     empty message) has to leave this much room, or the sticky bar
+     sits on top of the words it just jumped to. The tallest bar is
+     the Arabic one, where the words are a little taller: 122px on
+     a computer, 148px on a phone. The phone number is set in the
+     phone block further down. */
+  --bar-h: 8rem;
+
   --head: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -441,7 +450,7 @@ a { text-underline-offset: .18em; }
    3. THE CARDS
    ============================================================ */
 
-.places { padding: 3rem 0 4rem; scroll-margin-top: 7.5rem; }
+.places { padding: 3rem 0 4rem; scroll-margin-top: var(--bar-h); }
 
 .section-title {
   font-size: clamp(1.7rem, 5vw, 2.6rem);
@@ -754,7 +763,7 @@ a { text-underline-offset: .18em; }
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   text-align: center;
-  scroll-margin-top: 7.5rem;
+  scroll-margin-top: var(--bar-h);
 }
 .empty[hidden] { display: none; }
 .empty-title {
@@ -813,8 +822,8 @@ a { text-underline-offset: .18em; }
   color: #d4d4d4;
   padding: 4rem 0;
   overflow: hidden;
-  /* the sticky toolbar is about 7rem tall — do not hide under it */
-  scroll-margin-top: 7.5rem;
+  /* the sticky bar at the top — do not hide under it */
+  scroll-margin-top: var(--bar-h);
 }
 
 .planner-wrap { position: relative; }
@@ -1176,7 +1185,10 @@ a { text-underline-offset: .18em; }
 
   /* A finger is not a mouse. The tabs in the bar are taller on a
      phone, and the three rows sit further apart: a thumb reaching
-     for "Winter" must not land on "Heritage" on the row above. */
+     for "Winter" must not land on "Heritage" on the row above.
+     The taller bar also needs more room left above whatever the
+     page jumps to, or it would sit on top of it. */
+  :root { --bar-h: 9.75rem; }
   .toolbar .row + .row { margin-top: .4rem; }
   .chip { padding: .62rem .7rem .56rem; }
   .season,
