@@ -69,7 +69,7 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(rgba(var(--bg-rgb), .8), rgba(var(--bg-rgb), .8)),
+    linear-gradient(rgba(var(--bg-rgb), .5), rgba(var(--bg-rgb), .5)),
     url("img/background.jpg") center / cover no-repeat;
   filter: blur(16px);
   transform: scale(1.12);
@@ -451,7 +451,9 @@ a { color: inherit; }
 .status {
   margin: 0 0 1.6rem;
   font-size: .9rem;
-  color: var(--muted);
+  /* this line sits straight on the page background, so it is darker
+     than the other small text: the picture behind it comes and goes */
+  color: var(--ink);
 }
 .status b { color: var(--ink); font-weight: 600; }
 
@@ -629,7 +631,8 @@ a { color: inherit; }
 .empty {
   margin: 2rem 0;
   text-align: center;
-  color: var(--muted);
+  /* same reason as .status — it sits on the picture */
+  color: var(--ink);
 }
 .link {
   font: inherit;
