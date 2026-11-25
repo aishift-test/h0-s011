@@ -292,7 +292,7 @@ a { color: inherit; }
   letter-spacing: 0.05em;
 }
 
-.trust-note { font-size: 0.53rem; color: #59607a; }
+.trust-note { font-size: 0.62rem; color: #59607a; }
 
 /* ---------- 2. sound familiar ---------- */
 .checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
