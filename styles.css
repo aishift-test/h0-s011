@@ -930,3 +930,82 @@ a { color: inherit; }
 @media (min-width: 1024px) {
   .hero h1 { max-width: 22ch; margin-left: auto; margin-right: auto; }
 }
+
+/* =========================================================
+   Video player box (opens when the hero video box is tapped)
+   ========================================================= */
+
+.video { cursor: pointer; }
+.video:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+
+.vmodal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.1rem;
+}
+.vmodal[hidden] { display: none; }
+
+.vmodal-back {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 9, 18, 0.82);
+  backdrop-filter: blur(3px);
+}
+
+.vmodal-box {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  background: #0b0e1b;
+  border: 1px solid rgba(184, 160, 80, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.95);
+  padding: 0.7rem;
+  animation: vmodal-in 0.22s ease-out;
+}
+
+@keyframes vmodal-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.vmodal-x {
+  position: absolute;
+  top: -14px;
+  right: -8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #1b2140;
+  background: linear-gradient(180deg, #d2bc6c, #b8a050);
+  border: 1px solid rgba(122, 101, 41, 0.4);
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.9);
+}
+.vmodal-x:hover { background: linear-gradient(180deg, #ddc87a, #c2ab5a); }
+
+.vmodal-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #05070e;
+  border-radius: var(--radius);
+}
+.vmodal-video[hidden] { display: none; }
+
+.vmodal-note {
+  margin: 0;
+  padding: 2.6rem 1.2rem;
+  text-align: center;
+  color: #c9ccd8;
+  font-size: 0.92rem;
+}
+.vmodal-note[hidden] { display: none; }
+
+body.no-scroll { overflow: hidden; }

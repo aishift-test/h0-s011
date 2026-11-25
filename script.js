@@ -43,7 +43,56 @@
     window.addEventListener("resize", onScroll);
   }
 
-  /* ---- 3. gentle fade in when a block comes into view ---- */
+  /* ---- 3. the video player ----
+     Put your video link between the quotes below.
+     A YouTube link, a Vimeo link, or a file in this folder like "media/training.mp4".
+     Leave it empty and the box says the video is coming soon. */
+  var VIDEO_SRC = "";
+
+  var videoBox = document.getElementById("videoBox");
+  var videoModal = document.getElementById("videoModal");
+  var videoEl = document.getElementById("trainingVideo");
+  var videoNote = document.getElementById("videoNote");
+  var videoClose = document.getElementById("videoClose");
+
+  if (videoBox && videoModal && videoEl && videoNote) {
+    if (VIDEO_SRC) {
+      videoEl.src = VIDEO_SRC;
+      videoEl.hidden = false;
+      videoNote.hidden = true;
+    }
+
+    var openVideo = function () {
+      videoModal.hidden = false;
+      document.body.classList.add("no-scroll");
+      if (videoClose) videoClose.focus();
+    };
+
+    var closeVideo = function () {
+      videoModal.hidden = true;
+      document.body.classList.remove("no-scroll");
+      if (!videoEl.paused) videoEl.pause();
+      videoBox.focus();
+    };
+
+    videoBox.addEventListener("click", openVideo);
+    videoBox.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openVideo();
+      }
+    });
+
+    videoModal.addEventListener("click", function (event) {
+      if (event.target.hasAttribute("data-vclose")) closeVideo();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !videoModal.hidden) closeVideo();
+    });
+  }
+
+  /* ---- 4. gentle fade in when a block comes into view ---- */
   var items = document.querySelectorAll(
     ".sec .wrap > *, .card, .week, .faq, .bonuses li, .fail-block, .checklist li, .results li"
   );
