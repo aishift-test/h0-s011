@@ -4,6 +4,7 @@
 - Abha guide files: `abha/index.html`, `abha/styles.css`, `abha/script.js`, `abha/favicon.svg`, `abha/img/`. All the info comes from the student's `brief/abha tourist info.pdf`. The look follows the Visit Saudi site: grey page, white cards, one purple accent `#78006e`, all in `:root` at the top of `abha/styles.css`.
 - Done: landing page — all 11 sections, navy + gold, phone first, video player, join panel.
 - Done: Abha guide — 18 places, 4 type filters, a SEASON filter (Winter / Spring / Summer / Autumn) and a month picker, a 4-slot "Plan my day" (it opens on the student's own plan from the PDF), photo credits in the footer.
+- Done: every plan stop shows a clock time: 8:00 AM morning, 1:00 PM lunch, 4:30 PM afternoon, 7:00 PM evening. The times are in `SLOTS` in `abha/script.js` — change one there and it changes everywhere.
 - Done: "Plan my day" buttons — one see-through one in the top photo, one in the planner. Big photos: two cards side by side only from 860px wide; on a phone the photo is square, 366x366.
 - Places are edited in `PLACES` in `abha/script.js`; the seasons in `SEASONS`; the student's own day in `MY_PLAN`. If a photo is tall, add `pos: "50% 70%"` to that place.
 - Next for the landing page: the video link `VIDEO_SRC` and the payment link `CHECKOUT_URL`, both in `script.js`.

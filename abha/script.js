@@ -470,17 +470,26 @@
      MY_PLAN is the writer's own plan for one day.
      It is the plan you see first. The button gives you a new one.
      ---------------------------------------------------------- */
-  var SLOTS = [["morning", "Morning"], ["lunch", "Lunch"],
-               ["afternoon", "Afternoon"], ["evening", "Evening"]];
+  /* The four stops of a day, each with the time you would go.
+     Change a time here and it changes everywhere on the page. */
+  var SLOTS = [
+    { key: "morning",   label: "Morning",   time: "8:00 am" },
+    { key: "lunch",     label: "Lunch",     time: "1:00 pm" },
+    { key: "afternoon", label: "Afternoon", time: "4:30 pm" },
+    { key: "evening",   label: "Evening",   time: "7:00 pm" }
+  ];
+
+  var SLOT_BY_KEY = {};
+  SLOTS.forEach(function (s) { SLOT_BY_KEY[s.key] = s; });
 
   var MY_PLAN = [
-    { slot: "Morning",   place: "Al Soudah Park",
+    { slot: "morning",   place: "Al Soudah Park",
       note: "Then breakfast at Misty Peak Cafe." },
-    { slot: "Lunch",     place: "Asir Table",
+    { slot: "lunch",     place: "Asir Table",
       note: "Traditional dishes, sitting on the floor." },
-    { slot: "Afternoon", place: "Al Muftaha Art Village",
+    { slot: "afternoon", place: "Al Muftaha Art Village",
       note: "Colourful walls, galleries and small shops." },
-    { slot: "Evening",   place: "Green Mountain Viewpoint",
+    { slot: "evening",   place: "Green Mountain Viewpoint",
       note: "Then dinner in the city on the way back down." }
   ];
 
@@ -491,16 +500,20 @@
     return null;
   }
 
-  // Draw any list of stops. A stop is { slot, place, note }.
+  // Draw any list of stops. A stop is { slot, place, note },
+  // where "slot" is a key from SLOTS above.
   function drawPlan(stops) {
     planList.innerHTML = stops.map(function (stop) {
       var place = stop.place;
       var note = stop.note || place.tip;
+      var slot = SLOT_BY_KEY[stop.slot];
       return "<li>" +
         '<img class="plan-img" src="' + place.img + '" alt="" loading="lazy" width="74" height="74"' +
           (place.pos ? ' style="object-position:' + place.pos + '"' : '') + ">" +
         "<div>" +
-          '<span class="plan-slot">' + stop.slot + "</span>" +
+          '<span class="plan-slot">' +
+            '<b class="plan-time">' + slot.time + "</b> · " + slot.label +
+          "</span>" +
           '<p class="plan-name">' + escapeHtml(place.name) + "</p>" +
           '<p class="plan-why">' + escapeHtml(note) + "</p>" +
         "</div>" +
@@ -526,9 +539,9 @@
     var used = [];
     var stops = [];
 
-    SLOTS.forEach(function (pair) {
+    SLOTS.forEach(function (slot) {
       var pool = PLACES.filter(function (p) {
-        return p.slot === pair[0] && used.indexOf(p.name) === -1;
+        return p.slot === slot.key && used.indexOf(p.name) === -1;
       });
       if (!pool.length) return;
 
@@ -539,7 +552,7 @@
       var place = from[Math.floor(Math.random() * from.length)];
 
       used.push(place.name);
-      stops.push({ slot: pair[1], place: place });
+      stops.push({ slot: slot.key, place: place });
     });
 
     return stops;

@@ -566,6 +566,11 @@ a { color: inherit; }
   color: var(--accent-light);
   margin-bottom: .15rem;
 }
+/* the clock time leads the line: "8:00 AM · Morning" */
+.plan-time {
+  font-weight: 700;
+  color: #fff;
+}
 .plan-name {
   font-family: var(--head);
   font-size: 1.02rem;
