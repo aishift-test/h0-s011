@@ -65,6 +65,8 @@
       type: "heritage",
       img: "img/rijal-inside.jpg",
       alt: "Inside an old house in Rijal Almaa: a green staircase and a wall painted with bright geometric patterns",
+      // this photo is tall, so show the lower part — the stairs, not the roof
+      pos: "50% 74%",
       line: "A 900-year-old village of tall stone houses, now a heritage site. The most photographed place in Asir.",
       months: [10, 11, 12, 1, 2],
       slot: "morning",
@@ -200,11 +202,14 @@
           return '<span class="pill">' + SHORT[m - 1] + "</span>";
         }).join("");
 
+    // some photos are tall; "pos" says which part of the photo to show
+    var pos = place.pos ? ' style="object-position:' + place.pos + '"' : '';
+
     return '' +
       '<li class="card' + (state.month && !bestNow ? " is-quiet" : "") + '">' +
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="Open ' + escapeHtml(place.name) + ' in Google Maps">' +
-          '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050">' +
+          '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
           '<span class="tag tag-' + place.type + '">' + TYPE_LABEL[place.type] + "</span>" +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">Best now</span>" +
         "</a>" +
@@ -341,7 +346,8 @@
 
     planList.innerHTML = stops.map(function (stop) {
       return '<li>' +
-        '<img class="plan-img" src="' + stop.place.img + '" alt="" loading="lazy" width="74" height="74">' +
+        '<img class="plan-img" src="' + stop.place.img + '" alt="" loading="lazy" width="74" height="74"' +
+          (stop.place.pos ? ' style="object-position:' + stop.place.pos + '"' : '') + '>' +
         "<div>" +
           '<span class="plan-slot">' + stop.slot + "</span>" +
           '<p class="plan-name">' + escapeHtml(stop.place.name) + "</p>" +
