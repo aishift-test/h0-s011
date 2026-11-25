@@ -318,6 +318,24 @@ a { color: inherit; }
 
 .video-label { color: #c9ccd8; font-size: 0.8rem; }
 
+.video-badge,
+.video-cc {
+  position: absolute;
+  bottom: 0.6rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #d7dae4;
+  background: rgba(6, 9, 18, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 0.12rem 0.36rem;
+  line-height: 1.4;
+}
+
+.video-badge { right: 0.6rem; }
+.video-cc { right: 3.1rem; }
+
 .hero .btn { margin-top: 0.9rem; }
 
 .trustbar {
