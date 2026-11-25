@@ -314,6 +314,77 @@ a { color: inherit; }
   margin: 0 0 .35rem;
 }
 
+/* "Places to see" on the left, "Pick one for me" on the right */
+.places-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+  margin: 0 0 .5rem;
+}
+.places-head .section-title { margin: 0; }
+
+.btn-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-family: var(--head);
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--card);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: .55rem .9rem;
+  cursor: pointer;
+  transition: background .18s, transform .18s;
+}
+.btn-pick:hover { background: #f7eef6; transform: translateY(-1px); }
+.btn-pick:active { transform: translateY(0); }
+
+/* The page jumps down to the picked card, so the button above is out of
+   reach. This pill rides along the bottom for a few seconds instead. */
+.pick-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  max-width: calc(100% - 2rem);
+  padding: .5rem .5rem .5rem 1rem;
+  background: var(--dark);
+  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 14px 32px -14px rgba(0, 0, 0, .8);
+  font-family: var(--head);
+  font-size: .84rem;
+  white-space: nowrap;
+  animation: toast-in .28s ease-out both;
+}
+.pick-toast[hidden] { display: none; }
+.pick-toast button {
+  flex: none;
+  font-family: var(--head);
+  font-size: .84rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-mid);
+  border: 0;
+  border-radius: 999px;
+  padding: .42rem .9rem;
+  cursor: pointer;
+  transition: background .18s;
+}
+.pick-toast button:hover { background: #c448b4; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 14px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
 /* "It is November in Abha. 13 of the 18 places are at their best now." */
 .nowline {
   display: block;
@@ -361,6 +432,15 @@ a { color: inherit; }
 }
 .card.is-in { opacity: 1; }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+
+/* the card "Pick one for me" landed on: a purple ring that pulses twice */
+.card.is-picked { box-shadow: 0 0 0 3px var(--accent), var(--shadow-lift); }
+.card.is-picked { animation: pick-pulse .7s ease-out 2; }
+@keyframes pick-pulse {
+  from { box-shadow: 0 0 0 3px var(--accent), var(--shadow-lift); }
+  50%  { box-shadow: 0 0 0 11px rgba(var(--accent-rgb), .16), var(--shadow-lift); }
+  to   { box-shadow: 0 0 0 3px var(--accent), var(--shadow-lift); }
+}
 
 /* a card that is not at its best in the chosen month.
    The fade is on the inside, so it does not fight the fade-in above. */
@@ -835,6 +915,7 @@ a { color: inherit; }
   .card { opacity: 1 !important; }
   .hero-img { animation: none; }
   .toolbar { position: static; }
+  .pick-toast { display: none !important; }
 }
 
 /* respect a quiet computer */

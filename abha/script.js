@@ -253,6 +253,9 @@
   var savedChip  = document.querySelector('#filters .chip[data-filter="saved"]');
   var icsBtn     = document.getElementById("icsBtn");
   var icsNote    = document.getElementById("icsNote");
+  var pickBtn    = document.getElementById("pickBtn");
+  var pickToast  = document.getElementById("pickToast");
+  var pickAgain  = document.getElementById("pickAgain");
   var filterBtns = document.querySelectorAll("#filters .chip");
   var seasonBtns = document.querySelectorAll("#seasons .season");
   var monthBtns  = document.querySelectorAll("#months .month");
@@ -377,7 +380,7 @@
     var on = !!saved[place.name];
 
     return '' +
-      '<li class="card' + (quiet ? " is-quiet" : "") + '">' +
+      '<li class="card' + (quiet ? " is-quiet" : "") + '" data-place="' + escapeHtml(place.name) + '">' +
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="Open ' + escapeHtml(place.name) + ' in Google Maps">' +
           '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
@@ -471,6 +474,10 @@
 
     drawNowLine();
     updateSavedChip();
+
+    // the list changed, so any place we picked before is not on the page any more
+    window.clearTimeout(pickTimer);
+    if (pickToast) pickToast.hidden = true;
   }
 
   /* ----------------------------------------------------------
@@ -618,6 +625,70 @@
     if (toolbar) toolbar.classList.toggle("is-stuck", window.scrollY > 30);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ----------------------------------------------------------
+     6e. "PICK ONE FOR ME" — a place at random
+
+     It only picks from what you can see right now. So if you
+     picked Food, it gives you a food place. If you picked a
+     month or a season, it looks there first.
+     ---------------------------------------------------------- */
+  var lastPick = "";
+  var pickTimer = 0;
+
+  function pickOne() {
+    var pool = PLACES.filter(function (p) {
+      if (state.type === "saved") return !!saved[p.name];
+      if (state.type !== "all") return p.type === state.type;
+      return true;
+    });
+    if (!pool.length) return;          // nothing on the page to pick from
+
+    // with a month or a season on, the places that are good then come first
+    var months = wantedMonths();
+    var good = months ? pool.filter(function (p) { return isBestIn(p, months); }) : [];
+    var from = good.length ? good : pool;
+
+    // do not give the same place twice in a row
+    if (from.length > 1) {
+      var other = from.filter(function (p) { return p.name !== lastPick; });
+      if (other.length) from = other;
+    }
+
+    var place = from[Math.floor(Math.random() * from.length)];
+    lastPick = place.name;
+    showPick(place);
+  }
+
+  function showPick(place) {
+    var cards = grid.querySelectorAll(".card");
+    var target = null;
+
+    Array.prototype.forEach.call(cards, function (c) {
+      c.classList.remove("is-picked");
+      if (c.getAttribute("data-place") === place.name) target = c;
+    });
+    if (!target) return;
+
+    target.classList.add("is-in");       // in case it has not faded in yet
+    target.classList.add("is-picked");
+
+    var quiet = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: quiet ? "auto" : "smooth", block: "center" });
+
+    status.innerHTML = "Picked for you: <b>" + escapeHtml(place.name) +
+      "</b>. Press again for another.";
+    if (pickToast) pickToast.hidden = false;
+
+    window.clearTimeout(pickTimer);
+    pickTimer = window.setTimeout(function () {
+      target.classList.remove("is-picked");
+      if (pickToast) pickToast.hidden = true;
+    }, 7000);
+  }
+
+  if (pickBtn) pickBtn.addEventListener("click", pickOne);
+  if (pickAgain) pickAgain.addEventListener("click", pickOne);
 
   /* ----------------------------------------------------------
      7. PLAN MY DAY

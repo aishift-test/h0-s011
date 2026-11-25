@@ -94,7 +94,19 @@
   <!-- ============ PLACES ============ -->
   <section class="places" id="places">
     <div class="wrap">
-      <h2 class="section-title">Places to see</h2>
+      <div class="places-head">
+        <h2 class="section-title">Places to see</h2>
+        <button type="button" class="btn-pick" id="pickBtn">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none"
+               stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="4.5"/>
+            <circle cx="8.4" cy="8.4" r="1.25" fill="currentColor" stroke="none"/>
+            <circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"/>
+            <circle cx="15.6" cy="15.6" r="1.25" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>Pick one for me</span>
+        </button>
+      </div>
       <p class="nowline" id="nowline" hidden></p>
       <p class="status" id="status" aria-live="polite"></p>
       <ul class="grid" id="grid"></ul>
@@ -191,6 +203,13 @@
     </details>
   </div>
 </footer>
+
+<!-- shows for a few seconds after "Pick one for me", so the button
+     is still in reach once the page has jumped down to the card -->
+<div class="pick-toast" id="pickToast" hidden>
+  <span>Picked for you</span>
+  <button type="button" id="pickAgain">Pick again</button>
+</div>
 
 <script src="script.js"></script>
 </body>
