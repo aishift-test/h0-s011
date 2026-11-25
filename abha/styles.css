@@ -1,34 +1,50 @@
 /* ============================================================
    Abha — a guide for visiting friends
    Colours, type and layout. One file, no build step.
+
+   The colours come from Al Qatt Al Asiri — the bright wall
+   painting that women in Asir paint inside their homes:
+   red, green, teal-blue and gold on white.
    ============================================================ */
 
 :root {
-  /* page */
-  --bg:        #f4f1e9;
+  /* page — warm cream, like the white in the wall painting */
+  --bg:        #fdf8ef;
   --card:      #ffffff;
-  --ink:       #1a201c;
-  --muted:     #5d675f;
-  --line:      rgba(26, 32, 28, 0.10);
-  --line-soft: rgba(26, 32, 28, 0.06);
+  --ink:       #241a16;
+  --muted:     #6d5b50;
+  --line:      rgba(36, 26, 22, 0.12);
+  --line-soft: rgba(36, 26, 22, 0.07);
 
-  /* brand */
-  --green:      #2f6b4e;
-  --green-deep: #1c4432;
-  --green-dark: #14301f;
-  --sand:        #c2913f;
-  --sand-soft:   #e6d3a8;
-  --sand-bright: #e3c47f;
+  /* the wall painting itself */
+  --red:        #c2202f;
+  --red-deep:   #8f1622;
+  --green:      #3a5f2e;
+  --green-deep: #2a4722;
+  --green-dark: #1e3518;
+  --teal:       #3d6f74;
+  --maroon:     #8f3f50;
+  --tan:        #d0a080;
+
+  /* gold, from the same painting */
+  --sand:        #c9a825;
+  --sand-soft:   #ecdc9a;
+  --sand-bright: #f0dc86;
+
+  /* the one colour we use for buttons and links */
+  --brand:      #c2202f;
+  --brand-deep: #8f1622;
+  --brand-rgb:  194, 32, 47;
 
   /* the four types */
-  --nature:     #2f6b4e;
-  --heritage:   #4a5f8a;
-  --food:       #b4562f;
-  --activities: #8a6a1f;
+  --nature:     #3a5f2e;
+  --heritage:   #3d6f74;
+  --food:       #8f3f50;
+  --activities: #8a6f0e;
 
   --radius:  16px;
-  --shadow:  0 1px 2px rgba(26, 32, 28, .06), 0 12px 28px -18px rgba(26, 32, 28, .45);
-  --shadow-lift: 0 2px 4px rgba(26, 32, 28, .07), 0 26px 46px -22px rgba(26, 32, 28, .5);
+  --shadow:  0 1px 2px rgba(36, 26, 22, .07), 0 12px 28px -18px rgba(36, 26, 22, .45);
+  --shadow-lift: 0 2px 4px rgba(36, 26, 22, .08), 0 26px 46px -22px rgba(36, 26, 22, .5);
 
   --head: "Outfit", system-ui, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -55,6 +71,17 @@ h1, h2, h3 { font-family: var(--head); margin: 0; line-height: 1.1; letter-spaci
 a { color: inherit; }
 
 .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+
+/* A thin strip of Al Qatt Al Asiri: triangles and white circles,
+   the same shapes women in Asir paint on their walls. */
+.qatt-band {
+  height: 24px;
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='24' viewBox='0 0 72 24'%3E%3Cpath d='M0 20 L12 3 L24 20 Z' fill='%23c2202f'/%3E%3Cpath d='M24 20 L36 3 L48 20 Z' fill='%233a5f2e'/%3E%3Cpath d='M48 20 L60 3 L72 20 Z' fill='%233d6f74'/%3E%3Ccircle cx='12' cy='13' r='2.6' fill='%23fdf8ef'/%3E%3Ccircle cx='36' cy='13' r='2.6' fill='%23fdf8ef'/%3E%3Ccircle cx='60' cy='13' r='2.6' fill='%23fdf8ef'/%3E%3Crect y='20' width='72' height='4' fill='%23c9a825'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: auto 24px;
+}
+.qatt-band-dark { background-color: var(--green-dark); }
 
 :focus-visible {
   outline: 3px solid var(--sand);
@@ -219,10 +246,10 @@ a { color: inherit; }
   white-space: nowrap;
   transition: background .18s, color .18s, border-color .18s, transform .18s;
 }
-.chip:hover { border-color: rgba(47, 107, 78, .5); transform: translateY(-1px); }
+.chip:hover { border-color: rgba(var(--brand-rgb), .55); transform: translateY(-1px); }
 .chip.is-on {
-  background: var(--green-deep);
-  border-color: var(--green-deep);
+  background: var(--brand);
+  border-color: var(--brand);
   color: #fff;
 }
 
@@ -242,11 +269,11 @@ a { color: inherit; }
   white-space: nowrap;
   transition: background .18s, color .18s, border-color .18s;
 }
-.month:hover { color: var(--ink); border-color: rgba(26, 32, 28, .3); }
+.month:hover { color: var(--ink); border-color: rgba(36, 26, 22, .35); }
 .month.is-on {
   background: var(--sand);
   border-color: var(--sand);
-  color: #2a1f06;
+  color: #2a1d08;
   font-weight: 600;
 }
 
@@ -297,7 +324,7 @@ a { color: inherit; }
   display: block;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #dcd8cc;
+  background: #e8ded1;
 }
 .card-photo img {
   width: 100%;
@@ -335,8 +362,8 @@ a { color: inherit; }
   font-weight: 700;
   letter-spacing: .07em;
   text-transform: uppercase;
-  color: #14301f;
-  background: linear-gradient(180deg, #e8d9a8, #cfa956);
+  color: #2a1d08;
+  background: linear-gradient(180deg, #ecdc9a, #c9a825);
   padding: .28rem .6rem;
   border-radius: 999px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, .28);
@@ -382,9 +409,9 @@ a { color: inherit; }
 .pill {
   font-size: .7rem;
   font-weight: 500;
-  color: #33513f;
-  background: rgba(47, 107, 78, .1);
-  border: 1px solid rgba(47, 107, 78, .2);
+  color: #2f4d26;
+  background: rgba(58, 95, 46, .1);
+  border: 1px solid rgba(58, 95, 46, .22);
   border-radius: 6px;
   padding: .1rem .34rem;
 }
@@ -398,17 +425,17 @@ a { color: inherit; }
   font-family: var(--head);
   font-size: .84rem;
   font-weight: 600;
-  color: var(--green-deep);
+  color: var(--brand-deep);
   text-decoration: none;
   padding: .5rem .8rem .5rem .7rem;
-  border: 1px solid rgba(47, 107, 78, .28);
+  border: 1px solid rgba(var(--brand-rgb), .32);
   border-radius: 10px;
-  background: rgba(47, 107, 78, .05);
+  background: rgba(var(--brand-rgb), .05);
   transition: background .2s, color .2s, border-color .2s, gap .2s;
 }
 .maps:hover {
-  background: var(--green-deep);
-  border-color: var(--green-deep);
+  background: var(--brand);
+  border-color: var(--brand);
   color: #fff;
   gap: .6rem;
 }
@@ -421,7 +448,7 @@ a { color: inherit; }
 }
 .link {
   font: inherit;
-  color: var(--green-deep);
+  color: var(--brand-deep);
   background: none;
   border: 0;
   padding: 0;
@@ -435,9 +462,9 @@ a { color: inherit; }
 
 .planner {
   background:
-    radial-gradient(90% 60% at 85% 0%, rgba(194, 145, 63, .18) 0%, rgba(194, 145, 63, 0) 62%),
+    radial-gradient(90% 60% at 85% 0%, rgba(201, 168, 37, .22) 0%, rgba(201, 168, 37, 0) 62%),
     linear-gradient(180deg, var(--green-deep) 0%, var(--green-dark) 100%);
-  color: #eef4ef;
+  color: #f7efe2;
   padding: 3rem 0;
   overflow: hidden;
 }
@@ -453,14 +480,14 @@ a { color: inherit; }
 .planner-lede {
   margin: 0 0 .55rem;
   max-width: 30rem;
-  color: #c4d3c8;
+  color: #ded4c4;
 }
 
 .planner-note {
   margin: 0 0 1.4rem;
   max-width: 30rem;
   font-size: .84rem;
-  color: #b9c9bd;
+  color: #cfc4b4;
 }
 
 .btn-plan {
@@ -470,8 +497,8 @@ a { color: inherit; }
   font-family: var(--head);
   font-size: .95rem;
   font-weight: 700;
-  color: #1b2a1f;
-  background: linear-gradient(180deg, #eeddab 0%, #d3ac5b 55%, #b98f3c 100%);
+  color: #2a1d08;
+  background: linear-gradient(180deg, #f0e2ab 0%, #d8b93f 55%, #b3922a 100%);
   border: 0;
   border-radius: 12px;
   padding: .85rem 1.3rem;
@@ -485,7 +512,7 @@ a { color: inherit; }
 .planner-panel {
   margin-top: 1.6rem;
   background: rgba(255, 255, 255, .055);
-  border: 1px solid rgba(230, 211, 168, .28);
+  border: 1px solid rgba(240, 220, 134, .30);
   border-radius: var(--radius);
   padding: 1.1rem 1.1rem .9rem;
   animation: plan-in .3s ease-out;
@@ -502,7 +529,7 @@ a { color: inherit; }
   font-family: var(--head);
   font-size: 1.05rem;
   font-weight: 700;
-  color: #f0f5f1;
+  color: #f7efe2;
 }
 
 .plan {
@@ -529,7 +556,7 @@ a { color: inherit; }
   height: 4.6rem;
   border-radius: 10px;
   object-fit: cover;
-  border: 1px solid rgba(230, 211, 168, .4);
+  border: 1px solid rgba(240, 220, 134, .42);
 }
 
 .plan-slot {
@@ -551,14 +578,14 @@ a { color: inherit; }
 .plan-why {
   margin: 0;
   font-size: .82rem;
-  color: #b9c9bd;
+  color: #cfc4b4;
   line-height: 1.5;
 }
 
 .plan-foot {
   margin: .9rem 0 0;
   font-size: .78rem;
-  color: #93a597;
+  color: #a89b8a;
   text-align: center;
 }
 
@@ -584,8 +611,8 @@ a { color: inherit; }
    ============================================================ */
 
 .foot {
-  background: #101a13;
-  color: #9fb0a4;
+  background: #1c1512;
+  color: #b3a596;
   padding: 2.2rem 0 2.6rem;
   font-size: .85rem;
 }
@@ -593,7 +620,7 @@ a { color: inherit; }
   font-family: var(--head);
   font-size: 1rem;
   font-weight: 600;
-  color: #e4ece6;
+  color: #f2e9dc;
   margin: 0 0 .4rem;
 }
 .foot-note { margin: 0 0 .9rem; max-width: 34rem; }
@@ -611,7 +638,7 @@ a { color: inherit; }
   display: grid;
   gap: .2rem;
   font-size: .78rem;
-  color: #8b9c90;
+  color: #9c8f80;
 }
 .credits-link { margin: .8rem 0 0; }
 .credits-link a { color: var(--sand-soft); }
