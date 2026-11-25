@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Abha guide">
-  <rect width="64" height="64" rx="12" fill="#1b1916"/>
-  <circle cx="44" cy="19" r="6.5" fill="#9e1b2a"/>
-  <path d="M0 50 19 24l12 17 8-10 25 25z" fill="#f5f3f0"/>
-  <path d="M0 50 19 24l6 8-6 22z" fill="#b9b3aa"/>
+  <rect width="64" height="64" rx="12" fill="#101010"/>
+  <circle cx="44" cy="19" r="6.5" fill="#78006e"/>
+  <path d="M0 50 19 24l12 17 8-10 25 25z" fill="#ffffff"/>
+  <path d="M0 50 19 24l6 8-6 22z" fill="#b8b8b8"/>
 </svg>

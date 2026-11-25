@@ -285,9 +285,25 @@
     return place.months.indexOf(month) !== -1;
   }
 
+  /* "Jun–Aug", "Dec–May", "Mar, Apr" or "All year" */
   function monthText(place) {
-    if (place.months.length >= 10) return "All year";
-    return place.months.map(function (m) { return SHORT[m - 1]; }).join(" · ");
+    var m = place.months.slice().sort(function (a, b) { return a - b; });
+    if (m.length >= 10) return "All year";
+    if (m.length < 3) return m.map(function (x) { return SHORT[x - 1]; }).join(", ");
+
+    // the months may run past December into January, so start the run
+    // at the first gap and then check the whole ring
+    var start = 0;
+    for (var i = 1; i < m.length; i++) {
+      if (m[i] !== m[i - 1] + 1) { start = i; break; }
+    }
+    var run = m.slice(start).concat(m.slice(0, start));
+    for (var j = 1; j < run.length; j++) {
+      if (run[j] !== (run[j - 1] % 12) + 1) {
+        return m.map(function (x) { return SHORT[x - 1]; }).join(", ");
+      }
+    }
+    return SHORT[run[0] - 1] + "–" + SHORT[run[run.length - 1] - 1];
   }
 
   function escapeHtml(s) {
@@ -305,12 +321,6 @@
      4. DRAW THE CARDS
      ---------------------------------------------------------- */
   function cardHtml(place, bestNow) {
-    var pills = place.months.length >= 10
-      ? '<span class="pill">All year</span>'
-      : place.months.map(function (m) {
-          return '<span class="pill">' + SHORT[m - 1] + "</span>";
-        }).join("");
-
     // some photos are tall; "pos" says which part of the photo to show
     var pos = place.pos ? ' style="object-position:' + place.pos + '"' : '';
 
@@ -319,15 +329,17 @@
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="Open ' + escapeHtml(place.name) + ' in Google Maps">' +
           '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
-          '<span class="tag tag-' + place.type + '">' +
-            '<i class="dot" aria-hidden="true"></i>' + TYPE_LABEL[place.type] +
-          "</span>" +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">Best now</span>" +
         "</a>" +
         '<div class="card-body">' +
+          '<p class="card-meta type-' + place.type + '">' +
+            '<i class="dot" aria-hidden="true"></i>' +
+            "<span>" + TYPE_LABEL[place.type] + "</span>" +
+            '<span class="sep" aria-hidden="true">|</span>' +
+            "<span>Best " + monthText(place) + "</span>" +
+          "</p>" +
           "<h3>" + escapeHtml(place.name) + "</h3>" +
           '<p class="line">' + escapeHtml(place.line) + "</p>" +
-          '<p class="months"><span class="m-label">Best</span>' + pills + "</p>" +
           '<a class="maps" href="' + mapsUrl(place) + '" target="_blank" rel="noopener">' +
             PIN + "<span>Open in Maps</span>" +
           "</a>" +
