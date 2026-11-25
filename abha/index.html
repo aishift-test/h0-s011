@@ -28,7 +28,7 @@
 <!-- The ?v= number is a version stamp. Change it whenever styles.css
      or script.js changes, so a phone never mixes an old copy of one
      file with a new copy of the other. -->
-<link rel="stylesheet" href="styles.css?v=18">
+<link rel="stylesheet" href="styles.css?v=19">
 
 <script>
   /* Remember which language was picked last time, and say so before
@@ -66,7 +66,12 @@
 
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
-  <img class="hero-img" src="img/sarawat.jpg" width="1600" height="899" fetchpriority="high"
+  <!-- two sizes of the same photo: a phone takes the small one, which
+       is a quarter of the bytes, so the page is not grey while it
+       arrives. "sizes" says the photo is as wide as the screen. -->
+  <img class="hero-img" src="img/sarawat.jpg"
+       srcset="img/sarawat-sm.jpg 800w, img/sarawat.jpg 1400w" sizes="100vw"
+       width="1400" height="787" fetchpriority="high"
        alt="Green mountain ridges and a road running through a valley in the Asir region"
        data-en-alt="Green mountain ridges and a road running through a valley in the Asir region"
        data-ar-alt="سلاسل جبال خضراء وطريق يمر في وادٍ في منطقة عسير">
@@ -238,7 +243,10 @@
         </div>
       </div>
 
-      <img class="planner-art" src="img/rijal-almaa.jpg" width="1400" height="788"
+      <!-- this photo is hidden on a phone, so let it wait until it is
+           really needed instead of using up the phone's data -->
+      <img class="planner-art" src="img/rijal-almaa.jpg" width="900" height="507"
+           loading="lazy" decoding="async"
            alt="Looking down over the green Rijal Almaa valley and its villages"
            data-en-alt="Looking down over the green Rijal Almaa valley and its villages"
            data-ar-alt="إطلالة من الأعلى على وادي رجال ألمع الأخضر وقراه">
@@ -308,6 +316,6 @@
   <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
-<script src="script.js?v=18"></script>
+<script src="script.js?v=19"></script>
 </body>
 </html>

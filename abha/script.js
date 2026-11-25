@@ -294,7 +294,7 @@
          the picture was swapped, and the live site keeps an old copy
          of the same web address for about ten minutes. A new address
          is fetched at once. */
-      img: "img/misty-peak.jpg?v=2",
+      img: "img/misty-peak.jpg?v=3",
       alt: "A drawing of a cup of Arabic coffee and five coffee beans on a wooden table",
       altAr: "رسم لفنجان قهوة عربية وخمس حبوب بن على طاولة خشبية",
       line: "Coffee with a mountain view. Good for a slow morning before the clouds come in.",
@@ -719,6 +719,16 @@
   /* ----------------------------------------------------------
      4. DRAW THE CARDS
      ---------------------------------------------------------- */
+  /* Every photo has two sizes on disk: the plain name, and the same
+     name with "-sm" before ".jpg". The small one is for a phone, where
+     a card is only about 176 pixels wide — sending the big one there
+     wastes three quarters of the bytes and the photo arrives late.
+     The browser picks, using "sizes" below to work out how wide the
+     card really is. */
+  function smallImg(src) {
+    return src.replace(/\.jpg/, "-sm.jpg");
+  }
+
   function cardHtml(place, bestNow, quiet) {
     // some photos are tall; "pos" says which part of the photo to show
     var pos = place.pos ? ' style="object-position:' + place.pos + '"' : '';
@@ -728,7 +738,11 @@
       '<li class="card anim' + (quiet ? " is-quiet" : "") + '" data-place="' + escapeHtml(place.name) + '">' +
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="' + escapeHtml(mapsAria(place)) + '">' +
-          '<img src="' + place.img + '" alt="' + escapeHtml(palt(place)) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
+          '<img src="' + place.img + '"' +
+            ' srcset="' + smallImg(place.img) + ' 520w, ' + place.img + ' 760w"' +
+            ' sizes="(min-width: 1000px) 380px, (min-width: 640px) 46vw, 44vw"' +
+            ' alt="' + escapeHtml(palt(place)) + '" loading="lazy" decoding="async"' +
+            ' width="760" height="570"' + pos + '>' +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">" + t().bestNow + "</span>" +
         "</a>" +
         '<button type="button" class="save" data-name="' + escapeHtml(place.name) + '"' +
@@ -1162,7 +1176,7 @@
       var note = stopNote(stop, place);
       var slot = SLOT_BY_KEY[stop.slot];
       return "<li>" +
-        '<img class="plan-img" src="' + place.img + '" alt="" loading="lazy" width="74" height="74"' +
+        '<img class="plan-img" src="' + smallImg(place.img) + '" alt="" loading="lazy" decoding="async" width="74" height="74"' +
           (place.pos ? ' style="object-position:' + place.pos + '"' : '') + ">" +
         "<div>" +
           /* The time and the word for the time of day each sit in their
