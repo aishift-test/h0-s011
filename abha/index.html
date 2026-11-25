@@ -97,7 +97,8 @@
         <p class="kicker kicker-dark">Too many choices?</p>
         <h2>Plan my day</h2>
         <p class="planner-lede">
-          One morning, one lunch, one afternoon and one evening — picked for the month you chose.
+          One morning, one lunch, one afternoon and one evening.
+          My own plan is below — or press the button for a new one.
         </p>
         <p class="planner-note">
           Good to know: mountain roads get foggy and wet in the rain. Drive slowly.
@@ -108,11 +109,12 @@
             <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>
             <circle cx="12" cy="12" r="3.4"/>
           </svg>
-          <span id="planBtnText">Make me a day</span>
+          <span id="planBtnText">Make me another day</span>
         </button>
       </div>
 
-      <div class="planner-panel" id="planPanel" hidden>
+      <div class="planner-panel" id="planPanel">
+        <p class="plan-title" id="planTitle">My plan for one day</p>
         <ol class="plan" id="plan"></ol>
         <p class="plan-foot" id="planFoot"></p>
       </div>

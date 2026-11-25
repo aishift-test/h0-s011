@@ -5,6 +5,7 @@
 - Files: landing page at the top (`index.html`, `styles.css`, `script.js`, `favicon.svg`). Abha guide in `abha/` (`index.html`, `styles.css`, `script.js`, `favicon.svg`, `img/`).
 - Done: landing page — all 11 sections, navy + gold, phone first, video player, join panel, gold polish.
 - Done: Abha guide — 20 places, 4 filters, month picker, 4-slot day planner, photo credits in the footer. All the info comes from the student's `brief/abha tourist info.pdf`.
+- Done: "Plan my day" now opens on the student's own plan from the PDF (Al Soudah Park → Asir Table → Al Muftaha → Green Mountain). The button makes a different day. `MY_PLAN` in `abha/script.js` is the student's plan.
 - Done: every card photo is the same size and sharp (542x406 on desktop, 348x261 on phone). `abha/img/` is about 3.3 MB.
 - Note: `abha/img/city.jpg` (the student's brown skyline drawing) is still not used — no place in the list matches it.
 - Next for the landing page: (1) the video link `VIDEO_SRC`, (2) the payment link `CHECKOUT_URL` — both in `script.js`.

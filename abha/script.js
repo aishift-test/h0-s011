@@ -458,9 +458,7 @@
 
     drawPlan(stops);
     planTitle.textContent = "My plan for one day";
-    planFoot.innerHTML = "This is the day I would take you on. " +
-      'Press the button for a new one, or <button type="button" class="link" ' +
-      'id="showMine">show my plan again</button>.';
+    planFoot.textContent = "This is the day I would take you on. Press the button for a new one.";
     planPanel.hidden = false;
   }
 
@@ -532,4 +530,5 @@
      8. START
      ---------------------------------------------------------- */
   render();
+  showMyPlan();
 })();

@@ -497,6 +497,14 @@ a { color: inherit; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.plan-title {
+  margin: 0 0 .8rem;
+  font-family: var(--head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f0f5f1;
+}
+
 .plan {
   list-style: none;
   margin: 0;
@@ -553,6 +561,15 @@ a { color: inherit; }
   color: #93a597;
   text-align: center;
 }
+
+/* the small "show my plan" button inside the line above */
+.plan-foot .link {
+  font-family: var(--body);
+  font-size: .78rem;
+  color: var(--sand-soft);
+  text-decoration: underline;
+}
+.plan-foot .link:hover { color: #fff; }
 
 .planner-art {
   display: none;
