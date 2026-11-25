@@ -265,6 +265,8 @@ a { color: inherit; }
 .grid {
   display: grid;
   grid-template-columns: 1fr;
+  /* 1fr rows: every card is exactly the same height, even if the text is longer */
+  grid-auto-rows: 1fr;
   gap: 1.15rem;
   margin: 0;
   padding: 0;
@@ -288,10 +290,11 @@ a { color: inherit; }
 .card.is-quiet { opacity: .58; }
 .card.is-quiet:hover { opacity: 1; }
 
+/* every photo is the same shape: a wide rectangle, like the photos themselves */
 .card-photo {
   position: relative;
   display: block;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #dcd8cc;
 }
@@ -594,13 +597,12 @@ a { color: inherit; }
 @media (min-width: 640px) {
   .wrap { padding: 0 2rem; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 1.35rem; }
-  .card-photo { aspect-ratio: 4 / 3; }
   .hero { min-height: 60vh; }
   .row-label { width: 4.4rem; }
 }
 
 @media (min-width: 1000px) {
-  /* two big columns, not three small ones — the photos matter here */
+  /* two roomy columns — big enough to enjoy, small enough to stay sharp */
   .wrap { max-width: 1180px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
   .hero { min-height: 74vh; }
