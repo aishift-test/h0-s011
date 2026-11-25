@@ -395,9 +395,11 @@
       },
       showThem: "Show them",
       showEverything: "Show everything",
-      emptySaved: "You have not saved any places yet. " +
-        "Press the heart on a place to keep it here. ",
-      emptyNone: "Nothing matches that. ",
+      /* the list is empty: a heading, then a helpful line */
+      emptySavedTitle: "No saved places yet",
+      emptySavedLine: "Press the heart on any place to keep it here. It will be waiting for you next time.",
+      emptyNoneTitle: "Nothing matches that",
+      emptyNoneLine: "Try another season or month, or show everything.",
       planIn: "Plan my day in ",
       planMyDay: "Plan my day",
       myPlanTitle: "My plan for one day",
@@ -452,8 +454,10 @@
       },
       showThem: "اعرضها",
       showEverything: "اعرض الكل",
-      emptySaved: "لم تحفظ أي مكان بعد. اضغط على القلب في أي مكان ليبقى هنا. ",
-      emptyNone: "لا يوجد شيء بهذا الوصف. ",
+      emptySavedTitle: "لا أماكن محفوظة بعد",
+      emptySavedLine: "اضغط على القلب في أي مكان ليبقى هنا، وسيكون بانتظارك في المرة القادمة.",
+      emptyNoneTitle: "لا يوجد مكان بهذا الوصف",
+      emptyNoneLine: "جرّب موسماً أو شهراً آخر، أو اعرض كل الأماكن.",
       planIn: "خطّط يومي في ",
       planMyDay: "خطّط يومي",
       myPlanTitle: "خطتي ليوم واحد",
@@ -783,7 +787,15 @@
     });
   }
 
-  function render() {
+  /* Draw the places.
+
+     "asked" is true when the visitor has just pressed something —
+     a tab, a heart, "Show them". Only then may the page move, to
+     put the answer in front of them. Without that, an empty list
+     would leave them looking at blank space with no idea why:
+     the page gets much shorter, the browser keeps them where they
+     were, and the message ends up off the screen. */
+  function render(asked) {
     /* every change to the tabs comes through here, so this is the
        one place that has to remember them */
     saveView();
@@ -814,9 +826,21 @@
     }).join("");
     reveal();
 
-    empty.hidden = shown.length > 0;
-    empty.innerHTML = (!shown.length && state.type === "saved" ? t().emptySaved : t().emptyNone) +
-      '<button type="button" class="link" id="reset">' + t().showEverything + "</button>";
+    /* nothing to show: say so, in the place where the cards would be */
+    var none = !shown.length;
+    empty.hidden = !none;
+    if (none) {
+      var onSaved = state.type === "saved";
+      empty.innerHTML =
+        '<span class="empty-title">' +
+          (onSaved ? t().emptySavedTitle : t().emptyNoneTitle) + "</span>" +
+        '<span class="empty-line">' +
+          (onSaved ? t().emptySavedLine : t().emptyNoneLine) + "</span>" +
+        '<button type="button" class="btn-empty" id="reset">' +
+          t().showEverything + "</button>";
+      /* the visitor asked for this, so bring the answer into view */
+      if (asked && empty.scrollIntoView) empty.scrollIntoView({ block: "center" });
+    }
 
     // the line above the cards
     var typeWord = t().typeWord[state.type];
@@ -869,7 +893,7 @@
     btn.addEventListener("click", function () {
       state.type = btn.getAttribute("data-filter");
       filterBtns.forEach(function (b) { b.classList.toggle("is-on", b === btn); });
-      render();
+      render(true);
     });
   });
 
@@ -902,7 +926,7 @@
 
       showTab(seasonBtns, btn);
       showTab(monthBtns, monthBtns[0]);   // back to "Any"
-      render();
+      render(true);
       updatePlanBtn();
     });
   });
@@ -914,7 +938,7 @@
 
       showTab(monthBtns, btn);
       showTab(seasonBtns, seasonBtns[0]);  // back to "Any"
-      render();
+      render(true);
       updatePlanBtn();
     });
   });
@@ -924,7 +948,7 @@
     showTab(filterBtns, filterBtns[0]);
     showTab(seasonBtns, seasonBtns[0]);
     showTab(monthBtns, monthBtns[0]);
-    render();
+    render(true);
     updatePlanBtn();
   }
 
@@ -953,7 +977,7 @@
     updateSavedChip();
 
     // looking at the saved list and you just unsaved one — take it away
-    if (state.type === "saved" && !on) render();
+    if (state.type === "saved" && !on) render(true);
   });
 
   /* ----------------------------------------------------------
@@ -967,7 +991,7 @@
     state.season = "";
     showTab(monthBtns, document.querySelector('#months .month[data-month="' + m + '"]'));
     showTab(seasonBtns, seasonBtns[0]);
-    render();
+    render(true);
     updatePlanBtn();
   });
 

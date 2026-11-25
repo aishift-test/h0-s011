@@ -20,7 +20,7 @@
 <!-- The ?v= number is a version stamp. Change it whenever styles.css
      or script.js changes, so a phone never mixes an old copy of one
      file with a new copy of the other. -->
-<link rel="stylesheet" href="styles.css?v=12">
+<link rel="stylesheet" href="styles.css?v=13">
 
 <script>
   /* Remember which language was picked last time, and say so before
@@ -175,9 +175,14 @@
         Nothing matches that. <button type="button" class="link" id="reset">Show everything</button>
       </p>
       <noscript>
-        <p class="empty"
-           data-en="This guide needs JavaScript to show the places. Please turn it on."
-           data-ar="هذا الدليل يحتاج إلى JavaScript لعرض الأماكن. الرجاء تشغيله.">This guide needs JavaScript to show the places. Please turn it on.</p>
+        <p class="empty">
+          <span class="empty-title"
+                data-en="This guide needs JavaScript"
+                data-ar="هذا الدليل يحتاج إلى JavaScript">This guide needs JavaScript</span>
+          <span class="empty-line"
+                data-en="Turn it on to see the 18 places."
+                data-ar="شغّله لعرض الأماكن الثمانية عشر.">Turn it on to see the 18 places.</span>
+        </p>
       </noscript>
     </div>
   </section>
@@ -279,6 +284,6 @@
   <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
-<script src="script.js?v=12"></script>
+<script src="script.js?v=13"></script>
 </body>
 </html>
