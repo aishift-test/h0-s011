@@ -84,7 +84,8 @@
     });
 
     videoModal.addEventListener("click", function (event) {
-      if (event.target.hasAttribute("data-vclose")) closeVideo();
+      var hit = event.target.closest("[data-vclose]");
+      if (hit) closeVideo();
     });
 
     document.addEventListener("keydown", function (event) {
