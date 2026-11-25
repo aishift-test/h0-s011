@@ -394,15 +394,15 @@ a { color: inherit; }
 .card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 1.6rem 1.2rem;
+  padding: 1.1rem 1.1rem 1.4rem;
   text-align: center;
   box-shadow: var(--shadow);
 }
 
 .avatar {
-  width: 84px;
-  height: 84px;
-  margin: 0 auto 1rem;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 1.15rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -411,38 +411,38 @@ a { color: inherit; }
   border: 2px solid var(--gold);
 }
 
-.avatar svg { width: 46px; height: 46px; }
+.avatar svg { width: 38px; height: 38px; }
 
 .card h3 { color: var(--ink); margin-bottom: 0.5em; }
 
 .quote {
+  font-family: var(--serif);
   font-style: italic;
-  color: var(--ink-soft);
-  font-size: 0.9rem;
-  line-height: 1.6;
+  color: #8a90a0;
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
-.gold-quote { color: var(--gold-ink); margin-bottom: 0; margin-top: 1.1rem; }
+.gold-quote { color: var(--gold-ink); margin-bottom: 0; margin-top: 1rem; }
 
-.results { list-style: none; margin: 1.1rem 0 0; padding: 0; text-align: left; display: grid; gap: 0.45rem; }
+.results { list-style: none; margin: 1rem 0 0; padding: 0; text-align: left; display: grid; gap: 0.5rem; }
 
 .results li {
   position: relative;
-  padding-left: 1.6rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  padding-left: 1.35rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ink);
 }
 
 .results li::before {
-  content: "";
+  content: "\2713";
   position: absolute;
-  left: 0.15rem;
-  top: 0.42rem;
-  width: 9px;
-  height: 5px;
-  border-left: 2px solid #9aa0b0;
-  border-bottom: 2px solid #9aa0b0;
-  transform: rotate(-45deg);
+  left: 0;
+  top: 0;
+  color: #9aa0b0;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .results .gold { color: var(--gold-ink); }
@@ -485,25 +485,25 @@ a { color: inherit; }
 .week-art {
   display: grid;
   place-items: center;
-  padding: 1.1rem;
+  padding: 0.6rem;
   background: var(--navy);
 }
 
-.week-art svg { width: 150px; height: 113px; }
+.week-art svg { width: 200px; height: 150px; }
 
 .week-body { padding: 1.2rem 1.1rem 1.4rem; }
 
 .week-label {
   margin: 0 0 0.3rem;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--gold-ink);
 }
 
-.week-body h3 { color: var(--ink); margin-bottom: 0.4em; }
-.week-body p { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 0.55em; }
+.week-body h3 { font-family: var(--sans); color: var(--ink); margin-bottom: 0.4em; }
+.week-body p { font-size: 0.96rem; color: var(--ink-soft); margin-bottom: 0.55em; }
 
 .value { color: var(--gold-ink) !important; font-weight: 700; margin-bottom: 0 !important; }
 
@@ -511,7 +511,7 @@ a { color: inherit; }
 .bonuses { list-style: none; margin: 0; padding: 0; }
 
 .bonuses li {
-  padding: 1.3rem 0;
+  padding: 1.15rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -521,22 +521,23 @@ a { color: inherit; }
 .b-icon {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   margin-bottom: 0.8rem;
-  border-radius: 10px;
+  border-radius: 12px;
   color: var(--gold-bright);
   background: var(--navy-icon);
 }
 
-.b-icon svg { width: 20px; height: 20px; }
+.b-icon svg { width: 26px; height: 26px; }
 
-.bonuses h3 { margin-bottom: 0.35em; font-size: 1.05rem; }
-.sec.dark .bonuses p { font-size: 0.92rem; margin-bottom: 0.45em; text-align: left; }
+.bonuses h3 { font-family: var(--sans); margin-bottom: 0.35em; font-size: 1rem; }
+.sec.dark .bonuses p { font-size: 0.78rem; line-height: 1.85; margin-bottom: 0.45em; text-align: left; }
 
 .bonuses .value {
   font-family: var(--serif);
-  font-size: 1.05rem;
+  font-style: italic;
+  font-size: 0.95rem;
   color: var(--gold-bright) !important;
 }
 
