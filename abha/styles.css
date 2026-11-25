@@ -629,10 +629,16 @@ a { color: inherit; }
 
 @media (min-width: 640px) {
   .wrap { padding: 0 2rem; }
-  /* two cards side by side — 1fr rows keep them exactly the same height */
-  .grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 1.6rem; }
   .hero { min-height: 76vh; }
   .row-label { width: 4.4rem; }
+}
+
+/* Two cards side by side only when each one is still big.
+   Below this the card stays alone in the row, so the photo
+   never ends up smaller than it is on a phone.
+   1fr rows keep the two cards exactly the same height. */
+@media (min-width: 860px) {
+  .grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 1.6rem; }
 }
 
 @media (min-width: 1000px) {
@@ -667,17 +673,32 @@ a { color: inherit; }
   .grid { gap: 2.2rem; }
 }
 
+/* ------------------------------------------------------------
+   PHONES — one card per row, so the photo is the whole story.
+   The photo is square and nearly edge to edge: 366x366 instead
+   of 350x263. The small plan photos grow too.
+   ------------------------------------------------------------ */
+@media (max-width: 639px) {
+  .wrap { padding: 0 .75rem; }
+
+  /* a square photo, not a wide one — much more picture on a phone */
+  .card-photo { aspect-ratio: 1 / 1; }
+
+  /* the plan stops: a bigger photo next to the words */
+  .plan li { grid-template-columns: 5.4rem 1fr; gap: .85rem; }
+  .plan-img { width: 5.4rem; height: 5.4rem; }
+}
+
 /* a small phone */
 @media (max-width: 380px) {
-  .wrap { padding: 0 1rem; }
   .row-label { width: 3.4rem; font-size: .6rem; }
   .chip { font-size: .82rem; padding: .45rem .5rem .4rem; }
   .season,
   .month { font-size: .78rem; padding: .38rem .45rem .34rem; }
   .card-body { padding: .95rem 1rem 1.05rem; }
   .card-body h3 { font-size: 1.18rem; }
-  .plan li { grid-template-columns: 3.6rem 1fr; gap: .7rem; }
-  .plan-img { width: 3.6rem; height: 3.6rem; }
+  .plan li { grid-template-columns: 5rem 1fr; gap: .7rem; }
+  .plan-img { width: 5rem; height: 5rem; }
 }
 
 /* respect a quiet computer */
