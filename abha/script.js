@@ -537,8 +537,11 @@
      It is saved on this device only — there is no server.
      ---------------------------------------------------------- */
   var VIEW_KEY = "abha-view-v1";
-  var TYPES = ["all", "nature", "heritage", "food", "activities", "saved"];
-  var SEASONS = ["", "winter", "spring", "summer", "autumn"];
+  /* the names of the tabs, so a saved choice can be checked
+     against them. (SEASONS above is the table of seasons, so
+     this one needs its own name.) */
+  var TYPE_KEYS = ["all", "nature", "heritage", "food", "activities", "saved"];
+  var SEASON_KEYS = ["", "winter", "spring", "summer", "autumn"];
 
   function saveView() {
     try {
@@ -557,8 +560,8 @@
     try { data = JSON.parse(raw); } catch (e) { return; }
     if (!data || typeof data !== "object") return;
 
-    if (TYPES.indexOf(data.type) !== -1) state.type = data.type;
-    if (SEASONS.indexOf(data.season) !== -1) state.season = data.season;
+    if (TYPE_KEYS.indexOf(data.type) !== -1) state.type = data.type;
+    if (SEASON_KEYS.indexOf(data.season) !== -1) state.season = data.season;
 
     var m = Math.round(Number(data.month));
     if (m >= 0 && m <= 12) state.month = m;
