@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abha — A Guide for Visiting Friends</title>
+<meta name="description" content="A photo guide to Abha, Saudi Arabia: 10 places in the Asir mountains — nature, food and heritage. Filter by type, pick a month, or let it plan your day.">
+<meta name="theme-color" content="#1f4a36">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abha — A Guide for Visiting Friends">
+<meta property="og:description" content="10 places in the Asir mountains: nature, food and heritage. Filter by type or pick a month.">
+<meta property="og:image" content="img/sarawat.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <img class="hero-img" src="img/sarawat.jpg" width="900" height="505"
+       alt="Green mountain ridges and a road running through a valley in the Asir region">
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="hero-inner wrap">
+    <p class="kicker">A guide for visiting friends</p>
+    <h1>Abha</h1>
+    <p class="lede">
+      Green mountains, fog in the afternoon, old stone villages and slow-roast lamb.
+      These are the ten places I would take you.
+    </p>
+    <ul class="hero-facts">
+      <li><b>10</b><span>places</span></li>
+      <li><b>2,270 m</b><span>above the sea</span></li>
+      <li><b>Jun–Sep</b><span>coolest months</span></li>
+    </ul>
+  </div>
+  <p class="hero-credit">Photo: Sarawat Mountains by Richard Mortel, CC BY 2.0</p>
+</header>
+
+<!-- ============ TOOLBAR ============ -->
+<div class="toolbar" id="toolbar">
+  <div class="wrap">
+    <div class="row" role="group" aria-label="Filter by type">
+      <span class="row-label">Show</span>
+      <div class="scroller" id="filters">
+        <button type="button" class="chip is-on" data-filter="all">All <i>10</i></button>
+        <button type="button" class="chip" data-filter="nature">Nature <i>3</i></button>
+        <button type="button" class="chip" data-filter="food">Food <i>3</i></button>
+        <button type="button" class="chip" data-filter="heritage">Heritage <i>4</i></button>
+      </div>
+    </div>
+    <div class="row" role="group" aria-label="Pick a month">
+      <span class="row-label">Best in</span>
+      <div class="scroller" id="months">
+        <button type="button" class="month is-on" data-month="0">Any</button>
+        <button type="button" class="month" data-month="1">Jan</button>
+        <button type="button" class="month" data-month="2">Feb</button>
+        <button type="button" class="month" data-month="3">Mar</button>
+        <button type="button" class="month" data-month="4">Apr</button>
+        <button type="button" class="month" data-month="5">May</button>
+        <button type="button" class="month" data-month="6">Jun</button>
+        <button type="button" class="month" data-month="7">Jul</button>
+        <button type="button" class="month" data-month="8">Aug</button>
+        <button type="button" class="month" data-month="9">Sep</button>
+        <button type="button" class="month" data-month="10">Oct</button>
+        <button type="button" class="month" data-month="11">Nov</button>
+        <button type="button" class="month" data-month="12">Dec</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- ============ PLACES ============ -->
+  <section class="places">
+    <div class="wrap">
+      <p class="status" id="status" aria-live="polite"></p>
+      <ul class="grid" id="grid"></ul>
+      <p class="empty" id="empty" hidden>
+        Nothing matches that. <button type="button" class="link" id="reset">Show everything</button>
+      </p>
+      <noscript>
+        <p class="empty">This guide needs JavaScript to show the places. Please turn it on.</p>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- ============ PLAN MY DAY ============ -->
+  <section class="planner" id="planner">
+    <div class="wrap planner-wrap">
+      <div class="planner-copy">
+        <p class="kicker kicker-dark">Too many choices?</p>
+        <h2>Plan my day</h2>
+        <p class="planner-lede">
+          One morning, one lunch and one evening — picked for the month you chose.
+        </p>
+        <button type="button" class="btn-plan" id="planBtn">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none"
+               stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>
+            <circle cx="12" cy="12" r="3.4"/>
+          </svg>
+          <span id="planBtnText">Make me a day</span>
+        </button>
+      </div>
+
+      <div class="planner-panel" id="planPanel" hidden>
+        <ol class="plan" id="plan"></ol>
+        <p class="plan-foot" id="planFoot"></p>
+      </div>
+
+      <img class="planner-art" src="img/rijal-inside.jpg" width="900" height="1200"
+           alt="Inside a heritage house in Rijal Almaa: a green staircase and a wall painted with bright geometric patterns">
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot-title">Abha — a guide for visiting friends</p>
+    <p class="foot-note">
+      All photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers.
+    </p>
+    <details class="credits">
+      <summary>Photo credits</summary>
+      <ul>
+        <li>Sarawat Mountains — Richard Mortel, CC BY 2.0</li>
+        <li>Jabal Sawda — Chad Nagle, CC0</li>
+        <li>Abha cable car — Elyas4320, CC BY-SA 4.0</li>
+        <li>Boat on Abha — Aiman ALhaddad, CC BY-SA 3.0</li>
+        <li>Rijal Almaa village — Saudi Press Agency, CC BY-SA 4.0</li>
+        <li>Rijal Almaa from the inside — Richard Mortel, CC BY 2.0</li>
+        <li>Al Muftaha — Heritage Commission, CC BY-SA 4.0</li>
+        <li>Al Habala — Aiman titi, CC BY-SA 3.0</li>
+        <li>Palace of Abha — marviikad, CC BY-SA 2.0</li>
+        <li>Haneeth rice — Ayshamarjana, CC BY-SA 4.0</li>
+        <li>Traditional bee house — Wikimedia Commons, CC BY-SA 4.0</li>
+        <li>Kabsa — Sammy Six, CC BY 2.0</li>
+      </ul>
+      <p class="credits-link">
+        <a href="https://commons.wikimedia.org/wiki/Category:Abha" target="_blank" rel="noopener">See all on Wikimedia Commons</a>
+      </p>
+    </details>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
