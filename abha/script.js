@@ -50,6 +50,17 @@
       maps: "Abha Dam Lake, Abha, Saudi Arabia"
     },
     {
+      name: "Jacaranda Season",
+      type: "nature",
+      img: "img/jacaranda.jpg",
+      alt: "A drawing of two jacaranda trees covered in purple blossom",
+      line: "For a few weeks in spring the whole city turns purple. People drive from all over Saudi Arabia to see it.",
+      months: [3, 4],
+      slot: "morning",
+      tip: "Come in the first half of April, before the flowers start to fall.",
+      maps: "Jacaranda trees, Abha, Saudi Arabia"
+    },
+    {
       name: "Rijal Almaa Village",
       type: "heritage",
       img: "img/rijal-almaa.jpg",
