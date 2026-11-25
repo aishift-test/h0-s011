@@ -10,6 +10,7 @@
 :root {
   /* page — warm cream, like the white in the wall painting */
   --bg:        #fdf8ef;
+  --bg-rgb:    253, 248, 239;
   --card:      #ffffff;
   --ink:       #241a16;
   --muted:     #6d5b50;
@@ -190,7 +191,7 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(244, 241, 233, .93);
+  background: rgba(var(--bg-rgb), .93);
   backdrop-filter: blur(10px) saturate(1.4);
   -webkit-backdrop-filter: blur(10px) saturate(1.4);
   border-bottom: 1px solid var(--line);
@@ -585,7 +586,7 @@ a { color: inherit; }
 .plan-foot {
   margin: .9rem 0 0;
   font-size: .78rem;
-  color: #a89b8a;
+  color: #b8ab9a;
   text-align: center;
 }
 
