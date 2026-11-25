@@ -52,6 +52,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ------------------------------------------------------------
+   THE PICTURE BEHIND THE PAGE
+
+   One fixed layer, under everything else. It holds the photo
+   and, on top of the photo, a light veil of the page colour.
+   The veil is what keeps the words easy to read.
+
+   `inset: 0` plus `scale` makes the layer a little wider than
+   the screen, so the soft blurred edge stays off-screen.
+   ------------------------------------------------------------ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(var(--bg-rgb), .8), rgba(var(--bg-rgb), .8)),
+    url("img/background.jpg") center / cover no-repeat;
+  filter: blur(16px);
+  transform: scale(1.12);
+}
+
 img { display: block; max-width: 100%; }
 
 h1, h2, h3 {
