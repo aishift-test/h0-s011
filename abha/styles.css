@@ -1367,8 +1367,9 @@ a { text-underline-offset: .18em; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: .9rem; }
 
   /* the button on a card is as wide as the card, so its words
-     always fit, however narrow the card gets */
-  .maps { width: 100%; justify-content: center; }
+     always fit, however narrow the card gets. It is also a little
+     taller than the words need, so a thumb lands on it easily. */
+  .maps { width: 100%; min-height: 44px; justify-content: center; }
 
   /* "Best Jun–Aug" is too long for a narrow card and breaks in two.
      Drop the word "Best": "NATURE | JUN–AUG" fits on one line. */
