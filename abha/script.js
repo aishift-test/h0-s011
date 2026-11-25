@@ -1024,9 +1024,12 @@
         '<img class="plan-img" src="' + place.img + '" alt="" loading="lazy" width="74" height="74"' +
           (place.pos ? ' style="object-position:' + place.pos + '"' : '') + ">" +
         "<div>" +
+          /* The time and the word for the time of day each sit in their
+             own box. Without that, the Arabic word pulls the "·" to the
+             wrong side and the two pieces of text overlap. */
           '<span class="plan-slot">' +
             '<b class="plan-time">' + prettyTime(slot.from) + "</b> · " +
-            SLOT_LABEL[lang][slot.key] +
+            '<span class="plan-when">' + SLOT_LABEL[lang][slot.key] + "</span>" +
           "</span>" +
           '<p class="plan-name">' + escapeHtml(pname(place)) + "</p>" +
           '<p class="plan-why">' + escapeHtml(note) + "</p>" +
@@ -1249,7 +1252,10 @@
   function applyLang() {
     var root = document.documentElement;
     root.lang = lang;
-    root.dir = isAr() ? "rtl" : "ltr";
+    /* The page keeps the same left-to-right shape in both
+       languages, so the buttons never jump to the other side.
+       Only the words and the font change. */
+    root.dir = "ltr";
 
     document.title = t().title;
     var desc = document.querySelector('meta[name="description"]');

@@ -747,6 +747,12 @@ a { color: inherit; }
   font-weight: 700;
   color: #fff;
 }
+/* Keep the time and the word apart, so a right-to-left word cannot
+   drag the "·" over the time. Each box keeps its own direction. */
+.plan-time,
+.plan-when {
+  unicode-bidi: isolate;
+}
 .plan-name {
   font-family: var(--head);
   font-size: 1.02rem;
@@ -956,39 +962,24 @@ a { color: inherit; }
 }
 
 /* ============================================================
-   ARABIC — the page turns right to left
-   The Arabic letters join together, so any letter-spacing has
-   to go: it would pull the letters apart.
+   ARABIC — same shape as English, only the words change
+
+   The page keeps the same left-to-right shape in both
+   languages: the labels stay on the left, the chips after
+   them, and the language button at the right end.
+
+   Two things still have to change for Arabic:
+   the font, and the letter-spacing. Arabic letters join
+   together, and letter-spacing would pull them apart.
    ============================================================ */
-html[dir="rtl"] {
+html[lang="ar"] {
   --head: "Reem Kufi", "IBM Plex Sans Arabic", system-ui, sans-serif;
   --body: "IBM Plex Sans Arabic", system-ui, sans-serif;
   --serif: "Reem Kufi", "IBM Plex Sans Arabic", system-ui, sans-serif;
 }
 
-html[dir="rtl"] * { letter-spacing: 0 !important; }
+html[lang="ar"] * { letter-spacing: 0 !important; }
 
-html[dir="rtl"] .hero h1 { line-height: 1.15; }
-html[dir="rtl"] .row-label { text-transform: none; font-size: .74rem; }
-html[dir="rtl"] .kicker { text-transform: none; }
-
-/* the purple bar moves to the other side */
-html[dir="rtl"] .nowline {
-  border-left: 0;
-  border-right: 3px solid var(--accent);
-}
-
-/* the heart moves to the other corner of the photo */
-html[dir="rtl"] .save { left: auto; right: .7rem; }
-html[dir="rtl"] .now  { right: auto; left: .75rem; }
-
-/* the fade at the end of a scrolling row */
-html[dir="rtl"] .scroller {
-  -webkit-mask-image: linear-gradient(270deg, #000 0, #000 calc(100% - 22px), transparent 100%);
-  mask-image: linear-gradient(270deg, #000 0, #000 calc(100% - 22px), transparent 100%);
-}
-
-html[dir="rtl"] .lang-btn { margin-left: 0; margin-right: .5rem; }
-
-/* the credit list and the printed page */
-html[dir="rtl"] .credits ul { padding-left: 0; padding-right: 1.1rem; }
+html[lang="ar"] .hero h1 { line-height: 1.15; }
+html[lang="ar"] .row-label { text-transform: none; font-size: .74rem; }
+html[lang="ar"] .kicker { text-transform: none; }
