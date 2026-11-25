@@ -20,7 +20,7 @@
 <!-- The ?v= number is a version stamp. Change it whenever styles.css
      or script.js changes, so a phone never mixes an old copy of one
      file with a new copy of the other. -->
-<link rel="stylesheet" href="styles.css?v=9">
+<link rel="stylesheet" href="styles.css?v=10">
 
 <script>
   /* Remember which language was picked last time, and say so before
@@ -32,6 +32,21 @@
       document.documentElement.lang = "ar";
     }
   } catch (e) { /* private browsing — English is fine */ }
+
+  /* Dark colours or light? Same idea: decide now, before the page
+     paints, so the page never flashes white first. If you have
+     never pressed the button, follow your own computer's setting. */
+  try {
+    var theme = window.localStorage.getItem("abha-theme-v1");
+    if (theme !== "dark" && theme !== "light") {
+      theme = (window.matchMedia &&
+               window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ? "dark" : "light";
+    }
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {
+    document.documentElement.setAttribute("data-theme", "light");
+  }
 
   /* Tell the stylesheet that the script is running. The "slide in as
      you scroll" rules only apply with this class, so if the script
@@ -91,6 +106,18 @@
           <path d="M3 12h18M12 3c2.6 2.7 3.9 5.7 3.9 9s-1.3 6.3-3.9 9c-2.6-2.7-3.9-5.7-3.9-9S9.4 5.7 12 3z"/>
         </svg>
         <span id="langBtnText">عربي</span>
+      </button>
+      <button type="button" class="theme-btn" id="themeBtn" aria-pressed="false"
+              data-en-aria="Dark colours" data-ar-aria="ألوان داكنة">
+        <svg class="ico-moon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.2 14.3A8.3 8.3 0 0 1 9.7 3.8a8.5 8.5 0 1 0 10.5 10.5z"/>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>
+        </svg>
       </button>
     </div>
     <div class="row" role="group" aria-label="Filter by season" data-en-aria="Filter by season" data-ar-aria="تصفية حسب الموسم">
@@ -252,6 +279,6 @@
   <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
-<script src="script.js?v=9"></script>
+<script src="script.js?v=10"></script>
 </body>
 </html>

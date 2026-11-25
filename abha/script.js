@@ -1331,10 +1331,47 @@
   }
 
   /* ----------------------------------------------------------
+     8b. THE DARK / LIGHT BUTTON
+
+     The page is light unless you ask for dark. index.html has
+     already put data-theme on <html> before the page painted, so
+     there is no white flash; this only keeps the button in step
+     with the colours, and remembers your choice for next time.
+
+     The stylesheet does all the colour work — see the
+     "DARK COLOURS" block in abha/styles.css.
+     ---------------------------------------------------------- */
+  var THEME_KEY = "abha-theme-v1";
+  var themeBtn  = document.getElementById("themeBtn");
+  var htmlEl    = document.documentElement;
+
+  function isDark() { return htmlEl.getAttribute("data-theme") === "dark"; }
+
+  /* aria-pressed says "dark is on", which is what a screen reader
+     needs to hear from a button that stays pressed. The name of
+     the button ("Dark colours") comes from data-en-aria. */
+  function paintThemeBtn() {
+    if (themeBtn) themeBtn.setAttribute("aria-pressed", isDark() ? "true" : "false");
+  }
+
+  function setTheme(next) {
+    htmlEl.setAttribute("data-theme", next);
+    paintThemeBtn();
+    try { window.localStorage.setItem(THEME_KEY, next); } catch (e) { /* fine */ }
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener("click", function () {
+      setTheme(isDark() ? "light" : "dark");
+    });
+  }
+
+  /* ----------------------------------------------------------
      9. START
      ---------------------------------------------------------- */
   applyLang();     // direction, title, words, cards, plan button
   showMyPlan();    // the writer's own day, in the right language
+  paintThemeBtn(); // the dark/light button shows the colours on screen
   onScroll();
   /* once every photo has arrived the page is a different height, so
      look again for anything that has come into view */
