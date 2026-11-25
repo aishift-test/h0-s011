@@ -146,6 +146,14 @@ a { color: inherit; }
   border-radius: 4px;
 }
 
+/* the purple you get when you drag across words — a small thing,
+   but it is the sort of small thing people notice */
+::selection { background: var(--accent); color: #fff; }
+
+/* an underline that sits a little away from the letters, so it does
+   not touch the tails of g and y */
+a { text-underline-offset: .18em; }
+
 /* ============================================================
    1. HERO — full-width photo, centred serif headline
    ============================================================ */
@@ -194,6 +202,12 @@ a { color: inherit; }
   color: rgba(255, 255, 255, .82);
 }
 .kicker-dark { color: var(--accent-light); }
+/* the same small line, on a white part of the page. It sits above a
+   heading rather than under one, so it needs a smaller gap below. */
+.kicker-accent {
+  color: var(--accent);
+  margin-bottom: .45rem;
+}
 
 .hero h1 {
   font-family: var(--serif);
@@ -539,7 +553,9 @@ a { color: inherit; }
 .nowline b { color: var(--ink); font-weight: 600; }
 
 .status {
-  margin: 0 0 1.6rem;
+  /* sits right under the "it is November" line, so the two read as
+     one small block of information */
+  margin: 0 0 1.5rem;
   font-size: .9rem;
   color: var(--muted);
 }
@@ -906,6 +922,8 @@ a { color: inherit; }
 .plan-time {
   font-weight: 700;
   color: #fff;
+  /* every clock number the same width, so the four times line up */
+  font-variant-numeric: tabular-nums;
 }
 /* Keep the time and the word apart, so a right-to-left word cannot
    drag the "·" over the time. Each box keeps its own direction. */
@@ -994,14 +1012,53 @@ a { color: inherit; }
   padding: 2.6rem 0 3rem;
   font-size: .85rem;
 }
+/* two columns on a wide screen, so the notes do not sit in a narrow
+   strip with half the page empty beside them */
+.foot-wrap { display: grid; gap: 2rem; }
 .foot-title {
-  font-family: var(--head);
-  font-size: 1rem;
+  font-family: var(--serif);
+  font-size: 1.32rem;
   font-weight: 700;
+  letter-spacing: -0.01em;
   color: #fff;
-  margin: 0 0 .5rem;
+  margin: 0 0 .85rem;
 }
-.foot-note { margin: 0 0 1rem; max-width: 34rem; }
+/* the same short purple rule as the section headings, so the foot
+   belongs to the same page */
+.foot-title::after {
+  content: "";
+  display: block;
+  width: 2.6rem;
+  height: 3px;
+  margin-top: .5rem;
+  background: var(--accent-light);
+}
+.foot-note { margin: 0 0 1rem; max-width: 32rem; }
+
+.to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-family: var(--head);
+  font-size: .82rem;
+  font-weight: 600;
+  color: #e2e2e2;
+  text-decoration: none;
+  padding: .5rem .85rem;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 999px;
+  transition: background .18s, border-color .18s, color .18s;
+}
+.to-top:hover {
+  background: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .5);
+  color: #fff;
+}
+.foot-top { margin: 1.4rem 0 0; }
+
+@media (min-width: 900px) {
+  .foot-wrap { grid-template-columns: 1.1fr .9fr; gap: 3.5rem; align-items: start; }
+}
 
 .credits summary {
   cursor: pointer;
@@ -1160,6 +1217,10 @@ a { color: inherit; }
   .pick-toast { display: none !important; }
   /* the dark/light button does nothing on paper */
   .theme-btn { display: none !important; }
+  /* nor does a link that jumps to the top of a screen */
+  .to-top { display: none !important; }
+  /* and the photo credits are open on paper, where there is no click */
+  .credits[open] summary { margin-bottom: .3rem; }
 }
 
 /* respect a quiet computer */

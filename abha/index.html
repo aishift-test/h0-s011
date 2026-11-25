@@ -20,7 +20,7 @@
 <!-- The ?v= number is a version stamp. Change it whenever styles.css
      or script.js changes, so a phone never mixes an old copy of one
      file with a new copy of the other. -->
-<link rel="stylesheet" href="styles.css?v=16">
+<link rel="stylesheet" href="styles.css?v=17">
 
 <script>
   /* Remember which language was picked last time, and say so before
@@ -240,19 +240,22 @@
 
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
-  <div class="wrap">
-    <p class="foot-title anim"
-       data-en="Abha — a guide for visiting friends"
-       data-ar="أبها — دليل لأصدقائي الزائرين">Abha — a guide for visiting friends</p>
-    <p class="foot-note"
-       data-en="Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers. The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide."
-       data-ar="معظم الصور من ويكيميديا كومنز ومسموح بإعادة استخدامها. شكراً للمصوّرين. صور السودة وبحيرة سد أبها والجاكرندا مُقدَّمة لهذا الدليل.">Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers.
-      The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide.</p>
-    <p class="foot-note"
-       data-en="Misty Peak Cafe and Asir Table are example places, made up for this project. They are not real businesses. The other places are real."
-       data-ar="مقهى قمة الضباب وسُفرة عسير مكانان تجريبيان، صُنعا لهذا المشروع. هما ليسا مكانين حقيقيين. أما بقية الأماكن فحقيقية.">Misty Peak Cafe and Asir Table are example places, made up for this project.
-      They are not real businesses. The other places are real.</p>
-    <details class="credits">
+  <div class="wrap foot-wrap">
+    <div class="foot-about">
+      <p class="foot-title anim"
+         data-en="Abha — a guide for visiting friends"
+         data-ar="أبها — دليل لأصدقائي الزائرين">Abha — a guide for visiting friends</p>
+      <p class="foot-note"
+         data-en="Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers. The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide."
+         data-ar="معظم الصور من ويكيميديا كومنز ومسموح بإعادة استخدامها. شكراً للمصوّرين. صور السودة وبحيرة سد أبها والجاكرندا مُقدَّمة لهذا الدليل.">Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers.
+        The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide.</p>
+      <p class="foot-note"
+         data-en="Misty Peak Cafe and Asir Table are example places, made up for this project. They are not real businesses. The other places are real."
+         data-ar="مقهى قمة الضباب وسُفرة عسير مكانان تجريبيان، صُنعا لهذا المشروع. هما ليسا مكانين حقيقيين. أما بقية الأماكن فحقيقية.">Misty Peak Cafe and Asir Table are example places, made up for this project.
+        They are not real businesses. The other places are real.</p>
+    </div>
+    <div class="foot-side">
+      <details class="credits">
       <summary data-en="Photo credits" data-ar="حقوق الصور">Photo credits</summary>
       <ul>
         <li data-en="Sarawat Mountains — Richard Mortel, CC BY 2.0" data-ar="جبال السروات — Richard Mortel، CC BY 2.0">Sarawat Mountains — Richard Mortel, CC BY 2.0</li>
@@ -277,6 +280,16 @@
            data-en="See all on Wikimedia Commons" data-ar="شاهد الكل على ويكيميديا كومنز">See all on Wikimedia Commons</a>
       </p>
     </details>
+      <p class="foot-top">
+        <a class="to-top" href="#top">
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/>
+          </svg>
+          <span data-en="Back to top" data-ar="إلى الأعلى">Back to top</span>
+        </a>
+      </p>
+    </div>
   </div>
 </footer>
 
@@ -287,6 +300,6 @@
   <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
-<script src="script.js?v=16"></script>
+<script src="script.js?v=17"></script>
 </body>
 </html>
