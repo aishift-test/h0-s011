@@ -290,9 +290,13 @@
       name: "Misty Peak Cafe",
       nameAr: "مقهى قمة الضباب",
       type: "food",
-      img: "img/misty-peak.jpg",
-      alt: "A small cup of Arabic coffee on a saucer",
-      altAr: "فنجان صغير من القهوة العربية على صحن",
+      /* ?v=2 is a version stamp, the same trick as styles.css?v=13:
+         the picture was swapped, and the live site keeps an old copy
+         of the same web address for about ten minutes. A new address
+         is fetched at once. */
+      img: "img/misty-peak.jpg?v=2",
+      alt: "A drawing of a cup of Arabic coffee and five coffee beans on a wooden table",
+      altAr: "رسم لفنجان قهوة عربية وخمس حبوب بن على طاولة خشبية",
       line: "Coffee with a mountain view. Good for a slow morning before the clouds come in.",
       lineAr: "قهوة مع إطلالة على الجبل. مناسبة لصباح هادئ قبل أن يأتي الضباب.",
       months: ALL_YEAR,
