@@ -28,7 +28,7 @@
       months: [6, 7, 8],
       slot: "morning",
       tip: "Take a jacket — it is cold up here, even in August.",
-      maps: "Al Soudah, Abha, Saudi Arabia"
+      maps: "Al Soudah Park, Saudi Arabia"
     },
     {
       name: "Abha Dam Lake",
@@ -133,7 +133,7 @@
       months: [6, 7, 8, 9],
       slot: "evening",
       tip: "Ride down near sunset and watch the city lights come on.",
-      maps: "Abha Cable Car, Abha, Saudi Arabia"
+      maps: "New Abha Cable Car, Abha, Saudi Arabia"
     },
     {
       name: "Al Sahab Park",
@@ -155,7 +155,7 @@
       months: ALL_YEAR,
       slot: "morning",
       tip: "Take cash, and ask before you take a photo of people.",
-      maps: "traditional market, Abha, Saudi Arabia"
+      maps: "Thulathaa Traditional Market, Abha, Saudi Arabia"
     },
 
     /* ---- food ---- */
@@ -168,7 +168,8 @@
       months: ALL_YEAR,
       slot: "lunch",
       tip: "Eat it for breakfast or as a sweet after a big lunch.",
-      maps: "areeka, Abha, Saudi Arabia"
+      maps: "areeka, Abha, Saudi Arabia",
+      mapsSearch: true
     },
     {
       name: "Haneeth at a Local House",
@@ -179,7 +180,8 @@
       months: ALL_YEAR,
       slot: "lunch",
       tip: "Order one big plate for the table and eat with your right hand.",
-      maps: "haneeth restaurant, Abha, Saudi Arabia"
+      maps: "haneeth restaurant, Abha, Saudi Arabia",
+      mapsSearch: true
     },
     {
       name: "Aseer Sidr Honey",
@@ -190,7 +192,7 @@
       months: [8, 9, 10],
       slot: "lunch",
       tip: "Late summer is harvest time, so that is when it is cheapest.",
-      maps: "honey shop, Abha, Saudi Arabia"
+      maps: "Abha Honey Market, Abha, Saudi Arabia"
     },
     {
       name: "Kabsa and Arabic Coffee",
@@ -201,7 +203,8 @@
       months: ALL_YEAR,
       slot: "lunch",
       tip: "Say yes to a second cup of coffee. It means you are welcome.",
-      maps: "kabsa restaurant, Abha, Saudi Arabia"
+      maps: "kabsa restaurant, Abha, Saudi Arabia",
+      mapsSearch: true
     },
     {
       name: "Asir Table",
@@ -212,7 +215,8 @@
       months: ALL_YEAR,
       slot: "lunch",
       tip: "A made-up place, for this project. The real ones are just as good.",
-      maps: "traditional restaurant, Abha, Saudi Arabia"
+      maps: "traditional restaurant, Abha, Saudi Arabia",
+      mapsSearch: true
     },
     {
       name: "Misty Peak Cafe",
@@ -223,7 +227,8 @@
       months: ALL_YEAR,
       slot: "morning",
       tip: "A made-up place, for this project. Look for a cafe with a view like this.",
-      maps: "cafe with a view, Abha, Saudi Arabia"
+      maps: "cafe with a view, Abha, Saudi Arabia",
+      mapsSearch: true
     }
   ];
 
@@ -276,6 +281,20 @@
      ---------------------------------------------------------- */
   function mapsUrl(place) {
     return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(place.maps);
+  }
+
+  /* Most places here are one real spot, so Maps opens that exact place.
+     A few are a dish or a made-up place, and there is no address for
+     them — Maps can only show a list. Say so on the button, so nobody
+     is surprised. */
+  function mapsLabel(place) {
+    return place.mapsSearch ? "Find it in Abha" : "Open in Maps";
+  }
+
+  function mapsAria(place) {
+    return place.mapsSearch
+      ? "Search Google Maps for " + place.name
+      : "Open " + place.name + " in Google Maps";
   }
 
   /* The months the visitor asked about: one month, or all the months
@@ -382,7 +401,7 @@
     return '' +
       '<li class="card' + (quiet ? " is-quiet" : "") + '" data-place="' + escapeHtml(place.name) + '">' +
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
-           'aria-label="Open ' + escapeHtml(place.name) + ' in Google Maps">' +
+           'aria-label="' + escapeHtml(mapsAria(place)) + '">' +
           '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">Best now</span>" +
         "</a>" +
@@ -401,7 +420,7 @@
           "<h3>" + escapeHtml(place.name) + "</h3>" +
           '<p class="line">' + escapeHtml(place.line) + "</p>" +
           '<a class="maps" href="' + mapsUrl(place) + '" target="_blank" rel="noopener">' +
-            PIN + "<span>Open in Maps</span>" +
+            PIN + "<span>" + mapsLabel(place) + "</span>" +
           "</a>" +
         "</div>" +
       "</li>";
