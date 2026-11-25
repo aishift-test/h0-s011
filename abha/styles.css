@@ -16,8 +16,9 @@
   --green:      #2f6b4e;
   --green-deep: #1c4432;
   --green-dark: #14301f;
-  --sand:       #c2913f;
-  --sand-soft:  #e6d3a8;
+  --sand:        #c2913f;
+  --sand-soft:   #e6d3a8;
+  --sand-bright: #e3c47f;
 
   /* the three types */
   --nature:   #2f6b4e;
@@ -87,8 +88,8 @@ a { color: inherit; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(12, 28, 20, .55) 0%, rgba(12, 28, 20, .30) 34%, rgba(12, 28, 20, .88) 100%),
-    radial-gradient(120% 70% at 12% 100%, rgba(20, 48, 31, .78) 0%, rgba(20, 48, 31, 0) 62%);
+    linear-gradient(180deg, rgba(10, 24, 17, .72) 0%, rgba(10, 24, 17, .70) 55%, rgba(10, 24, 17, .94) 100%),
+    radial-gradient(120% 70% at 12% 100%, rgba(20, 48, 31, .82) 0%, rgba(20, 48, 31, 0) 62%);
 }
 
 .hero-inner {
@@ -106,7 +107,12 @@ a { color: inherit; }
   text-transform: uppercase;
   color: var(--sand-soft);
 }
-.kicker-dark { color: var(--sand); }
+.kicker-dark { color: var(--sand-bright); }
+
+/* the hero sits on a photo, so give its text a soft shadow to stay readable */
+.hero .kicker,
+.hero .lede,
+.hero-facts { text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
 
 .hero h1 {
   font-size: clamp(3.4rem, 17vw, 7rem);
@@ -148,15 +154,6 @@ a { color: inherit; }
 .hero-facts b { font-family: var(--head); font-weight: 700; font-size: .95rem; }
 .hero-facts span { font-size: .8rem; color: #d8e3da; }
 
-.hero-credit {
-  position: absolute;
-  right: 1.25rem;
-  bottom: .5rem;
-  margin: 0;
-  font-size: .64rem;
-  color: rgba(255, 255, 255, .5);
-}
-
 /* ============================================================
    2. TOOLBAR — filters and months
    ============================================================ */
@@ -193,12 +190,15 @@ a { color: inherit; }
 
 .scroller {
   display: flex;
-  gap: .35rem;
+  gap: .3rem;
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   padding: .1rem .1rem .15rem;
   scroll-snap-type: x proximity;
+  /* fade the right edge so it is clear you can scroll */
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent 100%);
 }
 .scroller::-webkit-scrollbar { display: none; }
 
@@ -207,22 +207,16 @@ a { color: inherit; }
   flex: 0 0 auto;
   scroll-snap-align: start;
   font-family: var(--head);
-  font-size: .82rem;
+  font-size: .8rem;
   font-weight: 600;
   color: var(--ink);
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: .4rem .8rem;
+  padding: .38rem .66rem;
   cursor: pointer;
   white-space: nowrap;
   transition: background .18s, color .18s, border-color .18s, transform .18s;
-}
-.chip i {
-  font-style: normal;
-  font-size: .72rem;
-  color: var(--muted);
-  margin-left: .12rem;
 }
 .chip:hover { border-color: rgba(47, 107, 78, .5); transform: translateY(-1px); }
 .chip.is-on {
@@ -230,7 +224,6 @@ a { color: inherit; }
   border-color: var(--green-deep);
   color: #fff;
 }
-.chip.is-on i { color: var(--sand-soft); }
 
 /* --- month pills --- */
 .month {
@@ -526,7 +519,7 @@ a { color: inherit; }
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--sand);
+  color: var(--sand-bright);
   margin-bottom: .1rem;
 }
 .plan-name {
@@ -638,7 +631,7 @@ a { color: inherit; }
 @media (max-width: 380px) {
   .wrap { padding: 0 1rem; }
   .row-label { width: 3.4rem; font-size: .62rem; }
-  .chip { font-size: .78rem; padding: .38rem .68rem; }
+  .chip { font-size: .74rem; padding: .34rem .54rem; }
   .month { font-size: .74rem; padding: .28rem .5rem; }
   .card-body { padding: .85rem .85rem .9rem; }
   .card-body h3 { font-size: 1.12rem; }
