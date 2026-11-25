@@ -1264,6 +1264,14 @@
     drawPlan(lastStops);
     setPlanHead();
 
+    /* In Arabic a row of buttons reads from the right. Some phones
+       put a scrolling row at the far end instead, which hides the
+       first button, so put all three rows back to the start. */
+    ["filters", "seasons", "months"].forEach(function (id) {
+      var row = document.getElementById(id);
+      if (row) row.scrollLeft = 0;
+    });
+
     try { window.localStorage.setItem(LANG_KEY, lang); } catch (e) { /* fine */ }
   }
 
