@@ -319,7 +319,9 @@
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="Open ' + escapeHtml(place.name) + ' in Google Maps">' +
           '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
-          '<span class="tag tag-' + place.type + '">' + TYPE_LABEL[place.type] + "</span>" +
+          '<span class="tag tag-' + place.type + '">' +
+            '<i class="dot" aria-hidden="true"></i>' + TYPE_LABEL[place.type] +
+          "</span>" +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">Best now</span>" +
         "</a>" +
         '<div class="card-body">' +
