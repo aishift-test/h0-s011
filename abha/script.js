@@ -355,6 +355,16 @@
   /* Every sentence the page builds for itself. English and Arabic
      put the words in a different order, so each one is a whole
      sentence rather than a pile of loose words. */
+
+  /* Arabic counts in threes: one place, two places, three to ten
+     places, then one place again. So "18 places" is "18 مكاناً". */
+  function placeWordAr(n) {
+    if (n === 1) return "مكان";
+    if (n === 2) return "مكانان";
+    if (n >= 3 && n <= 10) return "أماكن";
+    return "مكاناً";
+  }
+
   var T = {
     en: {
       title: "Abha — A Guide for Visiting Friends",
@@ -395,8 +405,8 @@
       myPlanFoot: "This is the day I would take you on. Press the button for a new one.",
       dayIn: "A day in ",
       dayInAbha: "A day in Abha",
-      newPlanFoot: function (period) {
-        return (period ? "Picked for " + period + ". " : "") +
+      newPlanFoot: function (p) {
+        return ((p.month || p.season) ? "Picked for " + periodLabelFull(p) + ". " : "") +
           "Press again for a different day, or " +
           '<button type="button" class="link" id="showMine">show my plan</button>.';
       },
@@ -429,11 +439,11 @@
       typeWord: { all: "", saved: "محفوظة ", nature: "طبيعة ", heritage: "تراث ",
                   food: "طعام ", activities: "أنشطة " },
       showing: function (n, word) {
-        return "يظهر الآن <b>" + n + "</b> " + word + (n === 1 ? "مكان" : "أماكن") + ".";
+        return "يظهر الآن <b>" + n + "</b> " + word + placeWordAr(n) + ".";
       },
       inPeriod: function (period, good, total, word) {
         return "في <b>" + period + "</b>، <b>" + good + "</b> من أصل " + total + " " + word +
-          (total === 1 ? "مكان" : "أماكن") + " في أفضل حال. وهي معروضة أولاً.";
+          placeWordAr(total) + " في أفضل حال. وهي معروضة أولاً.";
       },
       nowLine: function (month, good, total) {
         return "الشهر الآن <b>" + month + "</b> في أبها. <b>" + good + "</b> من " + total +
@@ -450,8 +460,9 @@
       myPlanFoot: "هذا هو اليوم الذي سآخذكم فيه. اضغط الزر لتحصل على يوم آخر.",
       dayIn: "يوم في ",
       dayInAbha: "يوم في أبها",
-      newPlanFoot: function (period) {
-        return (period ? "مختار لموسم " + period + ". " : "") +
+      newPlanFoot: function (p) {
+        return (p.month ? "مختار لشهر " : p.season ? "مختار لموسم " : "") +
+          ((p.month || p.season) ? periodLabelFull(p) + ". " : "") +
           "اضغط مرة أخرى ليوم مختلف، أو " +
           '<button type="button" class="link" id="showMine">اعرض خطتي</button>.';
       },
@@ -548,19 +559,26 @@
   }
 
   /* "March" or "spring" */
-  function periodShort() {
-    if (state.month) return MONTHS[lang][state.month - 1];
-    if (state.season) return seasonLabel(state.season);
+  /* A period is a month number or a season name, never both.
+     Keeping it as the month/season itself (not as a finished
+     sentence) means the label can be said again in either
+     language later, when the button is pressed. */
+  function periodLabelShort(p) {
+    if (p.month) return MONTHS[lang][p.month - 1];
+    if (p.season) return seasonLabel(p.season);
     return "";
   }
 
   /* "March" or "spring (Mar–May)" — the season with its months */
-  function periodName() {
-    if (!state.season) return periodShort();
-    var s = SEASONS[state.season];
+  function periodLabelFull(p) {
+    if (!p.season) return periodLabelShort(p);
+    var s = SEASONS[p.season];
     var first = s.months[0], last = s.months[s.months.length - 1];
-    return periodShort() + " (" + SHORT[lang][first - 1] + "–" + SHORT[lang][last - 1] + ")";
+    return periodLabelShort(p) + " (" + SHORT[lang][first - 1] + "–" + SHORT[lang][last - 1] + ")";
   }
+
+  function periodShort() { return periodLabelShort(state); }
+  function periodName()  { return periodLabelFull(state); }
 
   /* "Jun–Aug", "Dec–May", "Mar, Apr" or "All year" */
   function monthText(place) {
@@ -1015,15 +1033,34 @@
     }).join("");
   }
 
+  /* Which plan is on screen: the writer's own, or a new one. The
+     words above and below the stops follow it, so they change
+     with the language too. */
+  var planMode = "mine";
+  var lastPeriod = { month: 0, season: "" };
+
+  function setPlanHead() {
+    if (planMode === "mine") {
+      if (planTitle) planTitle.textContent = t().myPlanTitle;
+      if (planFoot) planFoot.textContent = t().myPlanFoot;
+      return;
+    }
+    var short = periodLabelShort(lastPeriod);
+    if (planTitle) {
+      planTitle.textContent = short ? t().dayIn + short : t().dayInAbha;
+    }
+    if (planFoot) planFoot.innerHTML = t().newPlanFoot(lastPeriod);
+  }
+
   // The writer's own day, shown first.
   function showMyPlan() {
     var stops = MY_PLAN.map(function (s) {
       return { slot: s.slot, place: findPlace(s.place), note: s.note, noteAr: s.noteAr };
     }).filter(function (s) { return s.place; });
 
+    planMode = "mine";
     drawPlan(stops);
-    if (planTitle) planTitle.textContent = t().myPlanTitle;
-    planFoot.textContent = t().myPlanFoot;
+    setPlanHead();
     planPanel.hidden = false;
   }
 
@@ -1069,15 +1106,11 @@
     }
     lastPlan = stops.map(function (s) { return s.place.name; });
 
+    planMode = "new";
+    lastPeriod = { month: state.month, season: state.season };
+
     drawPlan(stops);
-
-    if (planTitle) {
-      planTitle.textContent = months
-        ? t().dayIn + periodShort()
-        : t().dayInAbha;
-    }
-
-    planFoot.innerHTML = t().newPlanFoot(months ? periodName() : "");
+    setPlanHead();
 
     planPanel.hidden = false;
   }
@@ -1114,14 +1147,15 @@
   }
 
   /* A calendar line should be 75 bytes or fewer. Arabic letters
-     take two bytes each, so count bytes, not letters. */
+     take two bytes each, so count bytes, not letters. A folded
+     line carries on after a space at the start of the next line. */
   function icsFold(line) {
     var out = "";
     var bytes = 0;
     for (var i = 0; i < line.length; i++) {
       var ch = line.charAt(i);
       var size = ch.charCodeAt(0) < 128 ? 1 : 2;
-      if (bytes + size > 73) { out += "\r\n "; bytes = 1; }
+      if (bytes + size > 75) { out += "\r\n "; bytes = 1; }
       out += ch;
       bytes += size;
     }
@@ -1226,6 +1260,7 @@
     render();
     updatePlanBtn();
     drawPlan(lastStops);
+    setPlanHead();
 
     try { window.localStorage.setItem(LANG_KEY, lang); } catch (e) { /* fine */ }
   }
