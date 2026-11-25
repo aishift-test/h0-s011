@@ -28,7 +28,7 @@
 <!-- The ?v= number is a version stamp. Change it whenever styles.css
      or script.js changes, so a phone never mixes an old copy of one
      file with a new copy of the other. -->
-<link rel="stylesheet" href="styles.css?v=20">
+<link rel="stylesheet" href="styles.css?v=21">
 
 <script>
   /* Remember which language was picked last time, and say so before
@@ -320,6 +320,46 @@
   <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
-<script src="script.js?v=20"></script>
+<!-- ============ A BIGGER LOOK AT A PHOTO ============
+     Press a photo on a card and it opens here, as big as the
+     screen allows, with the whole photo showing (the card cuts
+     it to a wide shape). Escape, the X, or a press on the dark
+     part closes it. The two arrows and the arrow keys move to
+     the next photo on the page. It stays empty until you press
+     a photo, and it is written again in the other language if
+     you switch while it is open. -->
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lb-scrim"></div>
+  <div class="lb-box" role="dialog" aria-modal="true" aria-labelledby="lbName">
+    <img class="lb-img" id="lbImg" alt="" width="760" height="570" decoding="async">
+    <div class="lb-cap">
+      <p class="lb-name" id="lbName"></p>
+      <p class="lb-line" id="lbLine"></p>
+    </div>
+    <button type="button" class="lb-btn lb-close" id="lbClose"
+            data-en-aria="Close the photo" data-ar-aria="أغلق الصورة">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none"
+           stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+    <button type="button" class="lb-btn lb-prev" id="lbPrev"
+            data-en-aria="Previous photo" data-ar-aria="الصورة السابقة">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none"
+           stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 5l-7 7 7 7"/>
+      </svg>
+    </button>
+    <button type="button" class="lb-btn lb-next" id="lbNext"
+            data-en-aria="Next photo" data-ar-aria="الصورة التالية">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none"
+           stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script src="script.js?v=21"></script>
 </body>
 </html>

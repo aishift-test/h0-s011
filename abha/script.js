@@ -423,8 +423,7 @@
       picked: function (name) {
         return "Picked for you: <b>" + name + "</b>. Press again for another.";
       },
-      searchMaps: function (name) { return "Search Google Maps for " + name; },
-      openMapsAria: function (name) { return "Open " + name + " in Google Maps"; },
+      zoomAria: function (name) { return "See the photo of " + name + " bigger"; },
       saveAria: "Save ", removeAria: "Remove ",
       switchTo: "عربي", switchAria: "Switch to Arabic"
     },
@@ -482,8 +481,7 @@
       picked: function (name) {
         return "اخترت لك: <b>" + name + "</b>. اضغط مرة أخرى لغيره.";
       },
-      searchMaps: function (name) { return "ابحث في خرائط Google عن " + name; },
-      openMapsAria: function (name) { return "افتح " + name + " في خرائط Google"; },
+      zoomAria: function (name) { return "شاهد صورة " + name + " بحجم أكبر"; },
       saveAria: "احفظ ", removeAria: "أزل ",
       switchTo: "English", switchAria: "Switch to English"
     }
@@ -609,10 +607,6 @@
     return place.mapsSearch ? t().findInAbha : t().openMaps;
   }
 
-  function mapsAria(place) {
-    return place.mapsSearch ? t().searchMaps(pname(place)) : t().openMapsAria(pname(place));
-  }
-
   /* The months the visitor asked about: one month, or all the months
      of a season. Returns null when they have not asked for any. */
   function wantedMonths() {
@@ -729,6 +723,12 @@
     return src.replace(/\.jpg/, "-sm.jpg");
   }
 
+  /* Both sizes of one photo, written once and used in two places:
+     on the card, and in the bigger look you get when you press it. */
+  function imgSet(place) {
+    return smallImg(place.img) + " 520w, " + place.img + " 760w";
+  }
+
   function cardHtml(place, bestNow, quiet) {
     // some photos are tall; "pos" says which part of the photo to show
     var pos = place.pos ? ' style="object-position:' + place.pos + '"' : '';
@@ -736,15 +736,17 @@
 
     return '' +
       '<li class="card anim' + (quiet ? " is-quiet" : "") + '" data-place="' + escapeHtml(place.name) + '">' +
-        '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
-           'aria-label="' + escapeHtml(mapsAria(place)) + '">' +
+        /* the photo is a button, not a link: pressing it shows the
+           photo big. "Open in Maps" is still on the card, below. */
+        '<button type="button" class="card-photo" data-name="' + escapeHtml(place.name) + '"' +
+           ' aria-label="' + escapeHtml(t().zoomAria(pname(place))) + '">' +
           '<img src="' + place.img + '"' +
-            ' srcset="' + smallImg(place.img) + ' 520w, ' + place.img + ' 760w"' +
+            ' srcset="' + imgSet(place) + '"' +
             ' sizes="(min-width: 1000px) 380px, (min-width: 640px) 46vw, 44vw"' +
             ' alt="' + escapeHtml(palt(place)) + '" loading="lazy" decoding="async"' +
             ' width="760" height="570"' + pos + '>' +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">" + t().bestNow + "</span>" +
-        "</a>" +
+        "</button>" +
         '<button type="button" class="save" data-name="' + escapeHtml(place.name) + '"' +
           ' aria-pressed="' + (on ? "true" : "false") + '"' +
           ' aria-label="' + (on ? t().removeAria : t().saveAria) + escapeHtml(pname(place)) + '">' +
@@ -1104,6 +1106,120 @@
 
   if (pickBtn) pickBtn.addEventListener("click", pickOne);
   if (pickAgain) pickAgain.addEventListener("click", pickOne);
+
+  /* ----------------------------------------------------------
+     6f. A BIGGER LOOK AT A PHOTO
+
+     A card photo is small, and cut to a wide shape. Pressing one
+     opens the WHOLE photo at the largest size the screen allows.
+
+     The photos you can step through are the cards on the page
+     right now, so the tabs filter this too: pick Food and you
+     step through the food photos only.
+
+     No new picture files: the same two sizes the card already
+     offered are offered again, so a phone uses the copy it has
+     already fetched and the photo is there at once.
+     ---------------------------------------------------------- */
+  var lb      = document.getElementById("lightbox");
+  var lbImg   = document.getElementById("lbImg");
+  var lbName  = document.getElementById("lbName");
+  var lbLine  = document.getElementById("lbLine");
+  var lbClose = document.getElementById("lbClose");
+  var lbPrev  = document.getElementById("lbPrev");
+  var lbNext  = document.getElementById("lbNext");
+  var lbList  = [];   // the place names you can step through
+  var lbAt    = -1;   // which one is on screen
+  var lbBack  = null; // the button that opened it, to go back to
+
+  function showAt(i) {
+    var place = findPlace(lbList[i]);
+    if (!place) return;
+    lbAt = i;
+
+    lbImg.setAttribute("srcset", imgSet(place));
+    /* how wide the photo will really be: as wide as the screen
+       on a phone, and no wider than 760 pixels on a computer */
+    lbImg.setAttribute("sizes", "(min-width: 820px) 760px, 100vw");
+    lbImg.setAttribute("src", place.img);
+    lbImg.setAttribute("alt", palt(place));
+
+    lbName.textContent = pname(place);
+    lbLine.textContent = pline(place);
+
+    /* one photo, nothing to step to */
+    var many = lbList.length > 1;
+    lbPrev.hidden = !many;
+    lbNext.hidden = !many;
+  }
+
+  function step(d) {
+    if (lbList.length < 2) return;
+    /* round and round: after the last one comes the first */
+    showAt((lbAt + d + lbList.length) % lbList.length);
+  }
+
+  function openBox(name) {
+    /* what is on the page now, so a filter also filters this */
+    lbList = Array.prototype.map.call(grid.querySelectorAll(".card"), function (c) {
+      return c.getAttribute("data-place");
+    });
+    lbAt = lbList.indexOf(name);
+    if (lbAt < 0) { lbList = [name]; lbAt = 0; }
+
+    lbBack = document.activeElement;
+    lb.hidden = false;
+    showAt(lbAt);
+    lbClose.focus();
+  }
+
+  function closeBox() {
+    lb.hidden = true;
+    /* let the photo go, so the next one does not flash on screen
+       for a moment before its own has arrived */
+    lbImg.removeAttribute("src");
+    lbImg.removeAttribute("srcset");
+    if (lbBack && lbBack.focus) lbBack.focus();
+  }
+
+  if (lb) {
+    grid.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest(".card-photo") : null;
+      if (!btn) return;
+      e.preventDefault();
+      openBox(btn.getAttribute("data-name"));
+    });
+
+    /* a press on the dark part — anything outside the photo */
+    lb.addEventListener("click", function (e) {
+      if (!e.target.closest || !e.target.closest(".lb-box")) closeBox();
+    });
+    lbClose.addEventListener("click", closeBox);
+    lbPrev.addEventListener("click", function () { step(-1); });
+    lbNext.addEventListener("click", function () { step(1); });
+
+    /* the page behind must stay still while the photo is open:
+       a finger swipe on a phone would scroll it */
+    lb.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
+    lb.addEventListener("wheel", function (e) { e.preventDefault(); }, { passive: false });
+
+    document.addEventListener("keydown", function (e) {
+      if (lb.hidden) return;
+      if (e.key === "Escape") { closeBox(); return; }
+      if (e.key === "ArrowLeft") { step(-1); return; }
+      if (e.key === "ArrowRight") { step(1); return; }
+      /* Tab stays inside the photo, where the visitor can see it */
+      if (e.key !== "Tab") return;
+      var stops = lb.querySelectorAll(".lb-btn:not([hidden])");
+      if (!stops.length) return;
+      var first = stops[0], last = stops[stops.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    });
+  }
 
   /* ----------------------------------------------------------
      7. PLAN MY DAY
@@ -1472,6 +1588,8 @@
     if (desc) desc.setAttribute("content", t().desc);
 
     setTagText();
+    /* a photo open big must change language with everything else */
+    if (lb && !lb.hidden && lbAt >= 0) showAt(lbAt);
     if (langBtnText) langBtnText.textContent = t().switchTo;
     if (langBtn) langBtn.setAttribute("aria-label", t().switchAria);
 
