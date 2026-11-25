@@ -224,28 +224,6 @@
       slot: "morning",
       tip: "A made-up place, for this project. Look for a cafe with a view like this.",
       maps: "cafe with a view, Abha, Saudi Arabia"
-    },
-    {
-      name: "Jacaranda Corner",
-      type: "food",
-      img: "img/jacaranda-corner.jpg",
-      alt: "Coffee and small sweets on a table, with a flower in a vase",
-      line: "A small cafe with purple flowers outside in spring. A good place to stop and sit.",
-      months: [3, 4],
-      slot: "morning",
-      tip: "A made-up place, for this project. Come in April for the flowers.",
-      maps: "cafe, Abha, Saudi Arabia"
-    },
-    {
-      name: "Highland Grill House",
-      type: "food",
-      img: "img/highland-grill.jpg",
-      alt: "A large mixed grill platter with meat, tomatoes and peppers",
-      line: "A family restaurant with local food and a big mixed grill for the table.",
-      months: ALL_YEAR,
-      slot: "evening",
-      tip: "A made-up place, for this project. Good for a group at the end of the day.",
-      maps: "grill restaurant, Abha, Saudi Arabia"
     }
   ];
 
@@ -437,7 +415,7 @@
     { slot: "Afternoon", place: "Al Muftaha Art Village",
       note: "Colourful walls, galleries and small shops." },
     { slot: "Evening",   place: "Green Mountain Viewpoint",
-      note: "Then dinner at Highland Grill House." }
+      note: "Then dinner in the city on the way back down." }
   ];
 
   function findPlace(name) {
