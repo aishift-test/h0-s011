@@ -526,6 +526,64 @@
   var state = { type: "all", season: "", month: 0 };
 
   /* ----------------------------------------------------------
+     2b. REMEMBER WHAT IS ON SCREEN
+
+     The three rows of tabs are a choice, so they are kept in the
+     browser and put back the next time the page opens. Without
+     this, a refresh would quietly put every tab back to
+     "All / Any / Any" and the visitor would think places were
+     missing.
+
+     It is saved on this device only — there is no server.
+     ---------------------------------------------------------- */
+  var VIEW_KEY = "abha-view-v1";
+  var TYPES = ["all", "nature", "heritage", "food", "activities", "saved"];
+  var SEASONS = ["", "winter", "spring", "summer", "autumn"];
+
+  function saveView() {
+    try {
+      window.localStorage.setItem(VIEW_KEY, JSON.stringify(state));
+    } catch (e) { /* private browsing — the tabs just start fresh */ }
+  }
+
+  /* Read the saved choice, but only if it is something we know.
+     A tab that no longer exists must not leave the page empty. */
+  function loadView() {
+    var raw = null;
+    try { raw = window.localStorage.getItem(VIEW_KEY); } catch (e) { return; }
+    if (!raw) return;
+
+    var data = null;
+    try { data = JSON.parse(raw); } catch (e) { return; }
+    if (!data || typeof data !== "object") return;
+
+    if (TYPES.indexOf(data.type) !== -1) state.type = data.type;
+    if (SEASONS.indexOf(data.season) !== -1) state.season = data.season;
+
+    var m = Math.round(Number(data.month));
+    if (m >= 0 && m <= 12) state.month = m;
+    /* only one of the two is ever on */
+    if (state.month) state.season = "";
+  }
+
+  /* Light up the tabs that the saved choice points at */
+  function paintTabs() {
+    var i;
+    for (i = 0; i < filterBtns.length; i++) {
+      filterBtns[i].classList.toggle("is-on",
+        filterBtns[i].getAttribute("data-filter") === state.type);
+    }
+    for (i = 0; i < seasonBtns.length; i++) {
+      seasonBtns[i].classList.toggle("is-on",
+        seasonBtns[i].getAttribute("data-season") === (state.season || "0"));
+    }
+    for (i = 0; i < monthBtns.length; i++) {
+      monthBtns[i].classList.toggle("is-on",
+        Number(monthBtns[i].getAttribute("data-month")) === state.month);
+    }
+  }
+
+  /* ----------------------------------------------------------
      3. SMALL HELPERS
      ---------------------------------------------------------- */
   function mapsUrl(place) {
@@ -723,6 +781,10 @@
   }
 
   function render() {
+    /* every change to the tabs comes through here, so this is the
+       one place that has to remember them */
+    saveView();
+
     var months = wantedMonths();
 
     var shown = PLACES.filter(function (p) {
@@ -1047,6 +1109,8 @@
   // Draw any list of stops. A stop is { slot, place, note },
   // where "slot" is a key from SLOTS above.
   var lastStops = [];
+  // the names of the day on screen, so two presses in a row differ
+  var lastPlan = [];
 
   /* the little line under a stop: the writer's own words if the
      stop has them, otherwise the tip that sits on the card */
@@ -1109,6 +1173,62 @@
     drawPlan(stops);
     setPlanHead();
     planPanel.hidden = false;
+    savePlan();
+  }
+
+  /* ----------------------------------------------------------
+     7c. REMEMBER THE DAY ON SCREEN
+
+     A day the page built for you is kept in the browser, so a
+     refresh does not throw it away and go back to my own day.
+     Only the name of each place is kept; the picture and the
+     words are looked up again when the page opens.
+     ---------------------------------------------------------- */
+  var PLAN_KEY = "abha-plan-v1";
+
+  function savePlan() {
+    try {
+      window.localStorage.setItem(PLAN_KEY, JSON.stringify({
+        mode: planMode,
+        period: lastPeriod,
+        stops: lastStops.map(function (s) {
+          return { slot: s.slot, name: s.place.name };
+        })
+      }));
+    } catch (e) { /* private browsing — the plan just starts fresh */ }
+  }
+
+  /* true if a day was put back on the page */
+  function loadPlan() {
+    var raw = null;
+    try { raw = window.localStorage.getItem(PLAN_KEY); } catch (e) { return false; }
+    if (!raw) return false;
+
+    var data = null;
+    try { data = JSON.parse(raw); } catch (e) { return false; }
+    if (!data || data.mode !== "new" || !data.stops || !data.stops.length) return false;
+
+    /* a place may have been renamed or taken out since the day was
+       saved, so look each one up and drop the ones that are gone */
+    var stops = [];
+    for (var i = 0; i < data.stops.length; i++) {
+      var place = findPlace(data.stops[i].name);
+      if (place && SLOT_BY_KEY[data.stops[i].slot]) {
+        stops.push({ slot: data.stops[i].slot, place: place });
+      }
+    }
+    if (!stops.length) return false;
+
+    planMode = "new";
+    lastPeriod = data.period && typeof data.period === "object"
+      ? { month: Number(data.period.month) || 0, season: data.period.season || "" }
+      : { month: 0, season: "" };
+    lastPlan = stops.map(function (s) { return s.place.name; });
+
+    drawPlan(stops);
+    setPlanHead();
+    planPanel.hidden = false;
+    return true;
   }
 
   // Build one day. When "strict" is true it only uses places that are
@@ -1141,8 +1261,6 @@
     return stops.every(function (s, i) { return s.place.name === names[i]; });
   }
 
-  var lastPlan = [];
-
   function makePlan() {
     var months = wantedMonths();
     var stops = buildStops(months, true);
@@ -1160,6 +1278,7 @@
     setPlanHead();
 
     planPanel.hidden = false;
+    savePlan();   // so a refresh keeps the day you were just given
   }
 
   if (planBtn) planBtn.addEventListener("click", makePlan);
@@ -1368,9 +1487,15 @@
 
   /* ----------------------------------------------------------
      9. START
+
+     Everything the visitor chose last time goes back first, so
+     the page opens the way they left it.
      ---------------------------------------------------------- */
+  loadView();      // the tabs: show, season, best in
+  paintTabs();     // light up the tabs that choice points at
   applyLang();     // direction, title, words, cards, plan button
-  showMyPlan();    // the writer's own day, in the right language
+  /* the day that was on screen last time, or the writer's own day */
+  if (!loadPlan()) showMyPlan();
   paintThemeBtn(); // the dark/light button shows the colours on screen
   onScroll();
   /* once every photo has arrived the page is a different height, so
