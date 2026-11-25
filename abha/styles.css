@@ -338,6 +338,22 @@ a { color: inherit; }
   margin: 0 0 .35rem;
 }
 
+/* a short purple rule under the heading. It grows out from the
+   left as the heading arrives. */
+.section-title::after {
+  content: "";
+  display: block;
+  width: 4.5rem;
+  height: 3px;
+  margin-top: .55rem;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  scale: 1 1;
+  transition: scale .7s cubic-bezier(.22, .61, .36, 1) .25s;
+}
+.js .section-title::after { scale: 0 1; }
+.js .section-title.is-in::after { scale: 1 1; }
+
 /* "Places to see" on the left, "Pick one for me" on the right */
 .places-head {
   display: flex;
@@ -450,9 +466,10 @@ a { color: inherit; }
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  /* starts out of sight; the page fades each card in as you reach it */
+  /* starts out of sight; the page brings each card up as you reach it
+     (the "arrive" animation further down does the moving and fading) */
   opacity: 0;
-  transition: transform .26s ease, box-shadow .26s ease, opacity .55s ease;
+  transition: transform .26s ease, box-shadow .26s ease;
 }
 .card.is-in { opacity: 1; }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
@@ -509,8 +526,12 @@ a { color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .5s ease;
+  /* the photo is a little too big to begin with, then settles back
+     to its true size as the card slides in */
+  scale: 1.06;
+  transition: transform .5s ease, scale .9s cubic-bezier(.22, .61, .36, 1);
 }
+.card.is-in .card-photo img { scale: 1; }
 .card:hover .card-photo img { transform: scale(1.04); }
 
 /* "best now" — a small white chip, like the weather chip on Visit Saudi */
@@ -862,6 +883,54 @@ a { color: inherit; }
 .credits-link a { color: var(--accent-light); }
 
 /* ============================================================
+   5b. MOVEMENT — the page arrives as you scroll
+
+   Every piece starts a little low and out of sight, then slides
+   into place when you reach it. Only two things ever move:
+   `opacity` and `translate` / `scale`. Those are the cheap ones
+   for a phone to draw, so the page stays smooth.
+
+   The `js` class on <html> is what switches this on. If the
+   script never runs, nothing below applies, and the page is
+   simply still. Nobody is left looking at an empty screen.
+
+   Why an animation and not a transition: an animation leaves
+   the `transition` property alone, so the lift on hover still
+   works on the buttons and the cards.
+   ============================================================ */
+
+/* the thin purple line at the very top: how far down you are */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-mid) 55%, var(--accent-light) 100%);
+}
+
+.js .anim { opacity: 0; }
+
+/* where each piece starts from, before it slides in */
+.js .anim     { --ax: 0px;    --ay: 30px; --as: 1; }
+.js .anim-left  { --ax: -26px; --ay: 0px; }
+.js .anim-right { --ax: 16px;  --ay: 0px; }
+.js .anim-zoom  { --ax: 0px;   --ay: 22px; --as: .93; }
+
+.js .anim.is-in {
+  animation: arrive .72s cubic-bezier(.22, .61, .36, 1) var(--d, 0ms) both;
+}
+
+@keyframes arrive {
+  from { opacity: 0; translate: var(--ax) var(--ay); scale: var(--as); }
+  to   { opacity: 1; translate: none; scale: none; }
+}
+
+/* ============================================================
    6. WIDER SCREENS
    ============================================================ */
 
@@ -943,6 +1012,11 @@ a { color: inherit; }
    the page has not scrolled to yet */
 @media print {
   .card { opacity: 1 !important; }
+  /* everything must be on the paper, not still waiting to slide in */
+  .js .anim { opacity: 1 !important; animation: none !important; }
+  .card-photo img { scale: 1 !important; }
+  .js .section-title::after { scale: 1 1 !important; }
+  .progress { display: none !important; }
   .hero-img { animation: none; }
   .toolbar { position: static; }
   .pick-toast { display: none !important; }
@@ -953,12 +1027,18 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: .001ms !important;
+    /* the wait before each piece slides in has to go too, or a
+       piece would still sit invisible for a moment */
+    animation-delay: 0s !important;
     transition-duration: .001ms !important;
+    transition-delay: 0s !important;
   }
   .hero-img { animation: none; }
   .card { opacity: 1; }
   .card:hover { transform: none; }
   .card:hover .card-photo img { transform: none; }
+  .card-photo img { scale: 1; }
+  .js .section-title::after { scale: 1 1; }
 }
 
 /* ============================================================

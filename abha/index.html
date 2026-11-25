@@ -20,7 +20,7 @@
 <!-- The ?v= number is a version stamp. Change it whenever styles.css
      or script.js changes, so a phone never mixes an old copy of one
      file with a new copy of the other. -->
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=7">
 
 <script>
   /* Remember which language was picked last time, and say so before
@@ -32,9 +32,17 @@
       document.documentElement.lang = "ar";
     }
   } catch (e) { /* private browsing — English is fine */ }
+
+  /* Tell the stylesheet that the script is running. The "slide in as
+     you scroll" rules only apply with this class, so if the script
+     ever fails the page is simply still — never blank. */
+  document.documentElement.classList.add("js");
 </script>
 </head>
 <body>
+
+<!-- how far down the page you are -->
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <!-- ============ HERO ============ -->
 <header class="hero">
@@ -44,21 +52,21 @@
        data-ar-alt="سلاسل جبال خضراء وطريق يمر في وادٍ في منطقة عسير">
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-inner wrap">
-    <p class="kicker"
+    <p class="kicker anim"
        data-en="A guide for visiting friends"
        data-ar="دليل لأصدقائي الزائرين">A guide for visiting friends</p>
-    <h1 data-en="Abha" data-ar="أبها">Abha</h1>
-    <p class="lede"
+    <h1 class="anim anim-zoom" style="--d:90ms" data-en="Abha" data-ar="أبها">Abha</h1>
+    <p class="lede anim" style="--d:180ms"
        data-en="Green mountains, fog in the afternoon, old stone villages and slow-roast lamb. These are the eighteen places I would take you."
        data-ar="جبال خضراء، وضباب بعد الظهر، وقرى حجرية قديمة، ولحم يُطبخ ببطء. هذه هي الأماكن الثمانية عشر التي سآخذكم إليها.">Green mountains, fog in the afternoon, old stone villages and slow-roast lamb.
       These are the eighteen places I would take you.</p>
-    <div class="hero-actions">
+    <div class="hero-actions anim" style="--d:280ms">
       <a class="hero-cta" href="#places"
          data-en="See the 18 places" data-ar="شاهد الأماكن الـ 18">See the 18 places</a>
       <a class="hero-cta hero-cta-ghost" href="#planner"
          data-en="Plan my day" data-ar="خطّط يومي">Plan my day</a>
     </div>
-    <ul class="hero-facts">
+    <ul class="hero-facts anim" style="--d:380ms">
       <li data-en="18 places" data-ar="18 مكاناً">18 places</li>
       <li data-en="2,200 m above the sea" data-ar="2,200 متر فوق سطح البحر">2,200 m above the sea</li>
       <li data-en="Coolest Jun–Sep" data-ar="الأجمل يونيو–سبتمبر">Coolest Jun–Sep</li>
