@@ -252,6 +252,30 @@ a { color: inherit; }
 }
 .scroller::-webkit-scrollbar { display: none; }
 
+/* --- the language button: pinned to the end of the first row,
+       so it is always there while the chips scroll --- */
+.lang-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  margin-left: .5rem;
+  font-family: var(--head);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--card);
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  padding: .38rem .8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .18s, color .18s;
+}
+.lang-btn:hover { background: var(--accent); color: #fff; }
+.lang-btn:active { transform: translateY(1px); }
+.lang-btn svg { flex: 0 0 auto; }
+
 /* --- type tabs --- */
 .chip {
   flex: 0 0 auto;

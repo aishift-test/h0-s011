@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,23 +24,29 @@
 <!-- ============ HERO ============ -->
 <header class="hero">
   <img class="hero-img" src="img/sarawat.jpg" width="1600" height="899" fetchpriority="high"
-       alt="Green mountain ridges and a road running through a valley in the Asir region">
+       alt="Green mountain ridges and a road running through a valley in the Asir region"
+       data-en-alt="Green mountain ridges and a road running through a valley in the Asir region"
+       data-ar-alt="سلاسل جبال خضراء وطريق يمر في وادٍ في منطقة عسير">
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-inner wrap">
-    <p class="kicker">A guide for visiting friends</p>
-    <h1>Abha</h1>
-    <p class="lede">
-      Green mountains, fog in the afternoon, old stone villages and slow-roast lamb.
-      These are the eighteen places I would take you.
-    </p>
+    <p class="kicker"
+       data-en="A guide for visiting friends"
+       data-ar="دليل لأصدقائي الزائرين">A guide for visiting friends</p>
+    <h1 data-en="Abha" data-ar="أبها">Abha</h1>
+    <p class="lede"
+       data-en="Green mountains, fog in the afternoon, old stone villages and slow-roast lamb. These are the eighteen places I would take you."
+       data-ar="جبال خضراء، وضباب بعد الظهر، وقرى حجرية قديمة، ولحم يُطبخ ببطء. هذه هي الأماكن الثمانية عشر التي سآخذكم إليها.">Green mountains, fog in the afternoon, old stone villages and slow-roast lamb.
+      These are the eighteen places I would take you.</p>
     <div class="hero-actions">
-      <a class="hero-cta" href="#places">See the 18 places</a>
-      <a class="hero-cta hero-cta-ghost" href="#planner">Plan my day</a>
+      <a class="hero-cta" href="#places"
+         data-en="See the 18 places" data-ar="شاهد الأماكن الـ 18">See the 18 places</a>
+      <a class="hero-cta hero-cta-ghost" href="#planner"
+         data-en="Plan my day" data-ar="خطّط يومي">Plan my day</a>
     </div>
     <ul class="hero-facts">
-      <li>18 places</li>
-      <li>2,200 m above the sea</li>
-      <li>Coolest Jun–Sep</li>
+      <li data-en="18 places" data-ar="18 مكاناً">18 places</li>
+      <li data-en="2,200 m above the sea" data-ar="2,200 متر فوق سطح البحر">2,200 m above the sea</li>
+      <li data-en="Coolest Jun–Sep" data-ar="الأجمل يونيو–سبتمبر">Coolest Jun–Sep</li>
     </ul>
   </div>
 </header>
@@ -48,43 +54,51 @@
 <!-- ============ TOOLBAR ============ -->
 <div class="toolbar" id="toolbar">
   <div class="wrap">
-    <div class="row" role="group" aria-label="Filter by type">
-      <span class="row-label">Show</span>
+    <div class="row" role="group" aria-label="Filter by type" data-en-aria="Filter by type" data-ar-aria="تصفية حسب النوع">
+      <span class="row-label" data-en="Show" data-ar="اعرض">Show</span>
       <div class="scroller" id="filters">
-        <button type="button" class="chip is-on" data-filter="all">All</button>
-        <button type="button" class="chip" data-filter="nature">Nature</button>
-        <button type="button" class="chip" data-filter="heritage">Heritage</button>
-        <button type="button" class="chip" data-filter="food">Food</button>
-        <button type="button" class="chip" data-filter="activities">Activities</button>
-        <button type="button" class="chip" data-filter="saved">Saved</button>
+        <button type="button" class="chip is-on" data-filter="all" data-en="All" data-ar="الكل">All</button>
+        <button type="button" class="chip" data-filter="nature" data-en="Nature" data-ar="طبيعة">Nature</button>
+        <button type="button" class="chip" data-filter="heritage" data-en="Heritage" data-ar="تراث">Heritage</button>
+        <button type="button" class="chip" data-filter="food" data-en="Food" data-ar="طعام">Food</button>
+        <button type="button" class="chip" data-filter="activities" data-en="Activities" data-ar="أنشطة">Activities</button>
+        <button type="button" class="chip" data-filter="saved" data-en="Saved" data-ar="المحفوظة">Saved</button>
       </div>
+      <button type="button" class="lang-btn" id="langBtn">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M3 12h18M12 3c2.6 2.7 3.9 5.7 3.9 9s-1.3 6.3-3.9 9c-2.6-2.7-3.9-5.7-3.9-9S9.4 5.7 12 3z"/>
+        </svg>
+        <span id="langBtnText">عربي</span>
+      </button>
     </div>
-    <div class="row" role="group" aria-label="Filter by season">
-      <span class="row-label">Season</span>
+    <div class="row" role="group" aria-label="Filter by season" data-en-aria="Filter by season" data-ar-aria="تصفية حسب الموسم">
+      <span class="row-label" data-en="Season" data-ar="الموسم">Season</span>
       <div class="scroller" id="seasons">
-        <button type="button" class="season is-on" data-season="0">Any</button>
-        <button type="button" class="season" data-season="winter">Winter</button>
-        <button type="button" class="season" data-season="spring">Spring</button>
-        <button type="button" class="season" data-season="summer">Summer</button>
-        <button type="button" class="season" data-season="autumn">Autumn</button>
+        <button type="button" class="season is-on" data-season="0" data-en="Any" data-ar="أي موسم">Any</button>
+        <button type="button" class="season" data-season="winter" data-en="Winter" data-ar="الشتاء">Winter</button>
+        <button type="button" class="season" data-season="spring" data-en="Spring" data-ar="الربيع">Spring</button>
+        <button type="button" class="season" data-season="summer" data-en="Summer" data-ar="الصيف">Summer</button>
+        <button type="button" class="season" data-season="autumn" data-en="Autumn" data-ar="الخريف">Autumn</button>
       </div>
     </div>
-    <div class="row" role="group" aria-label="Pick a month">
-      <span class="row-label">Best in</span>
+    <div class="row" role="group" aria-label="Pick a month" data-en-aria="Pick a month" data-ar-aria="اختر شهراً">
+      <span class="row-label" data-en="Best in" data-ar="الأفضل في">Best in</span>
       <div class="scroller" id="months">
-        <button type="button" class="month is-on" data-month="0">Any</button>
-        <button type="button" class="month" data-month="1">Jan</button>
-        <button type="button" class="month" data-month="2">Feb</button>
-        <button type="button" class="month" data-month="3">Mar</button>
-        <button type="button" class="month" data-month="4">Apr</button>
-        <button type="button" class="month" data-month="5">May</button>
-        <button type="button" class="month" data-month="6">Jun</button>
-        <button type="button" class="month" data-month="7">Jul</button>
-        <button type="button" class="month" data-month="8">Aug</button>
-        <button type="button" class="month" data-month="9">Sep</button>
-        <button type="button" class="month" data-month="10">Oct</button>
-        <button type="button" class="month" data-month="11">Nov</button>
-        <button type="button" class="month" data-month="12">Dec</button>
+        <button type="button" class="month is-on" data-month="0" data-en="Any" data-ar="أي شهر">Any</button>
+        <button type="button" class="month" data-month="1" data-en="Jan" data-ar="يناير">Jan</button>
+        <button type="button" class="month" data-month="2" data-en="Feb" data-ar="فبراير">Feb</button>
+        <button type="button" class="month" data-month="3" data-en="Mar" data-ar="مارس">Mar</button>
+        <button type="button" class="month" data-month="4" data-en="Apr" data-ar="أبريل">Apr</button>
+        <button type="button" class="month" data-month="5" data-en="May" data-ar="مايو">May</button>
+        <button type="button" class="month" data-month="6" data-en="Jun" data-ar="يونيو">Jun</button>
+        <button type="button" class="month" data-month="7" data-en="Jul" data-ar="يوليو">Jul</button>
+        <button type="button" class="month" data-month="8" data-en="Aug" data-ar="أغسطس">Aug</button>
+        <button type="button" class="month" data-month="9" data-en="Sep" data-ar="سبتمبر">Sep</button>
+        <button type="button" class="month" data-month="10" data-en="Oct" data-ar="أكتوبر">Oct</button>
+        <button type="button" class="month" data-month="11" data-en="Nov" data-ar="نوفمبر">Nov</button>
+        <button type="button" class="month" data-month="12" data-en="Dec" data-ar="ديسمبر">Dec</button>
       </div>
     </div>
   </div>
@@ -95,7 +109,7 @@
   <section class="places" id="places">
     <div class="wrap">
       <div class="places-head">
-        <h2 class="section-title">Places to see</h2>
+        <h2 class="section-title" data-en="Places to see" data-ar="أماكن تستحق الزيارة">Places to see</h2>
         <button type="button" class="btn-pick" id="pickBtn">
           <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none"
                stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -104,7 +118,7 @@
             <circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"/>
             <circle cx="15.6" cy="15.6" r="1.25" fill="currentColor" stroke="none"/>
           </svg>
-          <span>Pick one for me</span>
+          <span data-en="Pick one for me" data-ar="اختر لي مكاناً">Pick one for me</span>
         </button>
       </div>
       <p class="nowline" id="nowline" hidden></p>
@@ -114,7 +128,9 @@
         Nothing matches that. <button type="button" class="link" id="reset">Show everything</button>
       </p>
       <noscript>
-        <p class="empty">This guide needs JavaScript to show the places. Please turn it on.</p>
+        <p class="empty"
+           data-en="This guide needs JavaScript to show the places. Please turn it on."
+           data-ar="هذا الدليل يحتاج إلى JavaScript لعرض الأماكن. الرجاء تشغيله.">This guide needs JavaScript to show the places. Please turn it on.</p>
       </noscript>
     </div>
   </section>
@@ -123,15 +139,15 @@
   <section class="planner" id="planner">
     <div class="wrap planner-wrap">
       <div class="planner-copy">
-        <p class="kicker kicker-dark">Too many choices?</p>
-        <h2>Plan my day</h2>
-        <p class="planner-lede">
-          Four stops with a time for each: morning, lunch, afternoon and evening.
-          My own plan is below — or press the button for a new one.
-        </p>
-        <p class="planner-note">
-          Good to know: mountain roads get foggy and wet in the rain. Drive slowly.
-        </p>
+        <p class="kicker kicker-dark" data-en="Too many choices?" data-ar="خيارات كثيرة؟">Too many choices?</p>
+        <h2 data-en="Plan my day" data-ar="خطّط يومي">Plan my day</h2>
+        <p class="planner-lede"
+           data-en="Four stops with a time for each: morning, lunch, afternoon and evening. My own plan is below — or press the button for a new one."
+           data-ar="أربع محطات، ولكل محطة وقت: الصباح، والغداء، وبعد الظهر، والمساء. خطتي أنا في الأسفل — أو اضغط الزر لتحصل على خطة جديدة.">Four stops with a time for each: morning, lunch, afternoon and evening.
+          My own plan is below — or press the button for a new one.</p>
+        <p class="planner-note"
+           data-en="Good to know: mountain roads get foggy and wet in the rain. Drive slowly."
+           data-ar="معلومة مفيدة: طرق الجبال يغطيها الضباب وتبتل بالمطر. اِقُد ببطء.">Good to know: mountain roads get foggy and wet in the rain. Drive slowly.</p>
         <button type="button" class="btn-plan" id="planBtn">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none"
                stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -153,14 +169,16 @@
               <rect x="3" y="5" width="18" height="16" rx="2.5"/>
               <path d="M3 10h18M8 3v4M16 3v4M12 13.5v4M10 15.5h4"/>
             </svg>
-            <span>Add this day to my calendar</span>
+            <span data-en="Add this day to my calendar" data-ar="أضف هذا اليوم إلى تقويمي">Add this day to my calendar</span>
           </button>
           <p class="ics-note" id="icsNote" hidden></p>
         </div>
       </div>
 
       <img class="planner-art" src="img/rijal-almaa.jpg" width="1400" height="788"
-           alt="Looking down over the green Rijal Almaa valley and its villages">
+           alt="Looking down over the green Rijal Almaa valley and its villages"
+           data-en-alt="Looking down over the green Rijal Almaa valley and its villages"
+           data-ar-alt="إطلالة من الأعلى على وادي رجال ألمع الأخضر وقراه">
     </div>
   </section>
 </main>
@@ -168,37 +186,40 @@
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-title">Abha — a guide for visiting friends</p>
-    <p class="foot-note">
-      Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers.
-      The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide.
-    </p>
-    <p class="foot-note">
-      Misty Peak Cafe and Asir Table are example places, made up for this project.
-      They are not real businesses. The other places are real.
-    </p>
+    <p class="foot-title"
+       data-en="Abha — a guide for visiting friends"
+       data-ar="أبها — دليل لأصدقائي الزائرين">Abha — a guide for visiting friends</p>
+    <p class="foot-note"
+       data-en="Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers. The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide."
+       data-ar="معظم الصور من ويكيميديا كومنز ومسموح بإعادة استخدامها. شكراً للمصوّرين. صور السودة وبحيرة سد أبها والجاكرندا مُقدَّمة لهذا الدليل.">Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers.
+      The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide.</p>
+    <p class="foot-note"
+       data-en="Misty Peak Cafe and Asir Table are example places, made up for this project. They are not real businesses. The other places are real."
+       data-ar="مقهى قمة الضباب وسُفرة عسير مكانان تجريبيان، صُنعا لهذا المشروع. هما ليسا نشاطين حقيقيين. أما بقية الأماكن فحقيقية.">Misty Peak Cafe and Asir Table are example places, made up for this project.
+      They are not real businesses. The other places are real.</p>
     <details class="credits">
-      <summary>Photo credits</summary>
+      <summary data-en="Photo credits" data-ar="حقوق الصور">Photo credits</summary>
       <ul>
-        <li>Sarawat Mountains — Richard Mortel, CC BY 2.0</li>
-        <li>Abha cable car — Elyas4320, CC BY-SA 4.0</li>
-        <li>Jabal Akhdar (Green Mountain) — Wikimedia Commons, CC BY-SA 3.0</li>
-        <li>Abha park — Wikimedia Commons, CC BY-SA 4.0</li>
-        <li>Rijal Almaa village — Saudi Press Agency, CC BY-SA 4.0</li>
-        <li>Rijal Almaa from the inside — Richard Mortel, CC BY 2.0</li>
-        <li>Al Muftaha — Heritage Commission, CC BY-SA 4.0</li>
-        <li>Al Habala — Aiman titi, CC BY-SA 3.0</li>
-        <li>Palace of Abha — marviikad, CC BY-SA 2.0</li>
-        <li>Al Qatt Al Asiri pattern — Wikimedia Commons, CC BY 4.0</li>
-        <li>Traditional market — Richard Mortel, CC BY 2.0</li>
-        <li>Areeka — Wikimedia Commons, CC0</li>
-        <li>Haneeth rice — Ayshamarjana, CC BY-SA 4.0</li>
-        <li>Traditional bee house — Wikimedia Commons, CC BY-SA 4.0</li>
-        <li>Kabsa — Sammy Six, CC BY 2.0</li>
-        <li>Arabic coffee — Wikimedia Commons, CC BY 2.0 and CC BY-SA 4.0</li>
+        <li data-en="Sarawat Mountains — Richard Mortel, CC BY 2.0" data-ar="جبال السروات — Richard Mortel، CC BY 2.0">Sarawat Mountains — Richard Mortel, CC BY 2.0</li>
+        <li data-en="Abha cable car — Elyas4320, CC BY-SA 4.0" data-ar="تلفريك أبها — Elyas4320، CC BY-SA 4.0">Abha cable car — Elyas4320, CC BY-SA 4.0</li>
+        <li data-en="Jabal Akhdar (Green Mountain) — Wikimedia Commons, CC BY-SA 3.0" data-ar="الجبل الأخضر — ويكيميديا كومنز، CC BY-SA 3.0">Jabal Akhdar (Green Mountain) — Wikimedia Commons, CC BY-SA 3.0</li>
+        <li data-en="Abha park — Wikimedia Commons, CC BY-SA 4.0" data-ar="حديقة أبها — ويكيميديا كومنز، CC BY-SA 4.0">Abha park — Wikimedia Commons, CC BY-SA 4.0</li>
+        <li data-en="Rijal Almaa village — Saudi Press Agency, CC BY-SA 4.0" data-ar="قرية رجال ألمع — وكالة الأنباء السعودية، CC BY-SA 4.0">Rijal Almaa village — Saudi Press Agency, CC BY-SA 4.0</li>
+        <li data-en="Rijal Almaa from the inside — Richard Mortel, CC BY 2.0" data-ar="رجال ألمع من الداخل — Richard Mortel، CC BY 2.0">Rijal Almaa from the inside — Richard Mortel, CC BY 2.0</li>
+        <li data-en="Al Muftaha — Heritage Commission, CC BY-SA 4.0" data-ar="المفتاحة — هيئة التراث، CC BY-SA 4.0">Al Muftaha — Heritage Commission, CC BY-SA 4.0</li>
+        <li data-en="Al Habala — Aiman titi, CC BY-SA 3.0" data-ar="حبالة — Aiman titi، CC BY-SA 3.0">Al Habala — Aiman titi, CC BY-SA 3.0</li>
+        <li data-en="Palace of Abha — marviikad, CC BY-SA 2.0" data-ar="قصر أبها — marviikad، CC BY-SA 2.0">Palace of Abha — marviikad, CC BY-SA 2.0</li>
+        <li data-en="Al Qatt Al Asiri pattern — Wikimedia Commons, CC BY 4.0" data-ar="نقش القط العسيري — ويكيميديا كومنز، CC BY 4.0">Al Qatt Al Asiri pattern — Wikimedia Commons, CC BY 4.0</li>
+        <li data-en="Traditional market — Richard Mortel, CC BY 2.0" data-ar="السوق الشعبي — Richard Mortel، CC BY 2.0">Traditional market — Richard Mortel, CC BY 2.0</li>
+        <li data-en="Areeka — Wikimedia Commons, CC0" data-ar="عريكة — ويكيميديا كومنز، CC0">Areeka — Wikimedia Commons, CC0</li>
+        <li data-en="Haneeth rice — Ayshamarjana, CC BY-SA 4.0" data-ar="أرز الحنيذ — Ayshamarjana، CC BY-SA 4.0">Haneeth rice — Ayshamarjana, CC BY-SA 4.0</li>
+        <li data-en="Traditional bee house — Wikimedia Commons, CC BY-SA 4.0" data-ar="بيت النحل التقليدي — ويكيميديا كومنز، CC BY-SA 4.0">Traditional bee house — Wikimedia Commons, CC BY-SA 4.0</li>
+        <li data-en="Kabsa — Sammy Six, CC BY 2.0" data-ar="كبسة — Sammy Six، CC BY 2.0">Kabsa — Sammy Six, CC BY 2.0</li>
+        <li data-en="Arabic coffee — Wikimedia Commons, CC BY 2.0 and CC BY-SA 4.0" data-ar="القهوة العربية — ويكيميديا كومنز، CC BY 2.0 و CC BY-SA 4.0">Arabic coffee — Wikimedia Commons, CC BY 2.0 and CC BY-SA 4.0</li>
       </ul>
       <p class="credits-link">
-        <a href="https://commons.wikimedia.org/wiki/Category:Abha" target="_blank" rel="noopener">See all on Wikimedia Commons</a>
+        <a href="https://commons.wikimedia.org/wiki/Category:Abha" target="_blank" rel="noopener"
+           data-en="See all on Wikimedia Commons" data-ar="شاهد الكل على ويكيميديا كومنز">See all on Wikimedia Commons</a>
       </p>
     </details>
   </div>
@@ -207,8 +228,8 @@
 <!-- shows for a few seconds after "Pick one for me", so the button
      is still in reach once the page has jumped down to the card -->
 <div class="pick-toast" id="pickToast" hidden>
-  <span>Picked for you</span>
-  <button type="button" id="pickAgain">Pick again</button>
+  <span data-en="Picked for you" data-ar="اخترت لك">Picked for you</span>
+  <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
 <script src="script.js"></script>
