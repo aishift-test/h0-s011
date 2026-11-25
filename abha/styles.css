@@ -973,13 +973,16 @@ a { color: inherit; }
    together, and letter-spacing would pull them apart.
    ============================================================ */
 html[lang="ar"] {
-  --head: "Reem Kufi", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --head: "El Messiri", "IBM Plex Sans Arabic", system-ui, sans-serif;
   --body: "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --serif: "Reem Kufi", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --serif: "El Messiri", "IBM Plex Sans Arabic", system-ui, sans-serif;
 }
 
 html[lang="ar"] * { letter-spacing: 0 !important; }
 
-html[lang="ar"] .hero h1 { line-height: 1.15; }
+/* El Messiri has tall letters. Give the big headings a little more
+   room so the tails do not touch the line below. */
+html[lang="ar"] .hero h1 { line-height: 1.25; }
+html[lang="ar"] h2 { line-height: 1.35; }
 html[lang="ar"] .row-label { text-transform: none; font-size: .74rem; }
 html[lang="ar"] .kicker { text-transform: none; }
