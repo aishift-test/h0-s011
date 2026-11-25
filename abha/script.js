@@ -268,6 +268,7 @@
   var planBtn    = document.getElementById("planBtn");
   var planBtnTxt = document.getElementById("planBtnText");
   var planPanel  = document.getElementById("planPanel");
+  var planTitle  = document.getElementById("planTitle");
   var planList   = document.getElementById("plan");
   var planFoot   = document.getElementById("planFoot");
 
@@ -407,9 +408,61 @@
 
   /* ----------------------------------------------------------
      7. PLAN MY DAY
+
+     MY_PLAN is the writer's own plan for one day.
+     It is the plan you see first. The button gives you a new one.
      ---------------------------------------------------------- */
   var SLOTS = [["morning", "Morning"], ["lunch", "Lunch"],
                ["afternoon", "Afternoon"], ["evening", "Evening"]];
+
+  var MY_PLAN = [
+    { slot: "Morning",   place: "Al Soudah Park",
+      note: "Then breakfast at Misty Peak Cafe." },
+    { slot: "Lunch",     place: "Asir Table",
+      note: "Traditional dishes, sitting on the floor." },
+    { slot: "Afternoon", place: "Al Muftaha Art Village",
+      note: "Colourful walls, galleries and small shops." },
+    { slot: "Evening",   place: "Green Mountain Viewpoint",
+      note: "Then dinner at Highland Grill House." }
+  ];
+
+  function findPlace(name) {
+    for (var i = 0; i < PLACES.length; i++) {
+      if (PLACES[i].name === name) return PLACES[i];
+    }
+    return null;
+  }
+
+  // Draw any list of stops. A stop is { slot, place, note }.
+  function drawPlan(stops) {
+    planList.innerHTML = stops.map(function (stop) {
+      var place = stop.place;
+      var note = stop.note || place.tip;
+      return "<li>" +
+        '<img class="plan-img" src="' + place.img + '" alt="" loading="lazy" width="74" height="74"' +
+          (place.pos ? ' style="object-position:' + place.pos + '"' : '') + ">" +
+        "<div>" +
+          '<span class="plan-slot">' + stop.slot + "</span>" +
+          '<p class="plan-name">' + escapeHtml(place.name) + "</p>" +
+          '<p class="plan-why">' + escapeHtml(note) + "</p>" +
+        "</div>" +
+      "</li>";
+    }).join("");
+  }
+
+  // The writer's own day, shown first.
+  function showMyPlan() {
+    var stops = MY_PLAN.map(function (s) {
+      return { slot: s.slot, place: findPlace(s.place), note: s.note };
+    }).filter(function (s) { return s.place; });
+
+    drawPlan(stops);
+    planTitle.textContent = "My plan for one day";
+    planFoot.innerHTML = "This is the day I would take you on. " +
+      'Press the button for a new one, or <button type="button" class="link" ' +
+      'id="showMine">show my plan again</button>.';
+    planPanel.hidden = false;
+  }
 
   // Build one day. When "strict" is true it only uses places that are
   // at their best in the chosen month (if there are any).
@@ -453,26 +506,27 @@
     }
     lastPlan = stops.map(function (s) { return s.place.name; });
 
-    planList.innerHTML = stops.map(function (stop) {
-      return '<li>' +
-        '<img class="plan-img" src="' + stop.place.img + '" alt="" loading="lazy" width="74" height="74"' +
-          (stop.place.pos ? ' style="object-position:' + stop.place.pos + '"' : '') + '>' +
-        "<div>" +
-          '<span class="plan-slot">' + stop.slot + "</span>" +
-          '<p class="plan-name">' + escapeHtml(stop.place.name) + "</p>" +
-          '<p class="plan-why">' + escapeHtml(stop.place.tip) + "</p>" +
-        "</div>" +
-      "</li>";
-    }).join("");
+    drawPlan(stops);
 
-    planFoot.textContent = month
-      ? "Picked for " + MONTHS[month - 1] + ". Press again for a different day."
-      : "Press again for a different day.";
+    planTitle.textContent = month
+      ? "A day in " + MONTHS[month - 1]
+      : "A day in Abha";
+
+    planFoot.innerHTML = (month
+      ? "Picked for " + MONTHS[month - 1] + ". "
+      : "") +
+      "Press again for a different day, or " +
+      '<button type="button" class="link" id="showMine">show my plan</button>.';
 
     planPanel.hidden = false;
   }
 
   if (planBtn) planBtn.addEventListener("click", makePlan);
+
+  // the small "show my plan" button inside the panel
+  planFoot.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "showMine") showMyPlan();
+  });
 
   /* ----------------------------------------------------------
      8. START
