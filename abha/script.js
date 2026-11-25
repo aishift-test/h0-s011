@@ -63,8 +63,8 @@
     {
       name: "Rijal Almaa Village",
       type: "heritage",
-      img: "img/rijal-almaa.jpg",
-      alt: "The stone towers of Rijal Almaa village standing among green mountains",
+      img: "img/rijal-inside.jpg",
+      alt: "Inside an old house in Rijal Almaa: a green staircase and a wall painted with bright geometric patterns",
       line: "A 900-year-old village of tall stone houses, now a heritage site. The most photographed place in Asir.",
       months: [10, 11, 12, 1, 2],
       slot: "morning",
