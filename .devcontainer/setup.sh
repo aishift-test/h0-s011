@@ -37,7 +37,9 @@ s.env = Object.assign(s.env || {}, {
   CLAUDE_CODE_SUBAGENT_MODEL: e.HK_MODEL,
   CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
   CLAUDE_CODE_MAX_OUTPUT_TOKENS: "32000",
-  ENABLE_TOOL_SEARCH: "false"
+  ENABLE_TOOL_SEARCH: "false",
+  // The model has a 1M window; compact at 200K so each request stays small and cheap (pilot average was 63-88K).
+  CLAUDE_CODE_AUTO_COMPACT_WINDOW: "200000"
 });
 s.model = e.HK_MODEL;
 // No question boxes for first-time students: edits are accepted and the normal tools are pre-allowed.
@@ -50,7 +52,9 @@ s.skipAutoPermissionPrompt = true;
 s.permissions.disableAutoMode = "disable"; // no "Make auto mode your default?" question, and no auto-mode check
 s.statusLine = { type: "command", command: "bash " + path.join(e.HK_WS, ".devcontainer", "status.sh") };
 // Partial hardening: keep Claude from reading the key it runs on (settings file and environment).
-const deny = ["Read(~/.claude/**)", "Read(~/.claude.json)", "Bash(env)", "Bash(env *)", "Bash(printenv)", "Bash(printenv *)", "Bash(*~/.claude*)", "Bash(*$HOME/.claude*)", "Bash(*OPENROUTER_API_KEY*)", "Bash(*ANTHROPIC_AUTH_TOKEN*)"];
+const deny = ["Read(~/.claude/**)", "Read(~/.claude.json)", "Bash(env)", "Bash(env *)", "Bash(printenv)", "Bash(printenv *)", "Bash(*~/.claude*)", "Bash(*$HOME/.claude*)", "Bash(*OPENROUTER_API_KEY*)", "Bash(*ANTHROPIC_AUTH_TOKEN*)",
+  // PDFs sent to the gateway are parsed for a fee on every request; CLAUDE.md says to use pdftotext instead.
+  "Read(**/*.pdf)", "Read(//**/*.pdf)"];
 s.permissions.deny = Array.from(new Set([...(s.permissions.deny || []), ...deny]));
 fs.writeFileSync(settingsFile, JSON.stringify(s, null, 2));
 fs.chmodSync(settingsFile, 0o600);
@@ -65,6 +69,12 @@ j.projects = j.projects || {};
 j.projects[e.HK_WS] = Object.assign(j.projects[e.HK_WS] || {}, { hasTrustDialogAccepted: true });
 fs.writeFileSync(stateFile, JSON.stringify(j, null, 2));
 ' || { echo "SETUP PROBLEM: could not write the Claude Code settings."; exit 0; }
+
+# PDF tools (pdftotext, pdftoppm), so PDFs are read here for free and never sent to the gateway.
+# Installed in the background so the first start is not slower; skipped where apt-get is missing.
+if ! command -v pdftotext >/dev/null 2>&1 && command -v apt-get >/dev/null 2>&1; then
+  (sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils) >/tmp/pdf-tools-install.log 2>&1 &
+fi
 
 # Defaults so students do not have to remember anything:
 # 1) Claude starts by itself in the first terminal and picks up the last chat (falls back to a new chat).
