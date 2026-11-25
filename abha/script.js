@@ -359,10 +359,9 @@
   /* Arabic counts in threes: one place, two places, three to ten
      places, then one place again. So "18 places" is "18 مكاناً". */
   function placeWordAr(n) {
-    if (n === 1) return "مكان";
-    if (n === 2) return "مكانان";
     if (n >= 3 && n <= 10) return "أماكن";
-    return "مكاناً";
+    if (n >= 11) return "مكاناً";
+    return "مكان";   // 0, 1 and 2 all read "2 مكان" next to a number
   }
 
   var T = {
@@ -436,14 +435,15 @@
       saved: "المحفوظة",
       place: "مكان",
       places: "أماكن",
-      typeWord: { all: "", saved: "محفوظة ", nature: "طبيعة ", heritage: "تراث ",
-                  food: "طعام ", activities: "أنشطة " },
+      typeWord: { all: "", saved: "من المحفوظة", nature: "من الطبيعة",
+                  heritage: "من التراث", food: "من الطعام", activities: "من الأنشطة" },
       showing: function (n, word) {
-        return "يظهر الآن <b>" + n + "</b> " + word + placeWordAr(n) + ".";
+        return "يظهر الآن <b>" + n + "</b> " + placeWordAr(n) +
+          (word ? " " + word : "") + ".";
       },
       inPeriod: function (period, good, total, word) {
-        return "في <b>" + period + "</b>، <b>" + good + "</b> من أصل " + total + " " + word +
-          placeWordAr(total) + " في أفضل حال. وهي معروضة أولاً.";
+        return "في <b>" + period + "</b>، <b>" + good + "</b> من أصل " + total + " " +
+          placeWordAr(total) + (word ? " " + word : "") + " في أفضل حال. وهي معروضة أولاً.";
       },
       nowLine: function (month, good, total) {
         return "الشهر الآن <b>" + month + "</b> في أبها. <b>" + good + "</b> من " + total +
@@ -580,12 +580,14 @@
   function periodShort() { return periodLabelShort(state); }
   function periodName()  { return periodLabelFull(state); }
 
-  /* "Jun–Aug", "Dec–May", "Mar, Apr" or "All year" */
+  /* "Jun–Aug", "Dec–May", "Mar, Apr" or "All year".
+     Arabic has its own comma, so the list uses "،". */
   function monthText(place) {
     var S = SHORT[lang];
+    var comma = isAr() ? "، " : ", ";
     var m = place.months.slice().sort(function (a, b) { return a - b; });
     if (m.length >= 10) return t().allYear;
-    if (m.length < 3) return m.map(function (x) { return S[x - 1]; }).join(", ");
+    if (m.length < 3) return m.map(function (x) { return S[x - 1]; }).join(comma);
 
     // the months may run past December into January, so start the run
     // at the first gap and then check the whole ring
@@ -596,7 +598,7 @@
     var run = m.slice(start).concat(m.slice(0, start));
     for (var j = 1; j < run.length; j++) {
       if (run[j] !== (run[j - 1] % 12) + 1) {
-        return m.map(function (x) { return S[x - 1]; }).join(", ");
+        return m.map(function (x) { return S[x - 1]; }).join(comma);
       }
     }
     return S[run[0] - 1] + "–" + S[run[run.length - 1] - 1];
