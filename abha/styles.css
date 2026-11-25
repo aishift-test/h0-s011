@@ -1069,8 +1069,24 @@ a { text-underline-offset: .18em; }
 }
 .foot-top { margin: 1.4rem 0 0; }
 
+/* who made the guide: one line under both columns, with a thin rule
+   above it so it reads as the last thing on the page */
+.foot-made {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  font-family: var(--head);
+  font-size: .82rem;
+  letter-spacing: .01em;
+  color: #c9c9c9;
+}
+
 @media (min-width: 900px) {
   .foot-wrap { grid-template-columns: 1.1fr .9fr; gap: 3.5rem; align-items: start; }
+  /* the two columns sit close together; the made-by line gets its own
+     room above the rule */
+  .foot-made { margin-top: 1.2rem; }
 }
 
 .credits summary {
