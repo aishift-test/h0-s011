@@ -451,7 +451,7 @@
           placeWordAr(total) + (word ? " " + word : "") + " في أفضل حال. وهي معروضة أولاً.";
       },
       nowLine: function (month, good, total) {
-        return "الشهر الآن <b>" + month + "</b> في أبها. <b>" + good + "</b> من " + total +
+        return "نحن الآن في <b>" + month + "</b> في أبها. <b>" + good + "</b> من " + total +
           " مكاناً في أفضل حال الآن. " +
           '<button type="button" class="link" id="showNow">اعرضها</button>';
       },
