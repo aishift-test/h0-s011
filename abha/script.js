@@ -741,7 +741,11 @@
             '<i class="dot" aria-hidden="true"></i>' +
             "<span>" + TYPE_LABEL[lang][place.type] + "</span>" +
             '<span class="sep" aria-hidden="true">|</span>' +
-            "<span>" + t().best + monthText(place) + "</span>" +
+            /* "Best" is its own little piece, because on a narrow card
+               the months alone still fit on one line and the word
+               does not — see .best-word in the stylesheet */
+            '<span><span class="best-word">' + t().best + "</span>" +
+              monthText(place) + "</span>" +
           "</p>" +
           "<h3>" + escapeHtml(pname(place)) + "</h3>" +
           '<p class="line">' + escapeHtml(pline(place)) + "</p>" +
