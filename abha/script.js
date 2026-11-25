@@ -457,7 +457,7 @@
     }).filter(function (s) { return s.place; });
 
     drawPlan(stops);
-    planTitle.textContent = "My plan for one day";
+    if (planTitle) planTitle.textContent = "My plan for one day";
     planFoot.textContent = "This is the day I would take you on. Press the button for a new one.";
     planPanel.hidden = false;
   }
@@ -506,9 +506,11 @@
 
     drawPlan(stops);
 
-    planTitle.textContent = month
-      ? "A day in " + MONTHS[month - 1]
-      : "A day in Abha";
+    if (planTitle) {
+      planTitle.textContent = month
+        ? "A day in " + MONTHS[month - 1]
+        : "A day in Abha";
+    }
 
     planFoot.innerHTML = (month
       ? "Picked for " + MONTHS[month - 1] + ". "
