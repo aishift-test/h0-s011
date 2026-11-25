@@ -420,7 +420,7 @@
     } else if (state.season) {
       planBtnTxt.textContent = "Plan my day in " + SEASONS[state.season].label.toLowerCase();
     } else {
-      planBtnTxt.textContent = "Make me another day";
+      planBtnTxt.textContent = "Plan my day";
     }
   }
 

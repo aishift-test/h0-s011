@@ -141,6 +141,13 @@ a { color: inherit; }
   color: rgba(255, 255, 255, .92);
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .7rem;
+}
+
 .hero-cta {
   display: inline-block;
   font-family: var(--head);
@@ -155,6 +162,16 @@ a { color: inherit; }
   transition: background .18s, transform .18s;
 }
 .hero-cta:hover { background: var(--accent-deep); transform: translateY(-1px); }
+
+/* the second button: see-through, so the photo still shows.
+   The dark wash behind it keeps the white text readable on any photo. */
+.hero-cta-ghost {
+  background: rgba(10, 10, 10, .5);
+  border: 1.5px solid rgba(255, 255, 255, .75);
+  padding: calc(.85rem - 1.5px) calc(1.6rem - 1.5px);
+  box-shadow: none;
+}
+.hero-cta-ghost:hover { background: rgba(255, 255, 255, .22); }
 
 .hero-facts {
   display: flex;
@@ -279,7 +296,7 @@ a { color: inherit; }
    3. THE CARDS
    ============================================================ */
 
-.places { padding: 3rem 0 4rem; scroll-margin-top: 4.5rem; }
+.places { padding: 3rem 0 4rem; scroll-margin-top: 7.5rem; }
 
 .section-title {
   font-size: clamp(1.7rem, 5vw, 2.6rem);
@@ -444,6 +461,8 @@ a { color: inherit; }
   color: #d4d4d4;
   padding: 4rem 0;
   overflow: hidden;
+  /* the sticky toolbar is about 7rem tall — do not hide under it */
+  scroll-margin-top: 7.5rem;
 }
 
 .planner-wrap { position: relative; }
