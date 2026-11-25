@@ -795,7 +795,11 @@ a { text-underline-offset: .18em; }
   color: var(--accent);
   background: none;
   border: 0;
-  padding: 0;
+  /* A taller finger target than the words need. The negative margin
+     of the same size puts the sentence back exactly where it was,
+     so nothing moves — only the part you can tap grows. */
+  padding: .55rem .3rem;
+  margin: -.55rem -.3rem;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -1170,6 +1174,13 @@ a { text-underline-offset: .18em; }
      Drop the word "Best": "NATURE | JUN–AUG" fits on one line. */
   .card-meta .best-word { display: none; }
 
+  /* A finger is not a mouse. The tabs in the bar are taller on a
+     phone, and the three rows sit further apart: a thumb reaching
+     for "Winter" must not land on "Heritage" on the row above. */
+  .toolbar .row + .row { margin-top: .4rem; }
+  .chip { padding: .62rem .7rem .56rem; }
+  .season,
+  .month { padding: .62rem .6rem .56rem; }
 
   /* the plan stops: a bigger photo next to the words */
   .plan li { grid-template-columns: 5.4rem 1fr; gap: .85rem; }
@@ -1185,9 +1196,12 @@ a { text-underline-offset: .18em; }
 /* a small phone */
 @media (max-width: 380px) {
   .row-label { width: 3.4rem; font-size: .6rem; }
-  .chip { font-size: .82rem; padding: .45rem .5rem .4rem; }
+  /* the words get smaller, but the tabs keep the same finger-sized
+     height as on every other phone — only the sideways padding
+     shrinks, so the row still fits */
+  .chip { font-size: .82rem; padding-left: .5rem; padding-right: .5rem; }
   .season,
-  .month { font-size: .78rem; padding: .38rem .45rem .34rem; }
+  .month { font-size: .78rem; padding-left: .45rem; padding-right: .45rem; }
   .plan li { grid-template-columns: 5rem 1fr; gap: .7rem; }
   .plan-img { width: 5rem; height: 5rem; }
 }
