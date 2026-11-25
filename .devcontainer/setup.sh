@@ -73,7 +73,8 @@ fs.writeFileSync(stateFile, JSON.stringify(j, null, 2));
 # PDF tools (pdftotext, pdftoppm), so PDFs are read here for free and never sent to the gateway.
 # Installed in the background so the first start is not slower; skipped where apt-get is missing.
 if ! command -v pdftotext >/dev/null 2>&1 && command -v apt-get >/dev/null 2>&1; then
-  (sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils) >/tmp/pdf-tools-install.log 2>&1 &
+  # Retries: on first start another apt-get (the image) may hold the lock, and setup.sh runs twice (create and start).
+  ( for i in 1 2 3 4 5 6 7 8 9 10; do command -v pdftotext >/dev/null 2>&1 && break; sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils && break; sleep 15; done ) >>/tmp/pdf-tools-install.log 2>&1 &
 fi
 
 # Defaults so students do not have to remember anything:
