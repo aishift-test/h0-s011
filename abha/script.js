@@ -656,7 +656,7 @@
     var on = !!saved[place.name];
 
     return '' +
-      '<li class="card' + (quiet ? " is-quiet" : "") + '" data-place="' + escapeHtml(place.name) + '">' +
+      '<li class="card anim' + (quiet ? " is-quiet" : "") + '" data-place="' + escapeHtml(place.name) + '">' +
         '<a class="card-photo" href="' + mapsUrl(place) + '" target="_blank" rel="noopener" ' +
            'aria-label="' + escapeHtml(mapsAria(place)) + '">' +
           '<img src="' + place.img + '" alt="' + escapeHtml(palt(place)) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
@@ -683,22 +683,36 @@
       "</li>";
   }
 
-  /* Cards fade in as you reach them, instead of all at once. */
+  /* Everything slides in as you reach it, instead of all at once:
+     the cards, and the still pieces of the page — the headings, the
+     rows of buttons, the plan panel, the footer.
+
+     The stylesheet does the moving (the "arrive" animation); this
+     only says when each piece has been reached. */
   var io = ("IntersectionObserver" in window)
     ? new IntersectionObserver(function (entries) {
+        var step = 0;
         entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-in");
-            io.unobserve(e.target);
+          if (!e.isIntersecting) return;
+          var el = e.target;
+          /* cards reached together come in one after the other,
+             like a wave across the row */
+          if (el.classList.contains("card")) {
+            el.style.setProperty("--d", Math.min(step, 5) * 80 + "ms");
+            step++;
           }
+          el.classList.add("is-in");
+          io.unobserve(el);
         });
       }, { rootMargin: "0px 0px -6% 0px" })
     : null;
 
   function reveal() {
-    var cards = grid.querySelectorAll(".card");
-    Array.prototype.forEach.call(cards, function (c) {
-      if (io) io.observe(c); else c.classList.add("is-in");
+    /* a card also carries "anim", so this finds each one only once */
+    var parts = document.querySelectorAll(".card, .anim");
+    Array.prototype.forEach.call(parts, function (el) {
+      if (el.classList.contains("is-in")) return;
+      if (io) io.observe(el); else el.classList.add("is-in");
     });
   }
 
@@ -717,6 +731,11 @@
         return (isBestIn(b, months) ? 1 : 0) - (isBestIn(a, months) ? 1 : 0);
       });
     }
+
+    /* the old cards are about to be thrown away: stop watching them */
+    Array.prototype.forEach.call(grid.querySelectorAll(".card"), function (c) {
+      if (io) io.unobserve(c);
+    });
 
     grid.innerHTML = shown.map(function (p) {
       var best = isBestIn(p, months);
@@ -882,12 +901,101 @@
   });
 
   /* ----------------------------------------------------------
-     6d. A SHADOW UNDER THE TOOLBAR ONCE YOU SCROLL
+     6d. AS YOU SCROLL — the shadow under the toolbar, the purple
+         line at the very top, and the two pictures that drift
+
+     Everything here only ever moves `transform` or `translate`,
+     which the phone can do without redrawing the page, so the
+     scroll stays smooth even with 18 big photos on it.
      ---------------------------------------------------------- */
+  var progressBar = document.getElementById("progress");
+  var heroEl = document.querySelector(".hero");
+  var heroImg = document.querySelector(".hero-img");
+  var heroInner = document.querySelector(".hero-inner");
+  var plannerArt = document.querySelector(".planner-art");
+
+  /* someone who asked their computer for less movement gets a
+     still page: no drifting pictures */
+  var still = !!(window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  /* The hero photo is made a little too big, so it has spare
+     picture at the edges to drift into. Without that the drift
+     would pull the edge of the photo into view. */
+  if (!still && heroImg) heroImg.style.scale = "1.24";
+
+  var heroH = 0;
+  function measure() { heroH = heroEl ? heroEl.offsetHeight : 0; }
+
   function onScroll() {
-    if (toolbar) toolbar.classList.toggle("is-stuck", window.scrollY > 30);
+    var doc = document.documentElement;
+    var y = window.pageYOffset || doc.scrollTop;
+
+    /* --- look first, change things after: one layout, not two --- */
+    var room = doc.scrollHeight - window.innerHeight;
+    var artBox = (!still && plannerArt && plannerArt.offsetParent)
+      ? plannerArt.getBoundingClientRect()
+      : null;
+
+    /* --- now the changes --- */
+    if (toolbar) toolbar.classList.toggle("is-stuck", y > 30);
+
+    if (progressBar) {
+      var done = room > 0 ? y / room : 0;
+      if (done < 0) done = 0;
+      if (done > 1) done = 1;
+      progressBar.style.transform = "scaleX(" + done.toFixed(4) + ")";
+    }
+
+    if (still) return;
+
+    /* the photo drifts down a little as the words drift up, so the
+       two look like they sit at different distances */
+    if (y < heroH) {
+      if (heroImg) {
+        var pic = y * 0.10;
+        if (pic > 62) pic = 62;
+        heroImg.style.translate = "0 " + pic.toFixed(1) + "px";
+      }
+      if (heroInner) {
+        var words = -y * 0.16;
+        if (words < -70) words = -70;
+        heroInner.style.translate = "0 " + words.toFixed(1) + "px";
+      }
+    }
+
+    /* the picture beside the day plan drifts against the text */
+    if (artBox) {
+      var fromMiddle = (artBox.top + artBox.height / 2) - window.innerHeight / 2;
+      var drift = -fromMiddle * 0.07;
+      if (drift < -26) drift = -26;
+      if (drift > 26) drift = 26;
+      plannerArt.style.transform = "translateY(" + drift.toFixed(1) + "px)";
+    }
   }
-  window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* however fast the finger moves, do this once a frame */
+  var scrollQueued = false;
+  window.addEventListener("scroll", function () {
+    if (scrollQueued) return;
+    scrollQueued = true;
+    window.requestAnimationFrame(function () {
+      scrollQueued = false;
+      onScroll();
+    });
+  }, { passive: true });
+
+  /* a wider window can bring pieces into view that were not there
+     before (the picture beside the plan only shows on a big screen) */
+  var resizeTimer = 0;
+  window.addEventListener("resize", function () {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(function () {
+      measure();
+      reveal();
+      onScroll();
+    }, 200);
+  }, { passive: true });
 
   /* ----------------------------------------------------------
      6e. "PICK ONE FOR ME" — a place at random
@@ -1293,5 +1401,13 @@
      ---------------------------------------------------------- */
   applyLang();     // direction, title, words, cards, plan button
   showMyPlan();    // the writer's own day, in the right language
+  measure();       // how tall the hero is, for the drifting photo
   onScroll();
+  /* once every photo has arrived the page is a different height, so
+     measure again and pick up anything that came into view */
+  window.addEventListener("load", function () {
+    measure();
+    reveal();
+    onScroll();
+  });
 })();

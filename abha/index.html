@@ -77,7 +77,7 @@
 <!-- ============ TOOLBAR ============ -->
 <div class="toolbar" id="toolbar">
   <div class="wrap">
-    <div class="row" role="group" aria-label="Filter by type" data-en-aria="Filter by type" data-ar-aria="تصفية حسب النوع">
+    <div class="row anim anim-left" role="group" aria-label="Filter by type" data-en-aria="Filter by type" data-ar-aria="تصفية حسب النوع">
       <span class="row-label" data-en="Show" data-ar="اعرض">Show</span>
       <div class="scroller" id="filters">
         <button type="button" class="chip is-on" data-filter="all" data-en="All" data-ar="الكل">All</button>
@@ -96,7 +96,7 @@
         <span id="langBtnText">عربي</span>
       </button>
     </div>
-    <div class="row" role="group" aria-label="Filter by season" data-en-aria="Filter by season" data-ar-aria="تصفية حسب الموسم">
+    <div class="row anim anim-left" style="--d:80ms" role="group" aria-label="Filter by season" data-en-aria="Filter by season" data-ar-aria="تصفية حسب الموسم">
       <span class="row-label" data-en="Season" data-ar="الموسم">Season</span>
       <div class="scroller" id="seasons">
         <button type="button" class="season is-on" data-season="0" data-en="Any" data-ar="أي موسم">Any</button>
@@ -106,7 +106,7 @@
         <button type="button" class="season" data-season="autumn" data-en="Autumn" data-ar="الخريف">Autumn</button>
       </div>
     </div>
-    <div class="row" role="group" aria-label="Pick a month" data-en-aria="Pick a month" data-ar-aria="اختر شهراً">
+    <div class="row anim anim-left" style="--d:160ms" role="group" aria-label="Pick a month" data-en-aria="Pick a month" data-ar-aria="اختر شهراً">
       <span class="row-label" data-en="Best in" data-ar="الأفضل في">Best in</span>
       <div class="scroller" id="months">
         <button type="button" class="month is-on" data-month="0" data-en="Any" data-ar="أي شهر">Any</button>
@@ -132,8 +132,8 @@
   <section class="places" id="places">
     <div class="wrap">
       <div class="places-head">
-        <h2 class="section-title" data-en="Places to see" data-ar="أماكن تستحق الزيارة">Places to see</h2>
-        <button type="button" class="btn-pick" id="pickBtn">
+        <h2 class="section-title anim anim-left" data-en="Places to see" data-ar="أماكن تستحق الزيارة">Places to see</h2>
+        <button type="button" class="btn-pick anim anim-right" style="--d:110ms" id="pickBtn">
           <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none"
                stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="4.5"/>
@@ -144,8 +144,8 @@
           <span data-en="Pick one for me" data-ar="اختر لي مكاناً">Pick one for me</span>
         </button>
       </div>
-      <p class="nowline" id="nowline" hidden></p>
-      <p class="status" id="status" aria-live="polite"></p>
+      <p class="nowline anim" id="nowline" hidden></p>
+      <p class="status anim" style="--d:70ms" id="status" aria-live="polite"></p>
       <ul class="grid" id="grid"></ul>
       <p class="empty" id="empty" hidden>
         Nothing matches that. <button type="button" class="link" id="reset">Show everything</button>
@@ -162,16 +162,16 @@
   <section class="planner" id="planner">
     <div class="wrap planner-wrap">
       <div class="planner-copy">
-        <p class="kicker kicker-dark" data-en="Too many choices?" data-ar="خيارات كثيرة؟">Too many choices?</p>
-        <h2 data-en="Plan my day" data-ar="خطّط يومي">Plan my day</h2>
-        <p class="planner-lede"
+        <p class="kicker kicker-dark anim anim-left" data-en="Too many choices?" data-ar="خيارات كثيرة؟">Too many choices?</p>
+        <h2 class="anim anim-left" style="--d:80ms" data-en="Plan my day" data-ar="خطّط يومي">Plan my day</h2>
+        <p class="planner-lede anim" style="--d:170ms"
            data-en="Four stops with a time for each: morning, lunch, afternoon and evening. My own plan is below — or press the button for a new one."
            data-ar="أربع محطات، ولكل محطة وقت: الصباح، والغداء، وبعد الظهر، والمساء. خطتي أنا في الأسفل — أو اضغط الزر لتحصل على خطة جديدة.">Four stops with a time for each: morning, lunch, afternoon and evening.
           My own plan is below — or press the button for a new one.</p>
-        <p class="planner-note"
+        <p class="planner-note anim" style="--d:240ms"
            data-en="Good to know: mountain roads get foggy and wet in the rain. Drive slowly."
            data-ar="معلومة مفيدة: طرق الجبال يغطيها الضباب وتبتل بالمطر. اِقُد ببطء.">Good to know: mountain roads get foggy and wet in the rain. Drive slowly.</p>
-        <button type="button" class="btn-plan" id="planBtn">
+        <button type="button" class="btn-plan anim" style="--d:310ms" id="planBtn">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none"
                stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>
@@ -181,7 +181,7 @@
         </button>
       </div>
 
-      <div class="planner-panel" id="planPanel">
+      <div class="planner-panel anim anim-right" style="--d:120ms" id="planPanel">
         <p class="plan-title" id="planTitle">My plan for one day</p>
         <ol class="plan" id="plan"></ol>
         <p class="plan-foot" id="planFoot"></p>
@@ -198,7 +198,7 @@
         </div>
       </div>
 
-      <img class="planner-art" src="img/rijal-almaa.jpg" width="1400" height="788"
+      <img class="planner-art anim anim-zoom" style="--d:220ms" src="img/rijal-almaa.jpg" width="1400" height="788"
            alt="Looking down over the green Rijal Almaa valley and its villages"
            data-en-alt="Looking down over the green Rijal Almaa valley and its villages"
            data-ar-alt="إطلالة من الأعلى على وادي رجال ألمع الأخضر وقراه">
@@ -209,18 +209,18 @@
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-title"
+    <p class="foot-title anim"
        data-en="Abha — a guide for visiting friends"
        data-ar="أبها — دليل لأصدقائي الزائرين">Abha — a guide for visiting friends</p>
-    <p class="foot-note"
+    <p class="foot-note anim" style="--d:90ms"
        data-en="Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers. The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide."
        data-ar="معظم الصور من ويكيميديا كومنز ومسموح بإعادة استخدامها. شكراً للمصوّرين. صور السودة وبحيرة سد أبها والجاكرندا مُقدَّمة لهذا الدليل.">Most photos are from Wikimedia Commons and are free to reuse. Thank you to the photographers.
       The Al Soudah, Abha Dam Lake and jacaranda pictures were supplied for this guide.</p>
-    <p class="foot-note"
+    <p class="foot-note anim" style="--d:170ms"
        data-en="Misty Peak Cafe and Asir Table are example places, made up for this project. They are not real businesses. The other places are real."
        data-ar="مقهى قمة الضباب وسُفرة عسير مكانان تجريبيان، صُنعا لهذا المشروع. هما ليسا مكانين حقيقيين. أما بقية الأماكن فحقيقية.">Misty Peak Cafe and Asir Table are example places, made up for this project.
       They are not real businesses. The other places are real.</p>
-    <details class="credits">
+    <details class="credits anim" style="--d:250ms">
       <summary data-en="Photo credits" data-ar="حقوق الصور">Photo credits</summary>
       <ul>
         <li data-en="Sarawat Mountains — Richard Mortel, CC BY 2.0" data-ar="جبال السروات — Richard Mortel، CC BY 2.0">Sarawat Mountains — Richard Mortel, CC BY 2.0</li>
@@ -255,6 +255,6 @@
   <button type="button" id="pickAgain" data-en="Pick again" data-ar="اختر مرة أخرى">Pick again</button>
 </div>
 
-<script src="script.js?v=6"></script>
+<script src="script.js?v=7"></script>
 </body>
 </html>
