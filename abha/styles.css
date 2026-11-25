@@ -291,7 +291,7 @@ a { color: inherit; }
 .card-photo {
   position: relative;
   display: block;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #dcd8cc;
 }
@@ -594,13 +594,15 @@ a { color: inherit; }
 @media (min-width: 640px) {
   .wrap { padding: 0 2rem; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 1.35rem; }
+  .card-photo { aspect-ratio: 4 / 3; }
   .hero { min-height: 60vh; }
-  .hero-credit { right: 2rem; }
   .row-label { width: 4.4rem; }
 }
 
 @media (min-width: 1000px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
+  /* two big columns, not three small ones — the photos matter here */
+  .wrap { max-width: 1180px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
   .hero { min-height: 74vh; }
   .places { padding: 2rem 0 4rem; }
 
@@ -626,7 +628,7 @@ a { color: inherit; }
 }
 
 @media (min-width: 1200px) {
-  .grid { gap: 1.5rem; }
+  .grid { gap: 1.8rem; }
 }
 
 /* a small phone */
