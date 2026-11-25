@@ -34,6 +34,13 @@
   /* a very pale purple, for a button the mouse is over */
   --accent-tint: #f7eef6;
 
+  /* The quiet purple of the "Open in Maps" button on a card. A
+     card is a photo and a name; eighteen solid purple blocks
+     would shout over both. So the button is a soft wash with
+     purple words, and it fills in when the mouse is over it. */
+  --accent-soft:      #f7eef6;
+  --accent-soft-line: rgba(120, 0, 110, .18);
+
   /* the grey box behind a photo, before the photo arrives,
      and the thin "|" between the type and the months on a card */
   --photo-bg: #ececec;
@@ -104,6 +111,8 @@
   --accent-fill:       #b033a0;
   --accent-fill-hover: #c448b4;
   --accent-tint:       #2b1a2a;
+  --accent-soft:       #2d1a2b;
+  --accent-soft-line:  rgba(233, 166, 223, .26);
 
   --photo-bg: #262626;
   --sep:      rgba(255, 255, 255, .3);
@@ -112,9 +121,9 @@
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, .55), 0 20px 40px -18px rgba(0, 0, 0, .8);
 }
 
-/* A black shadow does nothing on a near-black page, so a card
-   gets a faint edge instead — that is what shows its shape. */
-:root[data-theme="dark"] .card { border: 1px solid var(--line); }
+/* A black shadow does nothing on a near-black page, so a card's
+   faint edge is what shows its shape there. Every card has that
+   edge now (see .card), so nothing extra is needed here. */
 :root[data-theme="dark"] .nowline {
   border: 1px solid var(--line);
   border-left: 3px solid var(--accent);
@@ -190,6 +199,11 @@ a { text-underline-offset: .18em; }
   position: absolute;
   inset: 0;
   background:
+    /* a soft dark ring around the edge of the photo, which gives the
+       picture depth and lets the words in the middle stay bright.
+       The middle is left alone, so nothing behind the title changes. */
+    radial-gradient(135% 105% at 50% 44%,
+      rgba(10, 10, 10, 0) 42%, rgba(10, 10, 10, .58) 100%),
     linear-gradient(180deg, rgba(10, 10, 10, .60) 0%, rgba(10, 10, 10, .62) 45%, rgba(10, 10, 10, .88) 100%);
 }
 
@@ -288,6 +302,15 @@ a { text-underline-offset: .18em; }
   height: 3px;
   border-radius: 50%;
   background: rgba(255, 255, 255, .5);
+}
+
+/* On a phone the three facts do not fit on one line, and a line
+   that breaks leaves a dot hanging at the end of it. So they get a
+   line each and no dots at all — three tidy lines. */
+@media (max-width: 639px) {
+  .hero-facts { flex-direction: column; gap: .4rem; }
+  .hero-facts li { justify-content: center; }
+  .hero-facts li:not(:last-child)::after { display: none; }
 }
 
 /* ============================================================
@@ -719,6 +742,9 @@ a { text-underline-offset: .18em; }
   background: var(--card);
   border-radius: var(--radius);
   overflow: hidden;
+  /* a hairline edge, so each card is a crisp tile instead of a
+     white shape floating on a white page */
+  border: 1px solid var(--line);
   box-shadow: var(--shadow);
   /* starts out of sight; the page brings each card up as you reach it
      (the "arrive" animation further down does the moving and fading) */
@@ -872,6 +898,10 @@ a { text-underline-offset: .18em; }
   overflow: hidden;
 }
 
+/* "Open in Maps" — a quiet button. It used to be a solid purple
+   block, and eighteen of them shouted over the photos and the
+   names they belong to. Now it is a soft purple wash with purple
+   words, and it fills in under the mouse. */
 .maps {
   display: inline-flex;
   align-items: center;
@@ -881,14 +911,20 @@ a { text-underline-offset: .18em; }
   font-family: var(--head);
   font-size: .78rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--accent);
   text-decoration: none;
-  padding: .5rem .8rem;
-  border-radius: 8px;
-  background: var(--accent-fill);
-  transition: background .2s, gap .2s;
+  padding: .46rem .8rem;
+  border: 1px solid var(--accent-soft-line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  transition: background .2s, color .2s, border-color .2s, gap .2s;
 }
-.maps:hover { background: var(--accent-fill-hover); gap: .6rem; }
+.maps:hover {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: #fff;
+  gap: .6rem;
+}
 .maps svg { flex: 0 0 auto; }
 
 /* Nothing matched: a clear white card, sitting exactly where the
@@ -1384,6 +1420,7 @@ a { text-underline-offset: .18em; }
     --ink: #141414; --text: #4b4b4b; --muted: #717171;
     --line: rgba(0, 0, 0, .12);
     --accent: #78006e; --accent-fill: #78006e; --accent-tint: #f7eef6;
+    --accent-soft: #f7eef6; --accent-soft-line: rgba(120, 0, 110, .3);
     --photo-bg: #ececec; --sep: rgba(0, 0, 0, .25);
     --shadow: none; --shadow-lift: none;
   }
