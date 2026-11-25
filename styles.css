@@ -195,6 +195,10 @@ a { color: inherit; }
 
 .menu a:hover { color: #fff; }
 
+/* the link to the other page in this project (the Abha guide).
+   Gold, so it does not read as another section of the offer. */
+.menu .menu-abha { color: var(--gold-bright); }
+
 .menu .menu-cta {
   margin-top: 0.8rem;
   padding: 0.8rem 1rem;
@@ -840,6 +844,31 @@ a { color: inherit; }
 }
 
 .brand-footer em { font-style: italic; color: var(--gold-bright); }
+
+/* the link to the other page in this project (the Abha guide).
+   A little gold rule above it, so it reads as its own thing and
+   not as part of the coaching offer. */
+.site-footer .foot-abha {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+.foot-abha a {
+  /* a taller finger target than the words need, without moving
+     anything: only the part you can tap grows */
+  padding: 0.5rem 0.2rem;
+  color: var(--gold-bright);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.foot-abha a:hover { color: #fff; }
+
+/* On a narrow phone the name is too long to sit beside "Also in
+   this project:", so it drops to its own line — and then the whole
+   line is easy to tap. */
+@media (max-width: 560px) {
+  .foot-abha a { display: block; }
+}
 
 /* ---------- sticky bottom button ---------- */
 .sticky-cta {
