@@ -14,4 +14,5 @@
 - Next for the landing page: the video link `VIDEO_SRC` and the payment link `CHECKOUT_URL`, both in `script.js`.
 - Note: `abha/img/city.jpg` (the student's brown skyline drawing) is still not used — no place in the list matches it.
 - Note: the student tried the green mountain drawing as a blurred page background and did NOT like it, so it was taken off. The file is kept at `abha/img/background.jpg` and nothing uses it. Say no if they ask again unless they ask for it by name.
+- The bar at the top with the filters is plain white, NOT frosted glass. A blur there has to re-read everything behind it on every frame of a scroll, which is very slow on a phone. At 94% white the blur was barely visible anyway, so nothing was lost.
 - Live pages: https://aishift-test.github.io/h0-s011/ — https://aishift-test.github.io/h0-s011/abha/

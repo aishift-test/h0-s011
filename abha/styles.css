@@ -202,9 +202,11 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(255, 255, 255, .94);
-  backdrop-filter: blur(10px) saturate(1.4);
-  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  /* Plain white, not frosted glass. A blur here has to re-read and
+     re-blur everything behind the bar on every single frame of a
+     scroll, which is one of the slowest things a phone can be asked
+     to do. At 94% white the blur was barely visible anyway. */
+  background: var(--card);
   border-bottom: 1px solid var(--line);
   /* three rows now (type, season, month), so keep them tight */
   padding: .35rem 0 .4rem;
