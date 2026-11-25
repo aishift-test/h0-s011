@@ -336,25 +336,30 @@
       <p class="lb-name" id="lbName"></p>
       <p class="lb-line" id="lbLine"></p>
     </div>
+    <!-- the two arrows sit at the sides of the screen on a computer,
+         where there is room beside the photo, and in a row under the
+         photo on a phone, where the photo is as wide as the screen -->
+    <div class="lb-nav">
+      <button type="button" class="lb-btn lb-prev" id="lbPrev"
+              data-en-aria="Previous photo" data-ar-aria="الصورة السابقة">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 5l-7 7 7 7"/>
+        </svg>
+      </button>
+      <button type="button" class="lb-btn lb-next" id="lbNext"
+              data-en-aria="Next photo" data-ar-aria="الصورة التالية">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
     <button type="button" class="lb-btn lb-close" id="lbClose"
             data-en-aria="Close the photo" data-ar-aria="أغلق الصورة">
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none"
            stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
         <path d="M6 6l12 12M18 6L6 18"/>
-      </svg>
-    </button>
-    <button type="button" class="lb-btn lb-prev" id="lbPrev"
-            data-en-aria="Previous photo" data-ar-aria="الصورة السابقة">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none"
-           stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 5l-7 7 7 7"/>
-      </svg>
-    </button>
-    <button type="button" class="lb-btn lb-next" id="lbNext"
-            data-en-aria="Next photo" data-ar-aria="الصورة التالية">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none"
-           stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 5l7 7-7 7"/>
       </svg>
     </button>
   </div>

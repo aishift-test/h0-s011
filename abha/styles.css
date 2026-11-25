@@ -574,11 +574,12 @@ a { text-underline-offset: .18em; }
 
 @keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
 
-/* the dark behind the photo */
+/* the dark behind the photo: solid, so the page behind cannot
+   show through and the photo is the only thing you look at */
 .lb-scrim {
   position: absolute;
   inset: 0;
-  background: rgba(9, 9, 11, .9);
+  background: #0a0a0c;
 }
 
 .lb-box {
@@ -623,12 +624,13 @@ a { text-underline-offset: .18em; }
 }
 .lb-line:empty { display: none; }
 
-/* the three round buttons: close, previous, next */
+/* the three round buttons: close, previous, next. 44px is the
+   size a finger can hit without looking. */
 .lb-btn {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid rgba(255, 255, 255, .28);
   border-radius: 50%;
@@ -641,18 +643,39 @@ a { text-underline-offset: .18em; }
 .lb-btn:active { transform: scale(.94); }
 .lb-btn[hidden] { display: none; }
 
-/* the buttons sit on the screen, not on the photo, so they are
-   in the same place whatever shape the photo is */
-.lb-close { position: fixed; top: .7rem; right: .7rem; z-index: 2; }
+/* On a computer there is room beside the photo, so the two arrows
+   go to the sides of the screen — in the same place whatever
+   shape the photo is. "display: contents" takes the wrapper away,
+   so only the two buttons are left to place. */
+.lb-nav { display: contents; }
 .lb-prev,
 .lb-next {
   position: fixed;
   top: 50%;
-  margin-top: -21px;   /* half the height, so they are centred */
+  margin-top: -22px;   /* half the height, so they are centred */
   z-index: 2;
 }
 .lb-prev { left: .6rem; }
 .lb-next { right: .6rem; }
+
+/* the X goes in the corner of the screen */
+.lb-close { position: fixed; top: .7rem; right: .7rem; z-index: 2; }
+
+/* On a phone the photo is as wide as the screen, so an arrow at
+   the side would sit on top of it. They go in a row under the
+   words instead. */
+@media (max-width: 639px) {
+  .lb-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.1rem;
+  }
+  .lb-prev,
+  .lb-next {
+    position: static;
+    margin-top: 0;
+  }
+}
 
 /* "It is November in Abha. 13 of the 18 places are at their best now." */
 .nowline {
