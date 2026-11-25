@@ -332,12 +332,45 @@
             '<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/>' +
             '<circle cx="12" cy="10" r="2.6"/></svg>';
 
+  var HEART = '<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" ' +
+              'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="M12 20.4 4.7 13a4.6 4.6 0 1 1 6.5-6.5l.8.8.8-.8A4.6 4.6 0 1 1 19.3 13z"/></svg>';
+
+  /* ----------------------------------------------------------
+     4b. THE PLACES YOU SAVED
+
+     The heart on a card keeps a place in the browser itself,
+     so it is still there the next time you open the page.
+     There is no server, so it is saved on this device only.
+     ---------------------------------------------------------- */
+  var SAVED_KEY = "abha-saved-v1";
+  var saved = {};
+
+  try {
+    var rawSaved = window.localStorage.getItem(SAVED_KEY);
+    var list = rawSaved ? JSON.parse(rawSaved) : [];
+    if (Object.prototype.toString.call(list) === "[object Array]") {
+      list.forEach(function (n) { saved[n] = true; });
+    }
+  } catch (e) {
+    /* private browsing, or the browser said no — keep them in memory only */
+  }
+
+  function savedCount() { return Object.keys(saved).length; }
+
+  function saveStore() {
+    try {
+      window.localStorage.setItem(SAVED_KEY, JSON.stringify(Object.keys(saved)));
+    } catch (e) { /* nothing we can do, and nothing breaks */ }
+  }
+
   /* ----------------------------------------------------------
      4. DRAW THE CARDS
      ---------------------------------------------------------- */
   function cardHtml(place, bestNow, quiet) {
     // some photos are tall; "pos" says which part of the photo to show
     var pos = place.pos ? ' style="object-position:' + place.pos + '"' : '';
+    var on = !!saved[place.name];
 
     return '' +
       '<li class="card' + (quiet ? " is-quiet" : "") + '">' +
@@ -346,6 +379,11 @@
           '<img src="' + place.img + '" alt="' + escapeHtml(place.alt) + '" loading="lazy" width="1400" height="1050"' + pos + '>' +
           '<span class="now"' + (bestNow ? "" : " hidden") + ">Best now</span>" +
         "</a>" +
+        '<button type="button" class="save" data-name="' + escapeHtml(place.name) + '"' +
+          ' aria-pressed="' + (on ? "true" : "false") + '"' +
+          ' aria-label="' + (on ? "Remove " : "Save ") + escapeHtml(place.name) + '">' +
+          HEART +
+        "</button>" +
         '<div class="card-body">' +
           '<p class="card-meta type-' + place.type + '">' +
             '<i class="dot" aria-hidden="true"></i>' +
@@ -471,13 +509,23 @@
      It is the plan you see first. The button gives you a new one.
      ---------------------------------------------------------- */
   /* The four stops of a day, each with the time you would go.
-     Change a time here and it changes everywhere on the page. */
+     Times are 24-hour here and shown as 8:00 am on the page.
+     Change one and it changes everywhere, including the calendar file. */
   var SLOTS = [
-    { key: "morning",   label: "Morning",   time: "8:00 am" },
-    { key: "lunch",     label: "Lunch",     time: "1:00 pm" },
-    { key: "afternoon", label: "Afternoon", time: "4:30 pm" },
-    { key: "evening",   label: "Evening",   time: "7:00 pm" }
+    { key: "morning",   label: "Morning",   from: "08:00", to: "10:00" },
+    { key: "lunch",     label: "Lunch",     from: "13:00", to: "14:30" },
+    { key: "afternoon", label: "Afternoon", from: "16:30", to: "18:00" },
+    { key: "evening",   label: "Evening",   from: "19:00", to: "21:00" }
   ];
+
+  /* "08:00" -> "8:00 am" */
+  function prettyTime(hhmm) {
+    var p = hhmm.split(":");
+    var h = Number(p[0]);
+    var ampm = h < 12 ? "am" : "pm";
+    var h12 = h % 12 === 0 ? 12 : h % 12;
+    return h12 + ":" + p[1] + " " + ampm;
+  }
 
   var SLOT_BY_KEY = {};
   SLOTS.forEach(function (s) { SLOT_BY_KEY[s.key] = s; });
@@ -512,7 +560,7 @@
           (place.pos ? ' style="object-position:' + place.pos + '"' : '') + ">" +
         "<div>" +
           '<span class="plan-slot">' +
-            '<b class="plan-time">' + slot.time + "</b> · " + slot.label +
+            '<b class="plan-time">' + prettyTime(slot.from) + "</b> · " + slot.label +
           "</span>" +
           '<p class="plan-name">' + escapeHtml(place.name) + "</p>" +
           '<p class="plan-why">' + escapeHtml(note) + "</p>" +

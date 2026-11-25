@@ -56,6 +56,7 @@
         <button type="button" class="chip" data-filter="heritage">Heritage</button>
         <button type="button" class="chip" data-filter="food">Food</button>
         <button type="button" class="chip" data-filter="activities">Activities</button>
+        <button type="button" class="chip" data-filter="saved">Saved</button>
       </div>
     </div>
     <div class="row" role="group" aria-label="Filter by season">
@@ -94,6 +95,7 @@
   <section class="places" id="places">
     <div class="wrap">
       <h2 class="section-title">Places to see</h2>
+      <p class="nowline" id="nowline" hidden></p>
       <p class="status" id="status" aria-live="polite"></p>
       <ul class="grid" id="grid"></ul>
       <p class="empty" id="empty" hidden>
@@ -132,6 +134,17 @@
         <p class="plan-title" id="planTitle">My plan for one day</p>
         <ol class="plan" id="plan"></ol>
         <p class="plan-foot" id="planFoot"></p>
+        <div class="ics-wrap">
+          <button type="button" class="btn-ics" id="icsBtn">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none"
+                 stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="16" rx="2.5"/>
+              <path d="M3 10h18M8 3v4M16 3v4M12 13.5v4M10 15.5h4"/>
+            </svg>
+            <span>Add this day to my calendar</span>
+          </button>
+          <p class="ics-note" id="icsNote" hidden></p>
+        </div>
       </div>
 
       <img class="planner-art" src="img/rijal-almaa.jpg" width="1400" height="788"
